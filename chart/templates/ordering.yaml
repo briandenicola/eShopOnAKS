@@ -1,0 +1,85 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ordering-cm
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: ordering
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  IdentityUrl: http://identity-api
+  IdentityUrlExternal: http://{{ .Values.hostName }}/identity
+  SeqServerUrl: http://seq
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ordering
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: ordering
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: ordering
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: ordering
+      annotations:
+        dapr.io/log-as-json: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/"
+    spec:
+      containers:
+        - name: ordering-api
+          image: eshopdapr/ordering.api:latest
+          #image: bjd145/eshopdapr-ordering.api:20220331
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: api-http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: ordering-cm
+            - secretRef:
+                name: eshopondapr-secrets                 
+          readinessProbe:
+            httpGet:
+              path: /hc
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordering-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: ordering
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: api-http
+  selector:
+    service: ordering

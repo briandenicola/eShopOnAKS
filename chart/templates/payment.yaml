@@ -1,0 +1,77 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: payment-cm
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: payment
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  SeqServerUrl: http://seq
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: payment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: payment
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: payment
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/"        
+    spec:
+      containers:
+        - name: payment-api
+          image: eshopdapr/payment.api:latest
+          #image: bjd145/eshopdapr-payment.api:20220331
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: payment-cm
+            - secretRef:
+                name: eshopondapr-secrets                 
+          readinessProbe:
+            httpGet:
+              path: /hc
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: payment
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    service: payment

@@ -1,0 +1,80 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: identity-cm
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: identity
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  PATH_BASE: /identity
+  SeqServerUrl: http://seq
+  IssuerUrl: http://{{ .Values.hostName }}
+  BlazorClientUrlExternal: http://{{ .Values.hostName }}
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: identity
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: identity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: identity
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: identity
+      annotations:
+        dapr.io/log-as-json: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/"        
+    spec:
+      containers:
+        - name: identity-api
+          #image: bjd145/eshopondapr-identity:a6daad59
+          image: eshopdapr/identity.api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: identity-http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: identity-cm
+            - secretRef:
+                name: eshopondapr-secrets                 
+          readinessProbe:
+            httpGet:
+              path: /hc
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: identity-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: identity
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: identity-http
+  selector:
+    service: identity

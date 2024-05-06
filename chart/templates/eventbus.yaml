@@ -1,0 +1,45 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rabbitmq
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3-management-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: rabbitmq-http
+            containerPort: 5672
+            protocol: TCP
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: rabbitmq
+spec:
+  ports:
+    - name: rabbitmq
+      port: 5672
+      targetPort: rabbitmq-http
+  selector:
+    service: rabbitmq

@@ -1,0 +1,86 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: catalog-cm
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: catalog
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  SeqServerUrl: http://seq
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: catalog
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: catalog
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: catalog
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/"        
+    spec:
+      containers:
+        - name: catalog-api
+          image: eshopdapr/catalog.api:latest
+          #image: bjd145/eshopdapr-catalog.api:20220331
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 81
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: catalog-cm
+            - secretRef:
+                name: eshopondapr-secrets                
+          readinessProbe:
+            httpGet:
+              path: /hc
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: catalog-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: eshop
+    service: catalog
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+    - port: 3500
+      targetPort: 3500
+      protocol: TCP
+      name: dapr-http
+    - port: 50001
+      targetPort: 50001
+      protocol: TCP
+      name: dapr-grpc
+  selector:
+    service: catalog
