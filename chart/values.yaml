@@ -1,8 +1,30 @@
-NAME: "eshop"
-ACR_NAME: ""
-APP_NAME: ""
+NAMESPACE                               : "eshop"
+APP_NAME                                : ""
+
+ACR:
+  NAME                                  : ""
+
+APP_INSIGHTS:
+  CONNECTION_STRING                     : ""
+              
+WORKLOAD_ID:
+  NAME                                  : ""
+  CLIENT_ID                             : ""
+  TENANT_ID                             : ""
 
 SERVICES:
   TYPE: LoadBalancer
   ANNOTATIONS:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+
+OTEL:
+  ZIPKIN_ENDPOINT                       : "http://otel-collector.otel-system.svc.cluster.local:9411/api/v2/spans"
+  ENDPOINT                              : "http://otel-collector.otel-system.svc.cluster.local:4317"
+  VERSION                               : "0.98.0"
+
+KEYVAULT:
+  NAME                                  : ""
+  SECRETS:
+    CATALOG                         : "sbconnection" 
+    IDENTITY                             : "storagekey"
+    ORDERING                            : "postgresqlconnection"

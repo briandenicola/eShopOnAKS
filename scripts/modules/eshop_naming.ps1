@@ -21,7 +21,7 @@ Set-Variable -Name Services             -Value @(
     @{Name="mobile-bff"; Path="src/Mobile.Bff.Shopping"},
     @{Name="order-processor"; Path="src/OrderProcessor"},
     @{Name="ordering-api"; Path="src/Ordering.API"},
-    @{Name="payment-processor"; Path="src/ PaymentProcessor"},
+    @{Name="payment-processor"; Path="src/PaymentProcessor"},
     @{Name="webapp"; Path="src/WebApp"},
     @{Name="webhooks-api"; Path="src/Webhooks.API"},
     @{Name="webhooksclient"; Path="src/WebhookClient"}

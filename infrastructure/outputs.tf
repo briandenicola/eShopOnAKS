@@ -22,8 +22,8 @@ output "ARM_WORKLOAD_APP_ID" {
   value     = azurerm_user_assigned_identity.app_identity.client_id
   sensitive = false
 }
-output "AI_INSTRUMENTATION_KEY" {
-    value = azurerm_application_insights.this.instrumentation_key
+output "AI_CONNECTION_STRING" {
+    value = azurerm_application_insights.this.connection_string
     sensitive = true
 }
 

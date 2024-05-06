@@ -25,9 +25,8 @@ Connect-ToAzureContainerRepo -ACRName $APP_ACR_NAME
 #Build and Push All Containers from Source 
 $commit_version = Get-GitCommitVersion -Source $SourceRootDirectory
 
-foreach( $Service in $Services) {
+foreach( $Service in $Services ) {
     $SourcePath = Join-Path -Path $SourceRootDirectory -ChildPath $Service.Path
-    Write-Log ("Building and pushing {0} container to {1} . . ." -f $Service.Name, $APP_ACR_NAME)
     Build-DockerContainers -ContainerRegistry "${APP_ACR_NAME}.azurecr.io" -ContainerImageTag ${commit_version} -SourcePath $SourcePath
 }
 

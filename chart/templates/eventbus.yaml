@@ -25,7 +25,11 @@ spec:
           - name: rabbitmq-http
             containerPort: 5672
             protocol: TCP
-
+      tolerations:
+      - key: "ReservedFor"
+        operator: "Equal"
+        value: "apps"
+        effect: "NoSchedule"
 ---
 
 kind: Service

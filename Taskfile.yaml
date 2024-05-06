@@ -42,9 +42,17 @@ tasks:
 
   refresh:
     cmds:
-    - terraform -chdir=./infrastructure refresh -var "region={{.REGION}}" -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}"  -var "tags={{.TITLE}}"
+    - terraform -chdir=./infrastructure refresh 
+      -var "region={{.REGION}}" 
+      -var "vm_size={{.SKU}}" 
+      -var "node_count={{.COUNT}}" 
+      -var "tags={{.TITLE}}"
+      -var "certificate_base64_encoded={{.CERT}}" 
+      -var "certificate_password={{.CERT_PFX_PASS}}"
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
+      CERT:
+        sh: cat {{.CERT_PATH}} | base64
 
   creds:
     desc: Gets credential file for newly created AKS cluster
@@ -60,7 +68,7 @@ tasks:
   configs:
     desc: Update configurations with proper values Key
     cmds:
-    - export AI_INSTRUMENTATION_KEY={{.AI_INSTRUMENTATION_KEY}} ;
+    - export AI_CONNECTION_STRING="{{.AI_CONNECTION_STRING}}" ;
       envsubst < cluster-config/istio/configuration/otel.tmpl > cluster-config/istio/configuration/otel.yaml
     - export INGRESS_CLIENT_ID={{.INGRESS_CLIENT_ID}} ;
       envsubst < cluster-config/istio/gateway/serviceaccount.tmpl > cluster-config/istio/gateway/serviceaccount.yaml
@@ -73,8 +81,8 @@ tasks:
     - git commit -m "Updated Config values"
     - git push
     vars:
-      AI_INSTRUMENTATION_KEY:
-        sh: terraform -chdir=./infrastructure output -raw AI_INSTRUMENTATION_KEY
+      AI_CONNECTION_STRING:
+        sh: terraform -chdir=./infrastructure output -raw AI_CONNECTION_STRING
       KEYVAULT_NAME:
         sh: terraform -chdir=./infrastructure output -raw KEYVAULT_NAME
       INGRESS_CLIENT_ID:

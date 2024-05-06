@@ -5,59 +5,65 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: eshop
-    service: basket
+    service: basket-api
 data:
-  ASPNETCORE_ENVIRONMENT: Development
-  ASPNETCORE_URLS: http://0.0.0.0:80
-  IdentityUrl: http://identity-api
-  IdentityUrlExternal: http://{{ .Values.hostName }}/identity
-  SeqServerUrl: http://seq
-
+  Identity__Url: http://identity-api
+  AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
+  ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
 ---
-
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: basket
+  name: basket-api
   namespace: {{ .Values.namespace }}
   labels:
     app: eshop
-    service: basket
+    service: basket-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: basket
+      service: basket-api
   template:
     metadata:
       labels:
         app: eshop
-        service: basket
+        service: basket-api
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
         prometheus.io/path: "/"        
     spec:
+      serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
       containers:
         - name: basket-api
-          image: eshopdapr/basket.api:latest
+          image: {{ print .Values.ACR.NAME ".azurecr.io/basket-api:" .Values.GIT_COMMIT_VERSION }}
           imagePullPolicy: IfNotPresent
-          ports:
-            - name: api-http
-              containerPort: 80
-              protocol: TCP
           envFrom:
-            - configMapRef:
-                name: basket-cm
-          readinessProbe:
-            httpGet:
-              path: /hc
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 5
-
+          - configMapRef:
+            name: basket-cm
+          env:
+          - name: ConnectionStrings__redis
+            valueFrom:
+              secretKeyRef:
+                name: redis-connection-string
+                key: redis-connection-string
+      volumes:
+      - name: secrets-store
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "eshop-secrets"
+      tolerations:
+      - key: "ReservedFor"
+        operator: "Equal"
+        value: "apps"
+        effect: "NoSchedule"
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -65,11 +71,28 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: eshop
-    service: basket
+    service: basbasket-api
 spec:
   ports:
-    - name: http
-      port: 80
-      targetPort: api-http
+    - port: 8080
+      targetPort: 8080
+      protocol: HTTP
   selector:
-    service: basket
+    service: basket-api
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name:  basket-api-vs
+  namespace: {{ .Values.namespace }}
+spec:
+  hosts:
+  -  {{ .Values.ISTIO.HOST }}
+  gateways:
+  -  {{ .Values.ISTIO.GATEWAY }}
+  http:
+  - route:
+    - destination:
+        host: basket-api
+        port:
+          number: 8080
