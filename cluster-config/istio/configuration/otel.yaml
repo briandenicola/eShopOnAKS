@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
       - name: otel-collector
-        image: otel/opentelemetry-collector-contrib:{{ .Values.OTEL.VERSION }}
+        image: otel/opentelemetry-collector-contrib:0.98.0
         command:
         - "/otelcol-contrib"
         - "--config=/config/otel-collector-config.yaml"
@@ -111,7 +111,7 @@ data:
         verbosity: detailed
 
       azuremonitor:
-        connection_string: 
+        connection_string: InstrumentationKey=55e6b8e7-73c5-4ef1-9290-9d9a0187d43d;IngestionEndpoint=https://southcentralus-3.in.applicationinsights.azure.com/;LiveEndpoint=https://southcentralus.livediagnostics.monitor.azure.com/;ApplicationId=6b204ef0-3b62-4c39-a096-1b152372a26a
         maxbatchsize: 100
         maxbatchinterval: 10s
 
