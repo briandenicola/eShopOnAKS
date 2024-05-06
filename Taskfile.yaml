@@ -22,7 +22,6 @@ tasks:
     - task: apply
     - task: creds
     - task: configs
-    #- task: deploy
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
 
@@ -80,6 +79,18 @@ tasks:
         sh: terraform -chdir=./infrastructure output -raw KEYVAULT_NAME
       INGRESS_CLIENT_ID:
         sh: terraform -chdir=./infrastructure output -raw INGRESS_CLIENT_ID
+
+  build: 
+    desc: Builds containers
+    dir: ./scripts
+    cmds:
+    - pwsh ./build_containers.ps1 -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -SourceRootDirectory {{.SOURCE_DIR}}
+    vars:
+      APP_NAME: 
+        sh: terraform -chdir=../infrastructure output -raw APP_NAME
+      SUBSCRIPTION_NAME:
+        sh: az account show --query name -o tsv
+      SOURCE_DIR: '{{default "~/code/eShop" .CLI_ARGS}}'
 
   deploy:
     desc: Deploys application via Helm
