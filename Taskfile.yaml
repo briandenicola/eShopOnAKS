@@ -21,7 +21,13 @@ tasks:
 
   apply:
     cmds:
-    - terraform -chdir=./infrastructure apply -auto-approve -var "region={{.REGION}}" -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}"  -var "tags={{.TAGS}}" -compact-warnings
+    - terraform -chdir=./infrastructure apply -auto-approve -var "region={{.REGION}}" -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}"  -var "tags={{.TITLE}}" -compact-warnings
+    vars: 
+      REGION: '{{default "southcentralus" .CLI_ARGS}}'
+
+  refresh:
+    cmds:
+    - terraform -chdir=./infrastructure refresh -var "region={{.REGION}}" -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}"  -var "tags={{.TITLE}}"
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
 

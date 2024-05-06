@@ -3,6 +3,11 @@ output "APP_NAME" {
   sensitive = false
 }
 
+output "AKS_CLUSTER_NAME" {
+  value     = azurerm_kubernetes_cluster.this.name
+  sensitive = false
+}
+
 output "RESOURCE_GROUP" {
   value     = azurerm_resource_group.this.name
   sensitive = false
