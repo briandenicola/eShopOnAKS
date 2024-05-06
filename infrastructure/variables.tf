@@ -34,12 +34,6 @@ variable "postgresql_user_name" {
   default     = "manager"
 }
 
-variable "postgresql_database_name" {
-  description = "PostgreSQL Database Name"
-  type        = string
-  default     = "coinsdb"
-}
-
 variable "github_repo_branch" {
   description = "The branched used for Infrastructure GitOps"
   default     = "main"
@@ -60,5 +54,5 @@ variable "certificate_password" {
 
 variable "certificate_name" {
   description      = "The name of the certificate to use for TLS"
-  default = "wildcard-certificate"
+  default          = "wildcard-certificate"
 }
