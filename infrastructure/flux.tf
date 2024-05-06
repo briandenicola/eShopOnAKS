@@ -26,12 +26,37 @@ resource "azurerm_kubernetes_flux_configuration" "flux_config" {
   }
 
   kustomizations {
-    name = "cluster-config"
+    name                       = "istio-cfg"
+    path                       = local.istio_cfg_path
+    timeout_in_seconds         = 600
+    sync_interval_in_seconds   = 120
+    retry_interval_in_seconds  = 300
+    garbage_collection_enabled = true
+    depends_on = []
+  }
+
+  kustomizations {
+    name                       = "istio-gw"
+    path                       = local.istio_gw_path
+    timeout_in_seconds         = 600
+    sync_interval_in_seconds   = 120
+    retry_interval_in_seconds  = 300
+    garbage_collection_enabled = true
+    depends_on = [
+      "istio-cfg"
+    ]
+  }
+
+  kustomizations {
+    name = "apps"
     path = local.app_path
 
     timeout_in_seconds         = 600
     sync_interval_in_seconds   = 120
     retry_interval_in_seconds  = 300
     garbage_collection_enabled = true
+    depends_on = [
+      "istio-cfg"
+    ]
   }
 }

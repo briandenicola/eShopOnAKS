@@ -43,6 +43,9 @@ locals {
   acr_name                    = "${replace(local.resource_name, "-", "")}containers"
   sql_name                    = "${local.resource_name}-sql"
   openai_name                 = "${local.resource_name}-openai"
+  aks_service_mesh_identity   = "${local.aks_name}-${var.service_mesh_type}-pod-identity"
+  istio_cfg_path              = "./cluster-config/istio/configuration"
+  istio_gw_path               = "./cluster-config/istio/gateway"
   app_path                    = "./cluster-config"
   flux_repository             = "https://github.com/briandenicola/eshoponaks"
   vnet_cidr                   = cidrsubnet("10.0.0.0/8", 8, random_integer.vnet_cidr.result)

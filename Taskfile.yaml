@@ -1,5 +1,7 @@
 version: '3'
 
+dotenv: ['.env']
+
 env:
   TITLE: eShop On AKS
   HELM_CHART: eshop
@@ -16,14 +18,24 @@ tasks:
     - task: apply
     - task: creds
     - task: deploy
+    - task: configs
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
 
   apply:
     cmds:
-    - terraform -chdir=./infrastructure apply -auto-approve -var "region={{.REGION}}" -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}"  -var "tags={{.TITLE}}" -compact-warnings
+    - terraform -chdir=./infrastructure apply -auto-approve
+       -var "region={{.REGION}}" 
+       -var "vm_size={{.SKU}}" 
+       -var "node_count={{.COUNT}}"
+       -var "tags={{.TITLE}}" 
+       -var "certificate_base64_encoded={{.CERT}}" 
+       -var "certificate_password={{.CERT_PFX_PASS}}"
+       -compact-warnings
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
+      CERT:
+        sh: cat {{.CERT_PATH}} | base64
 
   refresh:
     cmds:
@@ -41,6 +53,29 @@ tasks:
         sh: terraform -chdir=./infrastructure output -raw RESOURCE_GROUP
       AKS: 
         sh: terraform -chdir=./infrastructure output -raw AKS_CLUSTER_NAME
+
+  configs:
+    desc: Update configurations with proper values Key
+    cmds:
+    - export AI_INSTRUMENTATION_KEY={{.AI_INSTRUMENTATION_KEY}} ;
+      envsubst < clusters/common/istio/configuration/otel.tmpl > clusters/common/istio/configuration/otel.yaml
+    - export INGRESS_CLIENT_ID={{.INGRESS_CLIENT_ID}} ;
+      envsubst < clusters/common/istio/gateway/serviceaccount.tmpl > clusters/common/istio/gateway/serviceaccount.yaml
+    - export KEYVAULT_NAME={{.KEYVAULT_NAME}} ;
+      export INGRESS_CLIENT_ID={{.INGRESS_CLIENT_ID}} ;
+      envsubst < clusters/common/istio/gateway/secretsprovider.tmpl > clusters/common/istio/gateway/secretsprovider.yaml
+    - git add clusters/common/istio/configuration/otel.yaml
+    - git add clusters/common/istio/gateway/serviceaccount.yaml
+    - git add clusters/common/istio/gateway/secretsprovider.yaml
+    - git commit -m "Updated Config values"
+    - git push
+    vars:
+      AI_INSTRUMENTATION_KEY:
+        sh: terraform -chdir=./infrastructure output -raw AI_INSTRUMENTATION_KEY
+      KEYVAULT_NAME:
+        sh: terraform -chdir=./infrastructure output -raw KEYVAULT_NAME
+      INGRESS_CLIENT_ID:
+        sh: terraform -chdir=./infrastructure output -raw INGRESS_CLIENT_ID
 
   deploy:
     desc: Deploys application via Helm

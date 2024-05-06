@@ -9,7 +9,12 @@ variable "tags" {
 
 variable "namespace" {
   description = "The namespace application will be deployed to"
-  default     = "ric-analyzer"
+  default     = "eshop"
+}
+
+variable "service_mesh_type" {
+  description = "Type of Service Mesh for cluster"
+  default     = "istio"
 }
 
 variable "vm_size" {
@@ -43,4 +48,17 @@ variable "github_repo_branch" {
 variable "zones" {
   description = "The values for zones to deploy AKS nodes to"
   default = ["1"]
+}
+
+variable "certificate_base64_encoded" {
+  description = "TLS Certificate for Istio Ingress Gateway"
+}
+
+variable "certificate_password" {
+  description = "Password for TLS Certificate"
+}
+
+variable "certificate_name" {
+  description      = "The name of the certificate to use for TLS"
+  default = "wildcard-certificate"
 }
