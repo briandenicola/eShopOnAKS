@@ -34,6 +34,14 @@ curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffo
 sudo install skaffold /usr/local/bin/
 rm -rf skaffold
 
+#Install Istioctl
+VERSION=`curl --silent "https://api.github.com/repos/istio/istio/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`
+curl -sSL "https://github.com/istio/istio/releases/download/${VERSION}/istio-${VERSION}-linux-amd64.tar.gz" -o /tmp/istio.tar.gz
+tar -xf /tmp/istio.tar.gz -C /tmp
+sudo mv /tmp/istio-${VERSION}/bin/istioctl /usr/local/bin
+rm -f /tmp/istio-${VERSION}.tar.gz
+rm -rf tmp/istio-${VERSION}
+
 #Install Flux
 VERSION=`curl --silent "https://api.github.com/repos/fluxcd/flux2/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/'`
 curl -Ls "https://github.com/fluxcd/flux2/releases/download/v${VERSION}/flux_${VERSION}_linux_amd64.tar.gz" -o /tmp/flux2.tar.gz
