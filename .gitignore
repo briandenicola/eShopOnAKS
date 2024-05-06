@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# ENV files
+.env 
+
 # Terraform 
 infrastructure/.terraform/
 infrastructure/.terraform.tfstate.lock.info
@@ -364,3 +367,4 @@ infrastructure/terraform/.terraform/
 source/ui/.env
 source/ui/build
 source/ui/src/config.json
+.env
