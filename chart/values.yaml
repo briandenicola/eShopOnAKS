@@ -6,7 +6,11 @@ ACR:
 
 APP_INSIGHTS:
   CONNECTION_STRING                     : ""
-              
+
+ISTIO:
+  HOST                                  : ""
+  GATEWAY                               : ""
+
 WORKLOAD_ID:
   NAME                                  : ""
   CLIENT_ID                             : ""
@@ -24,7 +28,3 @@ OTEL:
 
 KEYVAULT:
   NAME                                  : ""
-  SECRETS:
-    CATALOG                         : "sbconnection" 
-    IDENTITY                             : "storagekey"
-    ORDERING                            : "postgresqlconnection"
