@@ -32,7 +32,7 @@ tasks:
     - kubelogin convert-kubeconfig -l azurecli
     vars:
       RG: 
-        sh: terraform -chdir=./infrastructure output -raw AKS_RESOURCE_GROUP
+        sh: terraform -chdir=./infrastructure output -raw RESOURCE_GROUP
       AKS: 
         sh: terraform -chdir=./infrastructure output -raw AKS_CLUSTER_NAME
 
