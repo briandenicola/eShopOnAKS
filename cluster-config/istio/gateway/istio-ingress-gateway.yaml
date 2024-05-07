@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: default-bjdazure-tech-gw
+  name: default-cluster-gateway
   namespace: aks-istio-ingress
 spec:
   selector:
@@ -13,12 +13,6 @@ spec:
       protocol: HTTP
     hosts:
     - "*.bjdazure.tech"
-  - port:
-      number: 80
-      name: http-serving
-      protocol: HTTP
-    hosts:
-    - "*.knative.bjdazure.tech"
   - port:
       number: 443
       name: https
@@ -32,13 +26,13 @@ spec:
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name:  default-bjdazure-tech-vs
+  name:  default-virtualservice
   namespace: aks-istio-ingress
 spec:
   hosts:
-  -  istio-default.bjdazure.tech
+  -  '*'
   gateways:
-  -  aks-istio-ingress/default-bjdazure-tech-gw
+  -  aks-istio-ingress/default-cluster-gateway
   http:
   - route:
     - destination:
