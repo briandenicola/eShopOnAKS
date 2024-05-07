@@ -4,7 +4,7 @@ function Write-Log
     Write-Verbose -Message ("[{0}] - {1} ..." -f $(Get-Date), $Message)
 }
 
-function Get-Password 
+function New-Password 
 {
     param(
         [ValidateRange(8,32)]
@@ -31,7 +31,7 @@ function Get-Password
         }
     }
 
-    $potentialCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*-_+={}|"
+    $potentialCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     $chars = $potentialCharacters.ToCharArray()
     for($i=0;$i -lt $length; $i++) {
