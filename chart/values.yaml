@@ -1,25 +1,48 @@
 NAMESPACE                               : "eshop"
 APP_NAME                                : ""
-
+GIT_COMMIT_VERSION                      : ""
 ACR:
   NAME                                  : ""
 
 APP_INSIGHTS:
   CONNECTION_STRING                     : ""
 
+EVENTBUS:
+  USER                                  : "guest"
+  PASSWORD                              : ""
+  PORT                                  : "5672"
+
 ISTIO:
-  HOST                                  : ""
   GATEWAY                               : ""
+  WEBHOOKS:
+    PORT                                : 8080
+  MOBILE:
+    PORT                                : 8080  
+  PAYMENT:
+    PORT                                : 8080
+    INTERNAL_URL                        : "http://payment-api"
+  IDENTITY:
+    PORT                                : 8080
+    EXTERNAL_URL                        : ""
+    INTERNAL_URL                        : "http://identity-api"
+  BASKET:
+    PORT                                : 8080
+    INTERNAL_URL                        : "http://basket-api"
+  CATALOG:
+    PORT                                : 8080
+    INTERNAL_URL                        : "http://catalog-api"
+  ORDERING:
+    PORT                                : 8080
+    INTERNAL_URL                        : "http://ordering-api"
+  WEBAPP:
+    PORT                                : 8080
+    EXTERNAL_URL                        : ""
+    INTERNAL_URL                        : "http://webapp"
 
 WORKLOAD_ID:
   NAME                                  : ""
   CLIENT_ID                             : ""
   TENANT_ID                             : ""
-
-SERVICES:
-  TYPE: LoadBalancer
-  ANNOTATIONS:
-    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 
 OTEL:
   ZIPKIN_ENDPOINT                       : "http://otel-collector.otel-system.svc.cluster.local:9411/api/v2/spans"

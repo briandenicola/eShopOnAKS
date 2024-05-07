@@ -4,9 +4,9 @@ dotenv: ['.env']
 
 env:
   TITLE: eShop On AKS
-  HELM_CHART: eshop
   SKU: "Standard_D4ads_v5"
   COUNT: 2
+  DOMAIN_ROOT: "bjdazure.tech"
 
 tasks:
   default: 
@@ -102,21 +102,14 @@ tasks:
 
   deploy:
     desc: Deploys application via Helm
+    dir: ./scripts
     cmds:
-    - helm upgrade -i {{.HELM_CHART}} 
-        --set ACR_NAME="{{.ACR_NAME}}" 
-        --set COMMIT_VERSION={{.COMMIT_VERSION}} 
-        --set APP_NAME={{.APP_NAME}} 
-        --set ARM_WORKLOAD_APP_ID={{.ARM_WORKLOAD_APP_ID}} 
-        --set ARM_TENANT_ID={{.ARM_TENANT_ID}} 
-        ./chart
+    - pwsh ./deploy_services.ps1 -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -Domain {{.DOMAIN_ROOT}}
     vars:
       APP_NAME: 
-        sh: terraform -chdir=./infrastructure output -raw APP_NAME
-      ARM_WORKLOAD_APP_ID: 
-        sh: terraform -chdir=./infrastructure output -raw ARM_WORKLOAD_APP_ID
-      ARM_TENANT_ID:
-        sh: terraform -chdir=./infrastructure output -raw ARM_TENANT_ID
+        sh: terraform -chdir=../infrastructure output -raw APP_NAME
+      SUBSCRIPTION_NAME:
+        sh: az account show --query name -o tsv        
 
   down:
     desc: Destroys all Azure resources and cleans up Terraform

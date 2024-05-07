@@ -15,6 +15,10 @@ Set-Variable -Name APP_AI_NAME          -Value ("{0}-appinsights" -f $AppName)  
 Set-Variable -Name APP_NAMESPACE        -Value "eshop"                                  -Option Constant
 Set-Variable -Name CHART_NAME           -Value "eshop"                                  -Option Constant
 
+Set-Variable -Name APP_ISTIO_GATEWAY    -Value "aks-istio-ingress/default-cluster-gateway"  -Option Constant
+Set-Variable -Name APP_IDENTITY_URL     -Value ("identity.{0}" -f $DomainName)              -Option Constant
+Set-Variable -Name APP_URL              -Value ("shop.{0}" -f $DomainName)                  -Option Constant
+
 Set-Variable -Name Services             -Value @(
     @{Name="basket-api"; Path="src/Basket.API"},
     @{Name="catalog-api"; Path="src/Catalog.API"},

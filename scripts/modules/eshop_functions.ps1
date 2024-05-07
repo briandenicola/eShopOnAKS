@@ -161,3 +161,44 @@ function Remove-TerraformState
         Remove-Item -Path (Join-Path -Path $PWD.Path -ChildPath $_) -Recurse -Force -Confirm:$false -Verbose -ErrorAction SilentlyContinue
     }
 }
+
+function Get-AKSCredentials 
+{
+    param(
+        [string] $AKSNAME,
+        [string] $AKSResourceGroup
+    )
+
+    Write-Log -Message "Get ${AKSNAME} AKS Credentials"
+    az aks get-credentials -n $AKSNAME -g $AKSResourceGroup --overwrite-existing
+    sed -i s/devicecode/azurecli/g ~/.kube/config
+}
+
+function Get-MSIAccountInfo
+{
+    param(
+        [string] $MSIName,
+        [string] $MSIResourceGroup
+    )
+
+    Write-Log -Message "Get ${MSIName} Manage Identity properties"
+    return (New-Object psobject -Property @{
+        client_id = (az identity show -n $MSIName -g $MSIResourceGroup --query clientId -o tsv)
+        resource_id = (az identity show -n $MSIName -g $MSIResourceGroup --query id -o tsv)
+        tenant_id = (az identity show -n $MSIName -g $MSIResourceGroup --query tenantId -o tsv)
+    })
+}
+
+function Get-AppInsightsKey
+{
+    param(
+        [string] $AppInsightsAccountName,
+        [string] $AppInsightsResourceGroup
+    )
+
+    Write-Log -Message "Get ${AppInsightsAccountName} Application Insights Account properties"
+    return (New-Object psobject -Property @{
+        key = (az monitor app-insights component show --app $AppInsightsAccountName -g $AppInsightsResourceGroup --query instrumentationKey -o tsv)
+        connection_string = (az monitor app-insights component show --app $AppInsightsAccountName -g $AppInsightsResourceGroup --query connectionString -o tsv)
+    })
+}

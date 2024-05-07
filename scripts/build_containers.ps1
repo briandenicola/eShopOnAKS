@@ -23,7 +23,7 @@ Connect-ToAzure -SubscriptionName $SubscriptionName
 Connect-ToAzureContainerRepo -ACRName $APP_ACR_NAME
 
 #Build and Push All Containers from Source 
-$commit_version = Get-GitCommitVersion -Source $SourceRootDirectory
+$commit_version = Get-GitCommitVersion -Source "."
 
 foreach( $Service in $Services ) {
     $SourcePath = Join-Path -Path $SourceRootDirectory -ChildPath $Service.Path
