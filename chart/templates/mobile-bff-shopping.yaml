@@ -91,7 +91,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.ISTIO.MOBILE.PORT }}
+  - port: 80
     targetPort: {{ .Values.ISTIO.MOBILE.PORT }}
   selector:
     service: mobile-bff

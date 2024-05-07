@@ -96,7 +96,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.ISTIO.WEBAPP.PORT }}
+  - port: 80
     targetPort: {{ .Values.ISTIO.WEBAPP.PORT }}
   selector:
     service: webapp
@@ -116,4 +116,4 @@ spec:
     - destination:
         host: webapp
         port:
-          number: {{ .Values.ISTIO.WEBAPP.PORT }}
+          number: 80

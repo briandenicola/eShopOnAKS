@@ -90,7 +90,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.ISTIO.WEBHOOKS.PORT }}
+  - port: 80
     targetPort: {{ .Values.ISTIO.WEBHOOKS.PORT }}
   selector:
     service: webhookclient

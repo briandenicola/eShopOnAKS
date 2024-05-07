@@ -109,7 +109,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.ISTIO.IDENTITY.PORT }}
+  - port: 80
     targetPort: {{ .Values.ISTIO.IDENTITY.PORT }}
   selector:
     service: identity-api
@@ -129,4 +129,4 @@ spec:
     - destination:
         host: identity-api
         port:
-          number: {{ .Values.ISTIO.IDENTITY.PORT }}
+          number: 80

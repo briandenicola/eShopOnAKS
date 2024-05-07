@@ -94,7 +94,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.ISTIO.ORDERING.PORT }}
+    - port: 80
       targetPort: {{ .Values.ISTIO.ORDERING.PORT }} 
   selector:
     service: order-processor

@@ -78,6 +78,11 @@ spec:
             - configMapRef:
                 name: catalog-cm
           env:
+          - name: ConnectionStrings__eventbus
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key:  RABBITMQ_CONNECTION_STRING           
           - name: ConnectionStrings__catalogdb
             valueFrom:
               secretKeyRef:
@@ -109,7 +114,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.ISTIO.CATALOG.PORT }}
+  - port: 80
     targetPort: {{ .Values.ISTIO.CATALOG.PORT }}
   selector:
     service: catalog-api

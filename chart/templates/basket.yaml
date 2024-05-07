@@ -114,7 +114,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.ISTIO.BASKET.PORT }}
+  - port: 80
     targetPort: {{ .Values.ISTIO.BASKET.PORT }}
   selector:
     service: basket-api

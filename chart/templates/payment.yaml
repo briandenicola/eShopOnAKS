@@ -100,7 +100,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.ISTIO.PAYMENT.PORT }}
+  - port: 80
     targetPort: {{ .Values.ISTIO.PAYMENT.PORT }}
   selector:
     service: payment-api
