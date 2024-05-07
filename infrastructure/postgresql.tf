@@ -20,6 +20,18 @@ resource "azurerm_postgresql_flexible_server" "this" {
   zone                   = "2"
 }
 
+resource "azapi_update_resource" "azurerm_postgresql_configuration_vector_enable" {
+  type = "Microsoft.DBforPostgreSQL/flexibleServers/configurations@2023-03-01-preview"
+  resource_id  = "${azurerm_postgresql_flexible_server.this.id}/configurations/azure.extensions"
+
+  body = jsonencode({
+    properties = {
+      source = "user-override"
+      value = "vector"
+    }
+  })
+}
+
 resource "azurerm_postgresql_flexible_server_database" "eshop_webhooksdb" {
   name                   = "webhooksdb"
   server_id              = azurerm_postgresql_flexible_server.this.id
