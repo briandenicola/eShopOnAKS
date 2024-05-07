@@ -4,6 +4,44 @@ function Write-Log
     Write-Verbose -Message ("[{0}] - {1} ..." -f $(Get-Date), $Message)
 }
 
+function Get-Password 
+{
+    param(
+        [ValidateRange(8,32)]
+        [int] $Length = 25
+    )
+
+    function Get-SecureRandomNumber {
+        param(
+            [int] $min,
+            [int] $max
+        )
+
+        $rng = New-Object "System.Security.Cryptography.RNGCryptoServiceProvider"
+        $rand = [System.Byte[]]::new(1)
+
+        while($true) {
+            $rand = [System.Byte[]]::new(1)
+            $rng.GetNonZeroBytes($rand)
+
+            $randInt = [convert]::ToInt32($rand[0])
+            if( ($randInt -ge $min) -and $randInt -le $max) {
+                return $randInt
+            }
+        }
+    }
+
+    $potentialCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*-_+={}|"
+
+    $chars = $potentialCharacters.ToCharArray()
+    for($i=0;$i -lt $length; $i++) {
+        $index = Get-SecureRandomNumber -Min 0 -Max $chars.Length
+        $password += $chars[$index]
+    }
+
+    return $password
+}
+
 function ConvertFrom-Base64String
 {
     param( 
