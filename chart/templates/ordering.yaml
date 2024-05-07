@@ -2,14 +2,15 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: ordering-cm
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app: eshop
+    app: {{ .Chart.Name }}
     service: ordering-api
 data:
-  Identity__Url: http://identity-api
+  Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
   AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+  DOTNET_USE_POLLING_FILE_WATCHER: "true"  
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
@@ -18,9 +19,9 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: ordering-api
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app: eshop
+    app: {{ .Chart.Name }}
     service: ordering-api
 spec:
   replicas: 1
@@ -30,10 +31,10 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: {{ .Chart.Name }}
         service: ordering-api
+        azure.workload.identity/use: "true"         
       annotations:
-        dapr.io/log-as-json: "true"
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
         prometheus.io/path: "/"
@@ -42,9 +43,36 @@ spec:
       containers:
         - name: ordering-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/ordering-api:" .Values.GIT_COMMIT_VERSION }}
-          imagePullPolicy: IfNotPresent
-          envFrom:
-          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: {{ .Values.ISTIO.ORDERING.PORT }}          
+          resources:
+            limits:
+              cpu: "1"
+              memory: 256Mi
+            requests:
+              cpu: "0.5"
+              memory: 128Mi
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false          
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health/liveness
+          #     port: {{ .Values.ISTIO.ORDERING.PORT }}
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 30
+          #   timeoutSeconds: 3
+          # startupProbe:
+          #   httpGet:
+          #     path: /health/liveness
+          #     port: {{ .Values.ISTIO.ORDERING.PORT }}
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   timeoutSeconds: 3       
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"                       
+            readOnly: true
           envFrom:
           - configMapRef:
               name: ordering-cm
@@ -52,10 +80,10 @@ spec:
           - name: ConnectionStrings__orderingdb
             valueFrom:
               secretKeyRef:
-                name: orderingdb-connection-string
+                name: eshop-kv-secrets 
                 key: orderingdb-connection-string
       volumes:
-      - name: secrets-store
+      - name: secrets-store-inline
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
@@ -71,31 +99,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ordering-api
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app: eshop
+    app: {{ .Chart.Name }}
     service: ordering-api
 spec:
+  type: ClusterIP
   ports:
-    - port: 8080
-      targetPort: 8080
-      protocol: HTTP
+    - port: {{ .Values.ISTIO.ORDERING.PORT }}
+      targetPort: {{ .Values.ISTIO.ORDERING.PORT }} 
   selector:
     service: ordering-api
----
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name:  ordering-api-vs
-  namespace: {{ .Values.namespace }}
-spec:
-  hosts:
-  -  {{ .Values.ISTIO.HOST }}
-  gateways:
-  -  {{ .Values.ISTIO.GATEWAY }}
-  http:
-  - route:
-    - destination:
-        host: ordering-api
-        port:
-          number: 8080

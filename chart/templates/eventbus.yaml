@@ -1,49 +1,67 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: eventbus-secret
+  namespace: {{ .Values.NAMESPACE }}
+type: Opaque
+data:
+  RABBITMQ_DEFAULT_PASS: {{ .Values.EVENTBUS.PASSWORD | b64enc }}
+  RABBITMQ_CONNECTION_STRING: {{ print "amqp://" .Values.EVENTBUS.USER ":" .Values.EVENTBUS.PASSWORD "@eventbus:" .Values.EVENTBUS.PORT | b64enc }}
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: rabbitmq
-  namespace: {{ .Values.namespace }}
+  name: eventbus 
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app: eshop
-    service: redis
+    app: {{ .Chart.Name }}
+    service: eventbus 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: rabbitmq
+      service: eventbus 
   template:
     metadata:
       labels:
-        app: eshop
-        service: rabbitmq
+        app: {{ .Chart.Name }}
+        service: eventbus 
     spec:
       containers:
       - name: rabbitmq
-        image: rabbitmq:3-management-alpine
+        image: library/rabbitmq:3
         imagePullPolicy: IfNotPresent
         ports:
           - name: rabbitmq-http
-            containerPort: 5672
+            containerPort: {{ .Values.EVENTBUS.PORT }}
             protocol: TCP
+        env:
+          - name: RABBITMQ_DEFAULT_USER
+            value: "guest"
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key:  RABBITMQ_DEFAULT_PASS
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"
         value: "apps"
         effect: "NoSchedule"
 ---
-
 kind: Service
 apiVersion: v1
 metadata:
-  name: rabbitmq
-  namespace: {{ .Values.namespace }}
+  name: eventbus 
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app: eshop
-    service: rabbitmq
+    app: {{ .Chart.Name }}
+    service: eventbus 
 spec:
+  type: ClusterIP
   ports:
-    - name: rabbitmq
-      port: 5672
+    - name: eventbus 
+      port: {{ .Values.EVENTBUS.PORT }}
       targetPort: rabbitmq-http
   selector:
-    service: rabbitmq
+    service: eventbus 

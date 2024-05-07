@@ -1,0 +1,119 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: webapp-cm
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: webapp
+data:
+  CallBackUrl: {{ print "https://" .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
+  IdentityUrl: {{ print "https://" .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
+  AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
+  ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+  DOTNET_USE_POLLING_FILE_WATCHER: "true"
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: webapp
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: webapp
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        service: webapp
+        azure.workload.identity/use: "true" 
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/"        
+    spec:
+      serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      containers:
+        - name: webapp
+          image: {{ print .Values.ACR.NAME ".azurecr.io/webapp:" .Values.GIT_COMMIT_VERSION }}
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: {{ .Values.ISTIO.WEBAPP.PORT }}
+          resources:
+            limits:
+              cpu: "1"
+              memory: 256Mi
+            requests:
+              cpu: "0.5"
+              memory: 128Mi
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false          
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health/liveness
+          #     port: {{ .Values.ISTIO.WEBAPP.PORT }}
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 30
+          #   timeoutSeconds: 3
+          # startupProbe:
+          #   httpGet:
+          #     path: /health/liveness
+          #     port: {{ .Values.ISTIO.WEBAPP.PORT }}
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   timeoutSeconds: 3       
+          envFrom:
+            - configMapRef:
+                name: webapp-cm
+          env:       
+          - name: ConnectionStrings__eventbus
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key:  RABBITMQ_CONNECTION_STRING            
+      tolerations:
+      - key: "ReservedFor"
+        operator: "Equal"
+        value: "apps"
+        effect: "NoSchedule"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: webapp
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Values.ISTIO.WEBAPP.PORT }}
+    targetPort: {{ .Values.ISTIO.WEBAPP.PORT }}
+  selector:
+    service: webapp
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name:  webapp-vs
+  namespace: {{ .Values.NAMESPACE }}
+spec:
+  hosts:
+  -  {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
+  gateways:
+  -  {{ .Values.ISTIO.GATEWAY }}
+  http:
+  - route:
+    - destination:
+        host: webapp
+        port:
+          number: {{ .Values.ISTIO.WEBAPP.PORT }}

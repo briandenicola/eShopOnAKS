@@ -1,0 +1,100 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: order-processor
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: order-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: order-processor
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        service: order-processor
+        azure.workload.identity/use: "true"         
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/"
+    spec:
+      serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      containers:
+        - name: order-processor
+          image: {{ print .Values.ACR.NAME ".azurecr.io/orderprocessor:" .Values.GIT_COMMIT_VERSION }}
+          ports:
+          - containerPort: {{ .Values.ISTIO.ORDERING.PORT }}          
+          resources:
+            limits:
+              cpu: "1"
+              memory: 256Mi
+            requests:
+              cpu: "0.5"
+              memory: 128Mi
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false          
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health/liveness
+          #     port: {{ .Values.ISTIO.ORDERING.PORT }}
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 30
+          #   timeoutSeconds: 3
+          # startupProbe:
+          #   httpGet:
+          #     path: /health/liveness
+          #     port: {{ .Values.ISTIO.ORDERING.PORT }}
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   timeoutSeconds: 3       
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"                       
+            readOnly: true
+          envFrom:
+          - configMapRef:
+              name: ordering-cm
+          env:
+          - name: ConnectionStrings__orderingdb
+            valueFrom:
+              secretKeyRef:
+                name: eshop-kv-secrets 
+                key: orderingdb-connection-string
+          - name: ConnectionStrings__eventbus
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key:  RABBITMQ_CONNECTION_STRING              
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "eshop-secrets"          
+      tolerations:
+      - key: "ReservedFor"
+        operator: "Equal"
+        value: "apps"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-processor
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: order-processor
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.ISTIO.ORDERING.PORT }}
+      targetPort: {{ .Values.ISTIO.ORDERING.PORT }} 
+  selector:
+    service: order-processor

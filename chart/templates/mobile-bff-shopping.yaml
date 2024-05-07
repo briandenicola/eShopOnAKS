@@ -1,0 +1,97 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mobile-bff-cm
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: mobile-bff
+data:
+  AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
+  ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+  DOTNET_USE_POLLING_FILE_WATCHER: "true"  
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+  OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+  # serivces__catalog-api__http__0: {{ .Values.ISTIO.CATALOG.INTERNAL_URL }}
+  # serivces__identity-api__http__0: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mobile-bff
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: mobile-bff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mobile-bff
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        service: mobile-bff
+        azure.workload.identity/use: "true"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/"        
+    spec:
+      serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      containers:
+        - name: mobile-bff
+          image: {{ print .Values.ACR.NAME ".azurecr.io/mobile-bff-shopping:" .Values.GIT_COMMIT_VERSION }}
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: {{ .Values.ISTIO.MOBILE.PORT }}
+          resources:
+            limits:
+              cpu: "1"
+              memory: 256Mi
+            requests:
+              cpu: "0.5"
+              memory: 128Mi
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false          
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health/liveness
+          #     port: {{ .Values.ISTIO.MOBILE.PORT }}
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 30
+          #   timeoutSeconds: 3
+          # startupProbe:
+          #   httpGet:
+          #     path: /health/liveness
+          #     port: {{ .Values.ISTIO.MOBILE.PORT }}
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   timeoutSeconds: 3                        
+          envFrom:
+          - configMapRef:
+              name: mobile-bff-cm
+      tolerations:
+      - key: "ReservedFor"
+        operator: "Equal"
+        value: "apps"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mobile-bff
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: mobile-bff
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Values.ISTIO.MOBILE.PORT }}
+    targetPort: {{ .Values.ISTIO.MOBILE.PORT }}
+  selector:
+    service: mobile-bff

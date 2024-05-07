@@ -1,16 +1,16 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: basket-cm
+  name: webhooks-api-cm
   namespace: {{ .Values.NAMESPACE }}
   labels:
     app: {{ .Chart.Name }}
-    service: basket-api
+    service: webhooks-api
 data:
-  Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
   AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
+  Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
-  DOTNET_USE_POLLING_FILE_WATCHER: "true"  
+  DOTNET_USE_POLLING_FILE_WATCHER: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
@@ -18,22 +18,22 @@ data:
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: basket-api
+  name: webhooks-api
   namespace: {{ .Values.NAMESPACE }}
   labels:
     app: {{ .Chart.Name }}
-    service: basket-api
+    service: webhooks-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: basket-api
+      service: webhooks-api
   template:
     metadata:
       labels:
         app: {{ .Chart.Name }}
-        service: basket-api
-        azure.workload.identity/use: "true"
+        service: webhooks-api
+        azure.workload.identity/use: "true" 
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
@@ -41,11 +41,11 @@ spec:
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
       containers:
-        - name: basket-api
-          image: {{ print .Values.ACR.NAME ".azurecr.io/basket-api:" .Values.GIT_COMMIT_VERSION }}
+        - name: webhooks-api
+          image: {{ print .Values.ACR.NAME ".azurecr.io/webhooks-api:" .Values.GIT_COMMIT_VERSION }}
           imagePullPolicy: IfNotPresent
           ports:
-          - containerPort: {{ .Values.ISTIO.BASKET.PORT }}
+          - containerPort: {{ .Values.ISTIO.WEBHOOKS.PORT }}
           resources:
             limits:
               cpu: "1"
@@ -59,30 +59,26 @@ spec:
           # livenessProbe:
           #   httpGet:
           #     path: /health/liveness
-          #     port: {{ .Values.ISTIO.BASKET.PORT }}
+          #     port: {{ .Values.ISTIO.WEBHOOKS.PORT }}
           #   initialDelaySeconds: 10
           #   periodSeconds: 30
           #   timeoutSeconds: 3
           # startupProbe:
           #   httpGet:
           #     path: /health/liveness
-          #     port: {{ .Values.ISTIO.BASKET.PORT }}
+          #     port: {{ .Values.ISTIO.WEBHOOKS.PORT }}
           #   initialDelaySeconds: 5
           #   periodSeconds: 10
-          #   timeoutSeconds: 3
-          volumeMounts:
-          - name: secrets-store-inline
-            mountPath: "/mnt/secrets-store"                       
-            readOnly: true                              
+          #   timeoutSeconds: 3       
           envFrom:
-          - configMapRef:
-              name: basket-cm
+            - configMapRef:
+                name: webhooks-api-cm
           env:
-          - name: ConnectionStrings__redis
+          - name: ConnectionStrings__webhooksdb
             valueFrom:
               secretKeyRef:
                 name: eshop-kv-secrets
-                key: redis-connection-string
+                key: webhooksdb-connection-string                 
           - name: ConnectionStrings__eventbus
             valueFrom:
               secretKeyRef:
@@ -94,27 +90,24 @@ spec:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: "eshop-secrets"
+            secretProviderClass: eshop-secrets                              
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"
         value: "apps"
         effect: "NoSchedule"
 ---
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  name: basket-api
+  name: webhooks-api
   namespace: {{ .Values.NAMESPACE }}
   labels:
     app: {{ .Chart.Name }}
-    service: basbasket-api
-  annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.ISTIO.BASKET.PORT }}
-    targetPort: {{ .Values.ISTIO.BASKET.PORT }}
+  - port: {{ .Values.ISTIO.WEBHOOKS.PORT }}
+    targetPort: {{ .Values.ISTIO.WEBHOOKS.PORT }}
   selector:
-    service: basket-api
+    service: webhooks-api
