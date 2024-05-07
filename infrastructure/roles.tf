@@ -12,6 +12,13 @@ resource "azurerm_role_assignment" "aks_role_assignemnt_msi" {
   skip_service_principal_aad_check = true
 }
 
+resource "azurerm_role_assignment" "acr_pull" {
+  scope                            = azurerm_container_registry.this.id
+  role_definition_name             = "AcrPull"
+  principal_id                     = azurerm_user_assigned_identity.aks_kubelet_identity.principal_id
+  skip_service_principal_aad_check = true
+}
+
 resource "azurerm_role_assignment" "deployer_kv_access" {
   scope                            = azurerm_key_vault.this.id
   role_definition_name             = "Key Vault Administrator"
