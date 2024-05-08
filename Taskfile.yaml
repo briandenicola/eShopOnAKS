@@ -104,7 +104,7 @@ tasks:
     desc: Deploys application via Helm
     dir: ./scripts
     cmds:
-    - pwsh ./deploy_services.ps1 -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -Domain {{.DOMAIN_ROOT}}
+    - pwsh ./deploy_services.ps1 -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -Domain {{.DOMAIN_ROOT}} -verbose
     vars:
       APP_NAME: 
         sh: terraform -chdir=../infrastructure output -raw APP_NAME

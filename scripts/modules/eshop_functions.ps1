@@ -144,7 +144,11 @@ function Build-DockerContainers
     )
 
     Write-Log -Message "Building and publish ${SourcePath}:${ContainerImageTag} to ${ContainerRegistry}"
-    dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${ContainerRegistry} -p:PublishSingleFile="true" -p:PublishTrimmed="false" --self-contained "true" --verbosity "quiet" $SourcePath
+    dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${ContainerRegistry} $SourcePath
+    
+    #ERROR: The following options generate an access deny error on the Identity.API container on tempkey.jwk file
+    #dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${ContainerRegistry} -p:PublishSingleFile="true" -p:PublishTrimmed="false" --self-contained "true" --verbosity "quiet" $SourcePath
+    
 }
 
 function Remove-TerraformState
