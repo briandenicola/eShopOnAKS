@@ -9,7 +9,7 @@ metadata:
   name: otel-collector
   namespace: otel-system
   labels:
-    app: opencesus
+    app: opentelemetry  
     component: otel-collector
 spec:
   ports:
@@ -101,10 +101,6 @@ data:
 
     extensions:
       health_check:
-      pprof:
-        endpoint: :1888
-      zpages:
-        endpoint: :55679
 
     exporters:
       debug:
