@@ -17,7 +17,7 @@ param(
 
 #Connect to Azure and Log into ACR
 Add-AzureCliExtensions
-Start-Docker
+#Start-Docker
 
 Connect-ToAzure -SubscriptionName $SubscriptionName
 Connect-ToAzureContainerRepo -ACRName $APP_ACR_NAME

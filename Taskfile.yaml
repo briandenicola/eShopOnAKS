@@ -92,7 +92,7 @@ tasks:
     desc: Builds containers
     dir: ./scripts
     cmds:
-    - pwsh ./build_containers.ps1 -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -SourceRootDirectory {{.SOURCE_DIR}}
+    - pwsh ./build_containers.ps1 -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -SourceRootDirectory {{.SOURCE_DIR}} -verbose
     vars:
       APP_NAME: 
         sh: terraform -chdir=../infrastructure output -raw APP_NAME

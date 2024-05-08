@@ -17,7 +17,7 @@ Connect-ToAzure -SubscriptionName $SubscriptionName
 Get-AKSCredentials -AKSName $APP_K8S_NAME -AKSResourceGroup $CORE_RG_NAME
 
 # Determine all required parameters
-$commit_version = "1c018af4" #Get-GitCommitVersion -Source "."
+$commit_version = "ced7164c" #Get-GitCommitVersion -Source "."
 $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $CORE_RG_NAME
 $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $CORE_RG_NAME
 $eventubs_password = New-Password -Length 30
