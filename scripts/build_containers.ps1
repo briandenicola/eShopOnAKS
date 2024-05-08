@@ -16,9 +16,6 @@ param(
 . ./modules/eshop_naming.ps1 -AppName $AppName
 
 #Connect to Azure and Log into ACR
-Add-AzureCliExtensions
-#Start-Docker
-
 Connect-ToAzure -SubscriptionName $SubscriptionName
 Connect-ToAzureContainerRepo -ACRName $APP_ACR_NAME
 

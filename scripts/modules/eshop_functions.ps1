@@ -68,23 +68,6 @@ function ConvertTo-Base64EncodedString
     }
 }
 
-function Add-AzureCliExtensions
-{
-    az extension add --name application-insights -y
-    az extension add --name aks-preview -y
-}
-
-function Start-Docker
-{
-    Write-Log -Message "Starting Docker"
-    if(Get-OSType -eq "Unix") {
-        sudo /etc/init.d/docker start
-    }
-    else {
-        Start-Service -Name docker
-    }
-}
-
 function Connect-ToAzure 
 {
     param(
