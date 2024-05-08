@@ -7,7 +7,8 @@ metadata:
     app: {{ .Chart.Name }}
     service: basket-api
 data:
-  Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  #Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  Identity__Url: {{ print "https://" .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
   AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
   DOTNET_USE_POLLING_FILE_WATCHER: "true"  
@@ -44,7 +45,7 @@ spec:
       containers:
         - name: basket-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/basket-api:" .Values.GIT_COMMIT_VERSION }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.BASKET.PORT }}
           resources:
@@ -102,9 +103,7 @@ metadata:
   namespace: {{ .Values.NAMESPACE }}
   labels:
     app: {{ .Chart.Name }}
-    service: basbasket-api
-  annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    service: basket-api
 spec:
   type: ClusterIP
   ports:

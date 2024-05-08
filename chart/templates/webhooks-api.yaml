@@ -8,7 +8,8 @@ metadata:
     service: webhooks-api
 data:
   AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
-  Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  #Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  Identity__Url: {{ print "https://" .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
   DOTNET_USE_POLLING_FILE_WATCHER: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
@@ -44,7 +45,7 @@ spec:
       containers:
         - name: webhooks-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/webhooks-api:" .Values.GIT_COMMIT_VERSION }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.WEBHOOKS.PORT }}
           resources:

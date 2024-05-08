@@ -7,7 +7,8 @@ metadata:
     app: {{ .Chart.Name }}
     service: payment-api
 data:
-  Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  #Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  Identity__Url: {{ print "https://" .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
   DOTNET_USE_POLLING_FILE_WATCHER: "true"  
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
@@ -43,7 +44,7 @@ spec:
       containers:
         - name: payment-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/orderprocessor:" .Values.GIT_COMMIT_VERSION }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.PAYMENT.PORT }}
           resources:

@@ -7,7 +7,8 @@ metadata:
     app: {{ .Chart.Name }}
     service: catalog-api
 data:
-  Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  #Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  Identity__Url: {{ print "https://" .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
   AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
   DOTNET_USE_POLLING_FILE_WATCHER: "true"  
@@ -44,7 +45,7 @@ spec:
       containers:
         - name: catalog-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/catalog-api:" .Values.GIT_COMMIT_VERSION }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.CATALOG.PORT }}     
           resources:
@@ -103,8 +104,6 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
     service: catalog-api
-  annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
   type: ClusterIP
   ports:

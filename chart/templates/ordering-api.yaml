@@ -7,7 +7,8 @@ metadata:
     app: {{ .Chart.Name }}
     service: ordering-api
 data:
-  Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  #Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  Identity__Url: {{ print "https://" .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
   AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
   DOTNET_USE_POLLING_FILE_WATCHER: "true"  

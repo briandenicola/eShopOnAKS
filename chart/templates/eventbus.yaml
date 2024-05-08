@@ -30,7 +30,7 @@ spec:
       containers:
       - name: rabbitmq
         image: library/rabbitmq:3
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
           - name: rabbitmq-http
             containerPort: {{ .Values.EVENTBUS.PORT }}

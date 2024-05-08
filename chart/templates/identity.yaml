@@ -16,9 +16,8 @@ data:
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.OTEL.ENDPOINT }}
   BasketApiClient: {{ .Values.ISTIO.BASKET.INTERNAL_URL }}
   OrderingApiClient: {{ .Values.ISTIO.ORDERING.INTERNAL_URL }}
-  WebAppClient: {{ .Values.ISTIO.WEBAPP.INTERNAL_URL }}
+  WebAppClient: {{ print "https://" .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
   WebhooksApiClient: {{ .Values.ISTIO.WEBHOOKS.INTERNAL_URL }}
-  
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -48,7 +47,7 @@ spec:
       containers:
         - name: identity-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/identity-api:" .Values.GIT_COMMIT_VERSION }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.IDENTITY.PORT }}
           resources:

@@ -16,9 +16,12 @@ data:
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.OTEL.ENDPOINT }}
-  services__basket-api__http__0: {{ print .Values.ISTIO.BASKET.INTERNAL_URL ":" .Values.ISTIO.BASKET.PORT }}
-  services__ordering-api__http__0: {{ print .Values.ISTIO.ORDERING.INTERNAL_URL ":" .Values.ISTIO.ORDERING.PORT }}
-  services__catalog-api__http__0: {{ print .Values.ISTIO.CATALOG.INTERNAL_URL ":" .Values.ISTIO.CATALOG.PORT }}    
+  services__basket-api__http__0: {{ .Values.ISTIO.BASKET.INTERNAL_URL }}
+  services__basket-api__https__0: {{ .Values.ISTIO.BASKET.INTERNAL_URL }}
+  services__ordering-api__http__0: {{ .Values.ISTIO.ORDERING.INTERNAL_URL }}
+  services__ordering-api__https__0: {{ .Values.ISTIO.ORDERING.INTERNAL_URL }}
+  services__catalog-api__http__0: {{ .Values.ISTIO.CATALOG.INTERNAL_URL }}    
+  services__catalog-api__https__0: {{ .Values.ISTIO.CATALOG.INTERNAL_URL }}
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -48,7 +51,7 @@ spec:
       containers:
         - name: webapp
           image: {{ print .Values.ACR.NAME ".azurecr.io/webapp:" .Values.GIT_COMMIT_VERSION }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.WEBAPP.PORT }}
           resources:
