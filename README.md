@@ -6,7 +6,7 @@ TBD
 
 # To Do
 - [X] Build container images
-- [ ] Deploy to Kubernetes
+- [X] Deploy to Kubernetes
 - [ ] Add Keda Scalers Examples
-- [ ] Review Azure Monitor and Application Insights
+- [X] Review Azure Monitor and Application Insights
 - [ ] Update documentation
