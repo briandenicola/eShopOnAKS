@@ -17,13 +17,13 @@ Connect-ToAzure -SubscriptionName $SubscriptionName
 Get-AKSCredentials -AKSName $APP_K8S_NAME -AKSResourceGroup $CORE_RG_NAME
 
 # Determine all required parameters
-$commit_version = "ced7164c" #Get-GitCommitVersion -Source "."
+$commit_version = Get-GitCommitVersion -Source "."
 $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $CORE_RG_NAME
 $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $CORE_RG_NAME
 $eventubs_password = New-Password -Length 30
 
 # Install App using Helm Chart
-Write-Log -Message "Deploying ${CHART_NAME} to ${commit_version}"
+Write-Log -Message "Deploying ${CHART_NAME} version ${commit_version} to ${APP_K8S_NAME} into ${APP_NAMESPACE} namespace. . ."
 helm upgrade -i ${CHART_NAME} `
     --set APP_NAME=$AppName `
     --set NAMESPACE=$APP_NAMESPACE `
@@ -42,7 +42,7 @@ helm upgrade -i ${CHART_NAME} `
     ../chart/.
 
 if($?){
-    Write-Log "Application successfully deployed. . ."
+    Write-Log "Application successfully deployed"
 }
 else {
     Write-Log ("Errors encountered while deploying application. Please review. Application Name: {0}" -f $AppName )
