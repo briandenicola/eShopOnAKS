@@ -9,7 +9,7 @@ metadata:
   name: otel-collector
   namespace: otel-system
   labels:
-    app: opentelemetry  
+    app: opencesus
     component: otel-collector
 spec:
   ports:
@@ -101,13 +101,17 @@ data:
 
     extensions:
       health_check:
+      pprof:
+        endpoint: :1888
+      zpages:
+        endpoint: :55679
 
     exporters:
       debug:
         verbosity: detailed
 
       azuremonitor:
-        connection_string: InstrumentationKey=55e6b8e7-73c5-4ef1-9290-9d9a0187d43d;IngestionEndpoint=https://southcentralus-3.in.applicationinsights.azure.com/;LiveEndpoint=https://southcentralus.livediagnostics.monitor.azure.com/;ApplicationId=6b204ef0-3b62-4c39-a096-1b152372a26a
+        connection_string: InstrumentationKey=a6d9a447-0c7d-436e-894f-c8d641d965a2;IngestionEndpoint=https://southcentralus-3.in.applicationinsights.azure.com/;LiveEndpoint=https://southcentralus.livediagnostics.monitor.azure.com/;ApplicationId=ec31c73c-d3e9-4e0c-8314-f0de9297c342
         maxbatchsize: 100
         maxbatchinterval: 10s
 
