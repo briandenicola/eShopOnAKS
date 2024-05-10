@@ -111,7 +111,7 @@ data:
         verbosity: detailed
 
       azuremonitor:
-        connection_string: InstrumentationKey=a6d9a447-0c7d-436e-894f-c8d641d965a2;IngestionEndpoint=https://southcentralus-3.in.applicationinsights.azure.com/;LiveEndpoint=https://southcentralus.livediagnostics.monitor.azure.com/;ApplicationId=ec31c73c-d3e9-4e0c-8314-f0de9297c342
+        connection_string: InstrumentationKey=2fc4d0a6-a970-4ed5-aaeb-36dc79cf303f;IngestionEndpoint=https://southcentralus-3.in.applicationinsights.azure.com/;LiveEndpoint=https://southcentralus.livediagnostics.monitor.azure.com/;ApplicationId=5e247922-d175-4a11-8db7-57015d5ed9aa
         maxbatchsize: 100
         maxbatchinterval: 10s
 
