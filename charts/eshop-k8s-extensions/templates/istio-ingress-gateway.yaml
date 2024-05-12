@@ -12,7 +12,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "*.bjdazure.tech"
+    - {{ print "*." .Values.WEBAPP_DOMAIN | quote }}
   - port:
       number: 443
       name: https
@@ -21,7 +21,7 @@ spec:
       mode: SIMPLE
       credentialName: istio-ingress-tls
     hosts:
-    - "*.bjdazure.tech"
+    - {{ print "*." .Values.WEBAPP_DOMAIN | quote }}
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService

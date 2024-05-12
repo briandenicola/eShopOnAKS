@@ -35,35 +35,3 @@ resource "azurerm_private_endpoint" "key_vault" {
     private_dns_zone_ids          = [ azurerm_private_dns_zone.privatelink_vaultcore_azure_net.id ]
   }
 }
-
-resource "azurerm_key_vault_certificate" "this" {
-  name         = var.certificate_name
-  key_vault_id = azurerm_key_vault.this.id
-
-  depends_on = [
-    azurerm_kubernetes_cluster.this,
-    azurerm_role_assignment.deployer_kv_access
-  ]
-
-  certificate {
-    contents = var.certificate_base64_encoded
-    password = var.certificate_password
-  }
-
-  certificate_policy {
-    issuer_parameters {
-      name = "Self"
-    }
-
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = false
-    }
-
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
-  }
-}

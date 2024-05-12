@@ -39,7 +39,7 @@ helm upgrade -i ${CHART_NAME} `
     --set ISTIO.GATEWAY=$APP_ISTIO_GATEWAY `
     --set ISTIO.IDENTITY.EXTERNAL_URL="$APP_IDENTITY_URL" `
     --set ISTIO.WEBAPP.EXTERNAL_URL="$APP_URL" `
-    ../chart/.
+    ../charts/app
 
 if($?){
     Write-Log "Application successfully deployed"

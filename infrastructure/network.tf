@@ -10,8 +10,7 @@ resource "azurerm_subnet" "private-endpoints" {
   resource_group_name   = azurerm_virtual_network.this.resource_group_name
   virtual_network_name  = azurerm_virtual_network.this.name
   address_prefixes      = [ local.pe_subnet_cidr ]
-
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 }
 
 resource "azurerm_subnet" "kubernetes" {

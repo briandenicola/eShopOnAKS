@@ -1,0 +1,6 @@
+apiVersion: v2
+name: "eshop-k8s-extensions"
+description: A Helm Chart to deploy the required configurations for eShop to run on AKS
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

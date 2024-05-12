@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+  namespace: aks-istio-ingress
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: {{ .Values.CERT.EMAIL_ADDRESS | quote }}
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - http01: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.WEBAPP_DOMAIN | replace "." "-" }}
+  namespace: aks-istio-ingress
+spec:
+  secretName: istio-ingress-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: {{ print "shop" .Values.WEBAPP_DOMAIN | quote }}
+  dnsNames:
+  - {{ print "shop" .Values.WEBAPP_DOMAIN | quote}}  
+  - {{ print "identity" .Values.WEBAPP_DOMAIN | quote }}

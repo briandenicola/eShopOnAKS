@@ -32,13 +32,9 @@ tasks:
        -var "vm_size={{.SKU}}" 
        -var "node_count={{.COUNT}}"
        -var "tags={{.TITLE}}" 
-       -var "certificate_base64_encoded={{.CERT}}" 
-       -var "certificate_password={{.CERT_PFX_PASS}}"
        -compact-warnings
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
-      CERT:
-        sh: cat {{.CERT_PATH}} | base64
 
   refresh:
     cmds:
@@ -47,12 +43,8 @@ tasks:
       -var "vm_size={{.SKU}}" 
       -var "node_count={{.COUNT}}" 
       -var "tags={{.TITLE}}"
-      -var "certificate_base64_encoded={{.CERT}}" 
-      -var "certificate_password={{.CERT_PFX_PASS}}"
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
-      CERT:
-        sh: cat {{.CERT_PATH}} | base64
 
   creds:
     desc: Gets credential file for newly created AKS cluster
@@ -68,26 +60,18 @@ tasks:
   configs:
     desc: Update configurations with proper values Key
     cmds:
-    - export AI_CONNECTION_STRING="{{.AI_CONNECTION_STRING}}" ;
-      envsubst < cluster-config/istio/configuration/otel.tmpl > cluster-config/istio/configuration/otel.yaml
-    - export INGRESS_CLIENT_ID={{.INGRESS_CLIENT_ID}} ;
-      envsubst < cluster-config/istio/gateway/serviceaccount.tmpl > cluster-config/istio/gateway/serviceaccount.yaml
-    - export KEYVAULT_NAME={{.KEYVAULT_NAME}} ;
-      export INGRESS_CLIENT_ID={{.INGRESS_CLIENT_ID}} ;
-      envsubst <cluster-config/istio/gateway/secretsprovider.tmpl > cluster-config/istio/gateway/secretsprovider.yaml
-    - git add cluster-config/istio/configuration/otel.yaml
-    - git add cluster-config/istio/gateway/serviceaccount.yaml
-    - git add cluster-config/istio/gateway/secretsprovider.yaml
-    - git commit -m "Updated Config values"
-    - git push
+    - helm upgrade --install eshop-k8s-extensions
+      --set APP_NAME={{.APP_NAME}} 
+      --set WEBAPP_DOMAIN={{.WEBAPP_DOMAIN}} 
+      --set APP_INSIGHTS.CONNECTION_STRING={{.AI_CONNECTION_STRING}}
+      ./charts/eshop-k8s-extensions 
     vars:
+      APP_NAME:
+        sh: terraform -chdir=../infrastructure output -raw APP_NAME
       AI_CONNECTION_STRING:
         sh: terraform -chdir=./infrastructure output -raw AI_CONNECTION_STRING
-      KEYVAULT_NAME:
-        sh: terraform -chdir=./infrastructure output -raw KEYVAULT_NAME
-      INGRESS_CLIENT_ID:
-        sh: terraform -chdir=./infrastructure output -raw INGRESS_CLIENT_ID
-
+      WEBAPP_DOMAIN: '{{.APP_NAME}}.{{.DOMAIN_ROOT}}'
+      
   build: 
     desc: Builds containers
     dir: ./scripts

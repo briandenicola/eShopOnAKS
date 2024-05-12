@@ -93,6 +93,8 @@ resource "azurerm_kubernetes_cluster" "this" {
     min_count           = 3
     max_count           = 6
     max_pods            = 250
+    only_critical_addons_enabled = true
+    temporary_name_for_rotation = "system-rotation"
     upgrade_settings {
       max_surge = "33%"
     }
@@ -149,8 +151,8 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   service_mesh_profile {
-    mode                             = "Istio" 
-    internal_ingress_gateway_enabled = true
+    mode                             = "Istio"
+    external_ingress_gateway_enabled = true
   }
 
 }
