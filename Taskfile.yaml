@@ -105,8 +105,12 @@ tasks:
     desc: Gets the IP Addresss of the Istio Gateway
     dir: ./scripts
     cmds:
-    - bash ./get-service-ipaddress.sh 
-
+    - echo 'Create an DNS (A) Record "*.{{.APP_NAME}}.{{.DOMAIN_ROOT}}"" resolving to {{.IP}}'
+    vars:
+      APP_NAME: 
+        sh: terraform -chdir=../infrastructure output -raw APP_NAME
+      IP:
+        sh: bash ./get-service-ipaddress.sh 
 
   down:
     desc: Destroys all Azure resources and cleans up Terraform

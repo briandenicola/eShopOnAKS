@@ -16,4 +16,4 @@ if [[ $? -eq 0 ]]; then
 fi
 
 export IP=`kubectl get svc aks-istio-ingressgateway-external -n aks-istio-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
-echo "Please create an DNS entry resolving ${IP}."
+echo ${IP}
