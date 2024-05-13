@@ -94,6 +94,12 @@ tasks:
       SUBSCRIPTION_NAME:
         sh: az account show --query name -o tsv        
 
+  update-firewalls:
+    desc: Update firewall rules for Keyvault, AKS, and ACR
+    dir: ./scripts
+    cmds:
+    - bash ./scripts/update-firewalls.sh
+
   down:
     desc: Destroys all Azure resources and cleans up Terraform
     cmds:
