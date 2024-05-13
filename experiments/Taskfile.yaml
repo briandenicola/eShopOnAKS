@@ -1,0 +1,35 @@
+version: '3'
+
+tasks:
+  extensions:
+    desc: Installing Chaos Mesh via Helm
+    cmds:
+    - helm repo add chaos-mesh https://charts.chaos-mesh.org
+    - helm repo update
+    - kubectl create ns chaos-testing
+    - helm install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+    vars:
+      AKS:
+        sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
+      RG: 
+        sh: az aks list --query "[?name=='{{.AKS}}']" | jq -r ".[].resourceGroup"
+
+  targets:
+    desc: On boards Chaos Extension onto AKS Cluster Resource
+    cmds:
+    - az group deployment create -n ChaosTargets -g {{.RG}} --template-file ./azuredeploy.deployment.json --parameters resourceName={{.AKS}} 
+    vars:
+      AKS:
+        sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
+      RG: 
+        sh: az aks list --query "[?name=='{{.AKS}}']" | jq -r ".[].resourceGroup"
+
+  experiment:
+    desc: Creates an Chaos Engineering
+    cmds:
+    - az group deployment create -n ChaosExperiment -g {{.RG}} --template-file ./azurechaos.experiment.json --parameters aksClusterName={{.AKS}}
+    vars:
+      AKS:
+        sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
+      RG: 
+        sh: az aks list --query "[?name=='{{.AKS}}']" | jq -r ".[].resourceGroup"

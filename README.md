@@ -8,14 +8,26 @@ Table of contents
 =================
 <!--ts-->
 * [Architecture](#architecture)
+    * [Basket API](./docs/architecture.md#basket-api)
+    * [Catalog API](./docs/architecture.md#catalog-api)
+    * [Identity API](./docs/architecture.md#identity-api)
+    * [Ordering API](./docs/architecture.md#ordering-api)
+    * [Payment API](./docs/architecture.md#payment-api)
+    * [Webapp](./docs/architecture.md#webapp)
+    * [Webhooks](./docs/architecture.md#webhooks)
 * [Prerequisites](./docs/prerequisites.md)
     * [Gihub Codespaces](./docs/prerequisites.md#github-codespaces)
 * [Infrastructure](./docs/installation.md) 
-    * [GitOps](./docs/installation.md#gitops)
     * [Networking](./docs/installation.md#networking)
-    * [Cluster Setup](./docs/installation.md#cluster-setup)
+    * [K8S Cluster Components](./docs/installation.md#cluster-setup)
+    * [GitOps](./docs/installation.md#gitops)
+    * [PostgreSQL](./docs/installation.md#postgresql)
+    * [EventBus](./docs/installation.md#eventbus)
 * [Application Build](./docs/build.md)
+    * [Dotnet Build](./docs/build.md#dotnet-publish)
+    * [Firewall Update](./docs/build.md#firewalls)
 * [Application Deployment](./docs/deployment.md)
+    * [Pod Disruption Budget](./docs/deployment.md#pod-disruption-budget)
     * [Secrets Management](./docs/deployment.md#secrets-management)
     * [Service Mesh](./docs/deployment.md#service-mesh)
     * [Github Actions](./docs/deployment.md#github-actions)
@@ -23,18 +35,30 @@ Table of contents
 * [Scaling](./docs/scaling.md)
 * [Security](./docs/security.md)
 * [Cost Management](./docs/cost-management.md)
-* [Backlog](#backlog)
+* [Troubleshooting](./docs/troubleshooting.md)
+    * [Chaos Engineering](./docs/troubleshooting.md#chaos-engineering)
+* [Roadmap](#Roadmap)
+* [Acknowledgments](#Acknowledgments)
 <!--te-->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 Architecture 
 ============
 ![eShop Reference Application architecture diagram](.assets/eshop_architecture.png)
 ![eShop Reference Application Home page](.assets/eshop_homepage.png)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Backlog
+Roadmap
 ============
 - [X] Build container images
 - [X] Deploy to Kubernetes
 - [x] Add Keda Scalers Examples
 - [X] Review Azure Monitor and Application Insights
 - [ ] Update documentation
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+Acknowledgments
+============
+* [The eShop Team](https://github.com/dotnet/eshop)
+* [The dotnet Team](https://github.com/dotnet)
+* [Ben Coleman](https://github.com/benc-uk/kube-workshop)

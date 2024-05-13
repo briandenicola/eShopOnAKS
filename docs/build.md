@@ -2,6 +2,14 @@ Build
 =============
 TBD
 
+dotnet publish
+=============
+TBD
+
+Firewalls
+=============
+TBD
+
 
 ## Navigation
 
