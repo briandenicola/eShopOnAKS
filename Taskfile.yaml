@@ -21,6 +21,7 @@ tasks:
     - terraform -chdir=./infrastructure init
     - task: apply
     - task: creds
+    - task: dns
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
 
@@ -98,7 +99,14 @@ tasks:
     desc: Update firewall rules for Keyvault, AKS, and ACR
     dir: ./scripts
     cmds:
-    - bash ./scripts/update-firewalls.sh
+    - bash ./update-firewalls.sh
+
+  dns:
+    desc: Gets the IP Addresss of the Istio Gateway
+    dir: ./scripts
+    cmds:
+    - bash ./get-service-ipaddress.sh 
+
 
   down:
     desc: Destroys all Azure resources and cleans up Terraform
