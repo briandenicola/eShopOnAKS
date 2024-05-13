@@ -1,7 +1,6 @@
 resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
   depends_on = [
     azurerm_kubernetes_cluster.this
-    #azapi_update_resource.cluster_updates
   ]
 
   lifecycle {
@@ -27,6 +26,4 @@ resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
   upgrade_settings {
     max_surge = "25%"
   }
-
-  node_taints           = [ "ReservedFor=apps:NoSchedule" ]
 }

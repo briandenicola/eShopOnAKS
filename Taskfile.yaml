@@ -21,7 +21,6 @@ tasks:
     - terraform -chdir=./infrastructure init
     - task: apply
     - task: creds
-    - task: configs
     vars: 
       REGION: '{{default "southcentralus" .CLI_ARGS}}'
 
