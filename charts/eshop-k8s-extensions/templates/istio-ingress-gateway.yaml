@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: default-cluster-gateway
+  name: istio-ingressgateway
   namespace: aks-istio-ingress
 spec:
   selector:
@@ -32,11 +32,29 @@ spec:
   hosts:
   -  {{ print "*." .Values.WEBAPP_DOMAIN | quote }}
   gateways:
-  -  aks-istio-ingress/default-cluster-gateway
+  -  aks-istio-ingress/istio-ingressgateway
   http:
-  - route:
+  - match:
+    - uri:
+        prefix: {{ print "/.well-known/acme-challenge/" .VALUES.CERT.WEBAPP_CHALLENGE | quote }}
+    route:
+    - destination:
+        host: {{ print "cm-acme-http-solver-" .VALUES.CERT.WEBAPP_SERVICE }}
+        port:
+          number: 8089
+  - match:
+    - uri:
+        prefix: {{ print "/.well-known/acme-challenge/" .VALUES.CERT.IDENTITY_CHALLENGE | quote }}
+    route:
+    - destination:
+        host: {{ print "cm-acme-http-solver-" .VALUES.CERT.IDENTITY_SERVICE }}
+        port:
+          number: 8089          
+  - match:
+    - uri:
+        prefix: "/"
+    route:
     - destination:
         host: default-backend-svc
         port:
           number: 80
-  

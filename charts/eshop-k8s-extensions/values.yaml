@@ -12,3 +12,7 @@ WEBAPP_DOMAIN                           : ""
 
 CERT:
   EMAIL_ADDRESS                         : ""
+  IDENTITY_SERVICE                      : ""
+  IDENTITY_CHALLENGE                    : ""
+  WEBAPP_SERVICE                        : ""
+  WEBAPP_CHALLENGE                      : ""

@@ -24,7 +24,9 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: {{ print "shop." .Values.WEBAPP_DOMAIN | quote }}
+    group: cert-manager.io
   dnsNames:
-  - {{ print "shop." .Values.WEBAPP_DOMAIN | quote}}  
+  - {{ print "eshop." .Values.WEBAPP_DOMAIN | quote }}
+  - {{ print "shop." .Values.WEBAPP_DOMAIN | quote }}
   - {{ print "identity." .Values.WEBAPP_DOMAIN | quote }}
+  - {{ print "basket." .Values.WEBAPP_DOMAIN | quote }}
