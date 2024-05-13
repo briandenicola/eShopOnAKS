@@ -38,6 +38,8 @@ Table of contents
 * [Troubleshooting](./docs/troubleshooting.md)
     * [Chaos Engineering](./docs/troubleshooting.md#chaos-engineering)
 * [Roadmap](#Roadmap)
+* [Code of Conduct](./CODE_OF_CONDUCT.md)
+* [Contributing](./CONTRIBUTING.md)
 * [Acknowledgments](#Acknowledgments)
 <!--te-->
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -62,3 +64,5 @@ Acknowledgments
 * [The eShop Team](https://github.com/dotnet/eshop)
 * [The dotnet Team](https://github.com/dotnet)
 * [Ben Coleman](https://github.com/benc-uk/kube-workshop)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
