@@ -12,4 +12,4 @@ TBD
 ## Navigation
 
 [Return to Main Index 🏠](../readme.md) ‖
-[Previous Section ⏪](./architecture.md)  ‖ [Next Section ⏩](./installation.md)
+[Previous Section ⏪](./architecture.md)  ‖ [Next Section ⏩](./infrastructure.md)
