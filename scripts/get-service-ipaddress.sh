@@ -15,5 +15,5 @@ if [[ $? -eq 0 ]]; then
     exit 1
 fi
 
-export IP=`kubectl get svc aks-istio-ingressgateway-external -n aks-istio-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+export IP=`kubectl --namespace aks-istio-ingress get service aks-istio-ingressgateway-external -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
 echo ${IP}
