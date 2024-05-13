@@ -24,7 +24,7 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: {{ print "shop" .Values.WEBAPP_DOMAIN | quote }}
+  commonName: {{ print "shop." .Values.WEBAPP_DOMAIN | quote }}
   dnsNames:
-  - {{ print "shop" .Values.WEBAPP_DOMAIN | quote}}  
-  - {{ print "identity" .Values.WEBAPP_DOMAIN | quote }}
+  - {{ print "shop." .Values.WEBAPP_DOMAIN | quote}}  
+  - {{ print "identity." .Values.WEBAPP_DOMAIN | quote }}
