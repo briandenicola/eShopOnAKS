@@ -30,7 +30,7 @@ metadata:
   namespace: aks-istio-ingress
 spec:
   hosts:
-  -  '*'
+  -  {{ print "*." .Values.WEBAPP_DOMAIN | quote }}
   gateways:
   -  aks-istio-ingress/default-cluster-gateway
   http:
