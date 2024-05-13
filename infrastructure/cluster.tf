@@ -94,7 +94,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     max_count           = 6
     max_pods            = 250
     only_critical_addons_enabled = true
-    temporary_name_for_rotation = "system-rotation"
+    temporary_name_for_rotation = "rotation"
     upgrade_settings {
       max_surge = "33%"
     }

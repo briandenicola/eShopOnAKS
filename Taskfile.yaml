@@ -63,11 +63,11 @@ tasks:
     - helm upgrade --install eshop-k8s-extensions
       --set APP_NAME={{.APP_NAME}} 
       --set WEBAPP_DOMAIN={{.WEBAPP_DOMAIN}} 
-      --set APP_INSIGHTS.CONNECTION_STRING={{.AI_CONNECTION_STRING}}
+      --set APP_INSIGHTS.CONNECTION_STRING="{{.AI_CONNECTION_STRING}}"
       ./charts/eshop-k8s-extensions 
     vars:
       APP_NAME:
-        sh: terraform -chdir=../infrastructure output -raw APP_NAME
+        sh: terraform -chdir=./infrastructure output -raw APP_NAME
       AI_CONNECTION_STRING:
         sh: terraform -chdir=./infrastructure output -raw AI_CONNECTION_STRING
       WEBAPP_DOMAIN: '{{.APP_NAME}}.{{.DOMAIN_ROOT}}'
