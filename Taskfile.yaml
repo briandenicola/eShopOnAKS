@@ -61,6 +61,7 @@ tasks:
     desc: Update configurations with proper values Key
     cmds:
     - helm upgrade --install eshop-k8s-extensions
+      --set CERT.EMAIL_ADDRESS={{.APP_NAME}}@{{.DOMAIN_ROOT}}
       --set APP_NAME={{.APP_NAME}} 
       --set WEBAPP_DOMAIN={{.WEBAPP_DOMAIN}} 
       --set APP_INSIGHTS.CONNECTION_STRING="{{.AI_CONNECTION_STRING}}"

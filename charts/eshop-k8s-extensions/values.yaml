@@ -11,4 +11,4 @@ APP_INSIGHTS:
 WEBAPP_DOMAIN                           : ""
 
 CERT:
-  EMAIL_ADDRESS                         : "brian@bjdazure.tech"
+  EMAIL_ADDRESS                         : ""
