@@ -16,8 +16,8 @@ Set-Variable -Name APP_NAMESPACE        -Value "eshop"                          
 Set-Variable -Name CHART_NAME           -Value "eshop"                                  -Option Constant
 
 Set-Variable -Name APP_ISTIO_GATEWAY    -Value "aks-istio-ingress/istio-ingressgateway" -Option Constant
-Set-Variable -Name APP_IDENTITY_URL     -Value ("identity.{0}" -f $DomainName)          -Option Constant
-Set-Variable -Name APP_URL              -Value ("shop.{0}" -f $DomainName)              -Option Constant
+Set-Variable -Name APP_IDENTITY_URL     -Value ("identity.{0}.{1}" -f $AppName,$DomainName)          -Option Constant
+Set-Variable -Name APP_URL              -Value ("shop.{0}.{1}" -f $AppName,$DomainName)              -Option Constant
 
 Set-Variable -Name Services             -Value @(
     @{Name="basket-api"; Path="src/Basket.API"},
