@@ -2,23 +2,20 @@
 * https://github.com/dotnet/eShop
 
 # Code Updates
-The follow changes have been made to the original source code to make it work with AKS and to enable Prometheus Metrics
+>The follow changes have been made to the original source code to make it work with AKS and to enable Prometheus Metrics
 > - https://github.com/briandenicola/eShop/commit/61913dbe2e94b0c460cc83d386b313fdb88f413d
 > - https://github.com/briandenicola/eShop/commit/d40a535046c18729edadb72dd6956fd3caafa6fd
 
-<p align="center">
+<hr/>
+
+## Pacakge References
 ![code diff 1](../.assets/diff-1.png)
-</p>
-</p>
-<hr/>
-<p align="center">
+
+## OTEL with Azure Monitor
 ![code diff 2](../.assets/diff-2.png)
-</p>
-<hr/>
-<p align="center">
-![code diff 3](../.assets/diff-3.png)
-</p>
-<hr/>
-<p align="center">
+
+# Enable Prometheus Metrics
 ![code diff 4](../.assets/diff-4.png)
-</p>
+
+## Removed OpenAI Configuration Section
+![code diff 3](../.assets/diff-3.png)
