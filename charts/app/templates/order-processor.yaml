@@ -38,13 +38,13 @@ spec:
           securityContext:
             privileged: false
             allowPrivilegeEscalation: false          
-          # livenessProbe:
-          #   httpGet:
-          #     path: /health
-          #     port: {{ .Values.ISTIO.ORDERING.PORT }}
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 30
-          #   timeoutSeconds: 3      
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.ISTIO.ORDERING.PORT }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 3      
           volumeMounts:
           - name: secrets-store-inline
             mountPath: "/mnt/secrets-store"                       

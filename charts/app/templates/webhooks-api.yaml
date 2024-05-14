@@ -8,7 +8,6 @@ metadata:
     service: webhooks-api
 data:
   AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
-  #Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
   Identity__Url: {{ print "https://" .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
   APP_INSIGHTS_CONNECTION_STRING: {{ .Values.APP_INSIGHTS.CONNECTION_STRING }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
@@ -59,13 +58,13 @@ spec:
           securityContext:
             privileged: false
             allowPrivilegeEscalation: false          
-          # livenessProbe:
-          #   httpGet:
-          #     path: /health
-          #     port: {{ .Values.ISTIO.WEBHOOKS.PORT }}
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 30
-          #   timeoutSeconds: 3   
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.ISTIO.WEBHOOKS.PORT }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 3   
           envFrom:
             - configMapRef:
                 name: webhooks-api-cm

@@ -7,7 +7,6 @@ metadata:
     app: {{ .Chart.Name }}
     service: payment-api
 data:
-  #Identity__Url: {{ .Values.ISTIO.IDENTITY.INTERNAL_URL }}
   Identity__Url: {{ print "https://" .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
   APP_INSIGHTS_CONNECTION_STRING: {{ .Values.APP_INSIGHTS.CONNECTION_STRING }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
@@ -58,13 +57,13 @@ spec:
           securityContext:
             privileged: false
             allowPrivilegeEscalation: false          
-          # livenessProbe:
-          #   httpGet:
-          #     path: /health
-          #     port: {{ .Values.ISTIO.PAYMENT.PORT }}
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 30
-          #   timeoutSeconds: 3    
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.ISTIO.PAYMENT.PORT }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 3    
           volumeMounts:
           - name: secrets-store-inline
             mountPath: "/mnt/secrets-store"                       
