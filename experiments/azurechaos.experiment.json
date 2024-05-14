@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "experimentName": {
-            "defaultValue": "experiment002",
+            "defaultValue": "eshop-experiments",
             "type": "String"
         },
         "aksClusterName": {
