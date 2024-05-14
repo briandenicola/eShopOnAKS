@@ -36,18 +36,18 @@ spec:
   http:
   - match:
     - uri:
-        prefix: {{ print "/.well-known/acme-challenge/" .VALUES.CERT.WEBAPP_CHALLENGE | quote }}
+        exact: {{ print .Values.CERT.SHOP_URL_CHALLENGE_PATH | quote }}
     route:
     - destination:
-        host: {{ print "cm-acme-http-solver-" .VALUES.CERT.WEBAPP_SERVICE }}
+        host: {{ print .Values.CERT.SHOP_URL_SERVICE_NAME }}
         port:
           number: 8089
   - match:
     - uri:
-        prefix: {{ print "/.well-known/acme-challenge/" .VALUES.CERT.IDENTITY_CHALLENGE | quote }}
+        exact: {{ print .Values.CERT.IDENTITY_URL_CHALLENGE_PATH | quote }}
     route:
     - destination:
-        host: {{ print "cm-acme-http-solver-" .VALUES.CERT.IDENTITY_SERVICE }}
+        host: {{ print .Values.CERT.IDENTITY_URL_SERVICE_NAME }}
         port:
           number: 8089          
   - match:

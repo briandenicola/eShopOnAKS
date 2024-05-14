@@ -13,20 +13,3 @@ spec:
     - http01:
         ingress:
           ingressClassName: istio
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: {{ .Values.WEBAPP_DOMAIN | replace "." "-" }}
-  namespace: aks-istio-ingress
-spec:
-  secretName: istio-ingress-tls
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-    group: cert-manager.io
-  dnsNames:
-  - {{ print "eshop." .Values.WEBAPP_DOMAIN | quote }}
-  - {{ print "shop." .Values.WEBAPP_DOMAIN | quote }}
-  - {{ print "identity." .Values.WEBAPP_DOMAIN | quote }}
-  - {{ print "basket." .Values.WEBAPP_DOMAIN | quote }}
