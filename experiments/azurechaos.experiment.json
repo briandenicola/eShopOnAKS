@@ -2,24 +2,31 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "experimentName": {
-            "defaultValue": "eshop-experiments",
-            "type": "String"
-        },
         "aksClusterName": {
             "type": "String"
-        }
+        },
+        "aksClusterResourceGroup": {
+            "type": "String"
+        },        
+        "location": {
+            "type": "string",
+            "defaultValue": "westus",
+            "metadata": {
+                "description": "Location"
+            }
+        }        
     },
     "variables": {
-        "aksResourceId": "[resourceId('Microsoft.ContainerService/managedClusters',parameters('aksClusterName'))]",
+        "experimentName": "eshop-experiments",
+        "aksResourceId": "[resourceId(parameters('aksClusterResourceGroup'),'Microsoft.ContainerService/managedClusters',parameters('aksClusterName'))]",
         "serviceChaosMeshResourceId": "[concat( variables('aksResourceId'),'/providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
     },
     "resources": [
         {
             "type": "Microsoft.Chaos/experiments",
             "apiVersion": "2024-01-01",
-            "name": "[parameters('experimentName')]",
-            "location": "centralus",
+            "name": "[variables('experimentName')]",
+            "location": "[parameters('location')]",
             "identity": {
                 "type": "SystemAssigned"
             },
@@ -61,7 +68,7 @@
                         "name": "Pod Chaos...",
                         "branches": [
                             {
-                                "name": "Ruining My Default Namespace",
+                                "name": "Ruining eShop",
                                 "actions": [
                                     {
                                         "type": "delay",
@@ -75,7 +82,7 @@
                                         "parameters": [
                                             {
                                                 "key": "jsonSpec",
-                                                "value": "{\n  \"action\": \"random\",\n  \"mode\": \"all\",\n  \"patterns\": [\n   \t\"azure.com\",\n    \"chaos-mesh.*\",\n    \"github.com\"\n  ],\n  \"selector\": {\n    \"namespaces\": [\"default\"]\n  }\n}"
+                                                "value": "{\n  \"action\": \"random\",\n  \"mode\": \"all\",\n  \"patterns\": [\n   \t\"azure.com\",\n    \"chaos-mesh.*\",\n    \"github.com\"\n  ],\n  \"selector\": {\n    \"namespaces\": [\"eshop\"]\n  }\n}"
                                             }
                                         ],
                                         "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:DNSChaos/2.1"
@@ -92,7 +99,7 @@
                                         "parameters": [
                                             {
                                                 "key": "jsonSpec",
-                                                "value": "{\"action\":\"pod-failure\",\"mode\":\"all\",\"duration\":\"600s\",\"selector\":{\"namespaces\":[\"default\"]}}"
+                                                "value": "{\"action\":\"pod-failure\",\"mode\":\"all\",\"duration\":\"600s\",\"selector\":{\"namespaces\":[\"eshop\"]}}"
                                             }
                                         ],
                                         "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1"
@@ -104,7 +111,7 @@
                                         "parameters": [
                                             {
                                                 "key": "jsonSpec",
-                                                "value": "{\"action\":\"delay\",\"mode\":\"one\",\"selector\":{\"namespaces\":[\"default\"],\"labelSelectors\":{\"app\":\"httpbin\"}},\"delay\":{\"latency\":\"10ms\",\"correlation\":\"100\",\"jitter\":\"0ms\"}}"
+                                                "value": "{\"action\":\"delay\",\"mode\":\"one\",\"selector\":{\"namespaces\":[\"eshop\"],\"labelSelectors\":{\"service\":\"basket-api\"}},\"delay\":{\"latency\":\"10ms\",\"correlation\":\"100\",\"jitter\":\"0ms\"}}"
                                             }
                                         ],
                                         "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:networkChaos/2.1"

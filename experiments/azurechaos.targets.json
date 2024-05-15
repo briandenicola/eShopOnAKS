@@ -7,24 +7,29 @@
       "metadata": {
         "description": "The name of the resource being enabled."
       }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "centralus",
+      "metadata": {
+        "description": "Location"
+      }
     }
   },
-  "variables": {
-    "location": "centralus",
-  },
+  "variables": {},
   "resources": [
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "properties": {}
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets/capabilities",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh/NetworkChaos-2.1')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')), '/', 'providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
       ],
@@ -32,9 +37,9 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets/capabilities",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh/PodChaos-2.1')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')), '/', 'providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
       ],
@@ -42,9 +47,9 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets/capabilities",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh/StressChaos-2.1')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')), '/', 'providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
       ],
@@ -52,9 +57,9 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets/capabilities",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh/IOChaos-2.1')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')), '/', 'providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
       ],
@@ -62,9 +67,9 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets/capabilities",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh/TimeChaos-2.1')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')), '/', 'providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
       ],
@@ -72,9 +77,9 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets/capabilities",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh/KernelChaos-2.1')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')), '/', 'providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
       ],
@@ -82,9 +87,9 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets/capabilities",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh/DNSChaos-2.1')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')), '/', 'providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
       ],
@@ -92,9 +97,9 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/providers/targets/capabilities",
-      "apiVersion": "2024-01-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Chaos/Microsoft-AzureKubernetesServiceChaosMesh/HTTPChaos-2.1')]",
-      "location": "[variables('location')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')), '/', 'providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
       ],

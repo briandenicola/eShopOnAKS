@@ -1,8 +1,8 @@
 
 resource "azurerm_key_vault" "this" {
   name                        = local.kv_name
-  resource_group_name         = azurerm_resource_group.this.name
-  location                    = azurerm_resource_group.this.location
+  resource_group_name         = azurerm_resource_group.app.name
+  location                    = azurerm_resource_group.app.location
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 7
   purge_protection_enabled    = false
@@ -19,8 +19,8 @@ resource "azurerm_key_vault" "this" {
 
 resource "azurerm_private_endpoint" "key_vault" {
   name                      = "${local.kv_name}-ep"
-  resource_group_name       = azurerm_resource_group.this.name
-  location                  = azurerm_resource_group.this.location
+  resource_group_name       = azurerm_resource_group.app.name
+  location                  = azurerm_resource_group.app.location
   subnet_id                 = azurerm_subnet.private-endpoints.id
 
   private_service_connection {

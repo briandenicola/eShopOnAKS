@@ -20,7 +20,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
   max_pods              = 250
   node_count            = var.node_count
   min_count             = var.node_count
-  max_count             = var.node_count + 2
+  max_count             = var.node_count + 3
   zones                 = local.zones
 
   upgrade_settings {

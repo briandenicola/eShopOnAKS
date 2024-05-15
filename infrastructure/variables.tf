@@ -1,6 +1,6 @@
 variable "region" {
   description = "The location for this application deployment"
-  default     = "southcentralus"
+  default     = "westus3"
 }
 
 variable "tags" {

@@ -3,6 +3,11 @@ output "APP_NAME" {
   sensitive = false
 }
 
+output "APP_RESOURCE_GROUP" {
+  value     = azurerm_resource_group.app.name
+  sensitive = false
+}
+
 output "ACR_NAME" {
   value     = azurerm_container_registry.this.name
   sensitive = false
@@ -13,8 +18,18 @@ output "AKS_CLUSTER_NAME" {
   sensitive = false
 }
 
-output "RESOURCE_GROUP" {
-  value     = azurerm_resource_group.this.name
+output "AKS_RESOURCE_GROUP" {
+  value     = azurerm_kubernetes_cluster.this.resource_group_name
+  sensitive = false
+}
+
+output "CHAOS_RESOURCE_GROUP" {
+  value     = azurerm_resource_group.chaos.name
+  sensitive = false
+}
+
+output "CHAOS_RESOURCE_LOCATION" {
+  value     = azurerm_resource_group.chaos.location
   sensitive = false
 }
 

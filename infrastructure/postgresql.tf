@@ -8,8 +8,8 @@ resource "azurerm_postgresql_flexible_server" "this" {
     azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com
   ]
   name                   = local.sql_name
-  resource_group_name    = azurerm_resource_group.this.name
-  location               = azurerm_resource_group.this.location
+  resource_group_name    = azurerm_resource_group.app.name
+  location               = azurerm_resource_group.app.location
   delegated_subnet_id    = azurerm_subnet.sql.id
   private_dns_zone_id    = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
   version                = "15"

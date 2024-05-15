@@ -2,7 +2,10 @@ Set-Variable -Name cwd                  -Value $PWD.Path
 Set-Variable -Name root                 -Value (Get-Item $PWD.Path).Parent.FullName
 Set-Variable -Name UriFriendlyAppName   -Value $AppName.Replace("-","")                 -Option Constant
 
-Set-Variable -Name CORE_RG_NAME         -Value ("{0}_rg" -f $AppName)                   -Option Constant
+Set-Variable -Name AKS_RG_NAME          -Value ("{0}_aks_rg" -f $AppName)               -Option Constant
+Set-Variable -Name CORE_RG_NAME         -Value ("{0}_core_rg" -f $AppName)              -Option Constant
+Set-Variable -Name APP_RG_NAME          -Value ("{0}_app_rg" -f $AppName)               -Option Constant
+Set-Variable -Name MONITORING_RG_NAME   -Value ("{0}_monitoring_rg" -f $AppName)        -Option Constant
 
 Set-Variable -Name APP_K8S_NAME         -Value ("{0}-aks" -f $AppName)                  -Option Constant
 Set-Variable -Name APP_ACR_NAME         -Value ("{0}containers" -f $UriFriendlyAppName) -Option Constant

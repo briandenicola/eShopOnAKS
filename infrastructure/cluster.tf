@@ -1,5 +1,5 @@
 data "azurerm_kubernetes_service_versions" "current" {
-  location = azurerm_resource_group.this.location
+  location = azurerm_resource_group.core.location
 }
 
 locals {
@@ -32,9 +32,9 @@ resource "azurerm_kubernetes_cluster" "this" {
   ]
 
   name                         = local.aks_name
-  resource_group_name          = azurerm_resource_group.this.name
-  location                     = azurerm_resource_group.this.location
-  node_resource_group          = "${azurerm_resource_group.this.name}_k8s_nodes"
+  resource_group_name          = azurerm_resource_group.aks.name
+  location                     = azurerm_resource_group.aks.location
+  node_resource_group          = "${local.aks_name}_nodes_rg"
   dns_prefix                   = local.aks_name
   sku_tier                     = "Standard"
   automatic_channel_upgrade    = "patch"

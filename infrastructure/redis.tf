@@ -1,7 +1,7 @@
 resource "azurerm_redis_cache" "this" {
   name                = local.redis_name
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.app.name
+  location            = azurerm_resource_group.app.location
   capacity            = 1
   family              = "P"
   sku_name            = "Premium"
@@ -24,8 +24,8 @@ resource "azurerm_monitor_diagnostic_setting" "redis" {
 
 resource "azurerm_private_endpoint" "redis_account" {
   name                = "${local.redis_name}-ep"
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.app.name
+  location            = azurerm_resource_group.app.location
   subnet_id           = azurerm_subnet.private-endpoints.id
 
   private_service_connection {

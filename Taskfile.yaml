@@ -5,6 +5,7 @@ dotenv: ['.env']
 env:
   TITLE: eShop On AKS
   SKU: "Standard_D4ads_v5"
+  DEFAULT_REGION: "westus3"
   COUNT: 2
   DOMAIN_ROOT: "bjdazure.tech"
 
@@ -23,7 +24,7 @@ tasks:
     - task: creds
     - task: dns
     vars: 
-      REGION: '{{default "southcentralus" .CLI_ARGS}}'
+      REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
 
   apply:
     cmds:
@@ -34,7 +35,7 @@ tasks:
        -var "tags={{.TITLE}}" 
        -compact-warnings
     vars: 
-      REGION: '{{default "southcentralus" .CLI_ARGS}}'
+      REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
 
   refresh:
     cmds:
@@ -44,7 +45,7 @@ tasks:
       -var "node_count={{.COUNT}}" 
       -var "tags={{.TITLE}}"
     vars: 
-      REGION: '{{default "southcentralus" .CLI_ARGS}}'
+      REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
 
   creds:
     desc: Gets credential file for newly created AKS cluster
@@ -53,7 +54,7 @@ tasks:
     - kubelogin convert-kubeconfig -l azurecli
     vars:
       RG: 
-        sh: terraform -chdir=./infrastructure output -raw RESOURCE_GROUP
+        sh: terraform -chdir=./infrastructure output -raw AKS_RESOURCE_GROUP
       AKS: 
         sh: terraform -chdir=./infrastructure output -raw AKS_CLUSTER_NAME
 

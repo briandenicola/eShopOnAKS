@@ -1,7 +1,7 @@
 resource "azurerm_container_registry" "this" {
   name                     = local.acr_name
-  resource_group_name      = azurerm_resource_group.this.name
-  location                 = azurerm_resource_group.this.location
+  resource_group_name      = azurerm_resource_group.aks.name
+  location                 = azurerm_resource_group.aks.location
   sku                      = "Premium"
   admin_enabled            = false
 
@@ -12,13 +12,12 @@ resource "azurerm_container_registry" "this" {
       ip_range            =  "${chomp(data.http.myip.response_body)}/32"
     }
   }
-  
 }
 
 resource "azurerm_private_endpoint" "acr_account" {
   name                      = "${local.acr_name}-ep"
-  resource_group_name       = azurerm_resource_group.this.name
-  location                  = azurerm_resource_group.this.location
+  resource_group_name       = azurerm_resource_group.aks.name
+  location                  = azurerm_resource_group.aks.location
   subnet_id                 = azurerm_subnet.private-endpoints.id
 
   private_service_connection {

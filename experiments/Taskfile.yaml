@@ -21,19 +21,23 @@ tasks:
   targets:
     desc: On boards Chaos Extension onto AKS Cluster Resource
     cmds:
-    - az group deployment create -n ChaosTargets -g {{.RG}} --template-file ./azurechaos.targets.json --parameters resourceName={{.AKS}} 
+    - az group deployment create -n ChaosTargets -g {{.RG}} --template-file ./azurechaos.targets.json --parameters resourceName={{.AKS}} --parameters location={{.REGION}}
     vars:
       AKS:
         sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
       RG: 
-        sh: az aks list --query "[?name=='{{.AKS}}']" | jq -r ".[].resourceGroup"
+        sh:  terraform -chdir=../infrastructure output -raw AKS_RESOURCE_GROUP
+      REGION:
+        sh:  terraform -chdir=../infrastructure output -raw CHAOS_RESOURCE_LOCATION        
 
   experiment:
     desc: Creates an Chaos Engineering
     cmds:
-    - az group deployment create -n ChaosExperiment -g {{.RG}} --template-file ./azurechaos.experiment.json --parameters aksClusterName={{.AKS}}
+    - az group deployment create -n ChaosExperiment -g {{.RG}} --template-file ./azurechaos.experiment.json --parameters aksClusterName={{.AKS}} --parameters aksClusterResourceGroup={{.AKS_RG}} 
     vars:
       AKS:
         sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
+      AKS_RG:
+        sh: terraform -chdir=../infrastructure output -raw AKS_RESOURCE_GROUP
       RG: 
-        sh: az aks list --query "[?name=='{{.AKS}}']" | jq -r ".[].resourceGroup"
+        sh:  terraform -chdir=../infrastructure output -raw CHAOS_RESOURCE_GROUP

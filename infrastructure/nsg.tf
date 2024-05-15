@@ -1,14 +1,14 @@
 
 resource "azurerm_network_security_group" "eshop-default" {
   name                = "${local.vnet_name}-default-nsg"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.core.location
+  resource_group_name = azurerm_resource_group.core.name
 }
 
 resource "azurerm_network_security_group" "eshop-internet" {
   name                = "${local.vnet_name}-internet-nsg"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.core.location
+  resource_group_name = azurerm_resource_group.core.name
 
   security_rule {
     name                       = "http"
