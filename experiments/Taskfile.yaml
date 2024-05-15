@@ -4,7 +4,7 @@ tasks:
   default: 
     cmds: 
     - task --list 
-    
+
   extensions:
     desc: Installing Chaos Mesh via Helm
     cmds:
@@ -21,7 +21,7 @@ tasks:
   targets:
     desc: On boards Chaos Extension onto AKS Cluster Resource
     cmds:
-    - az group deployment create -n ChaosTargets -g {{.RG}} --template-file ./azuredeploy.deployment.json --parameters resourceName={{.AKS}} 
+    - az group deployment create -n ChaosTargets -g {{.RG}} --template-file ./azurechaos.targets.json --parameters resourceName={{.AKS}} 
     vars:
       AKS:
         sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
