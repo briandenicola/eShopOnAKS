@@ -1,6 +1,10 @@
 version: '3'
 
 tasks:
+  default: 
+    cmds: 
+    - task --list 
+    
   extensions:
     desc: Installing Chaos Mesh via Helm
     cmds:
