@@ -10,12 +10,16 @@
 
 ## Pacakge References
 ![code diff 1](../.assets/diff-1.png)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## OTEL with Azure Monitor
 ![code diff 2](../.assets/diff-2.png)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 # Enable Prometheus Metrics
 ![code diff 4](../.assets/diff-4.png)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Removed OpenAI Configuration Section
 ![code diff 3](../.assets/diff-3.png)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
