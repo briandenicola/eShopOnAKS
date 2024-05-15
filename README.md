@@ -15,6 +15,7 @@ Table of contents
     * [Payment API](./docs/architecture.md#payment-api)
     * [Webapp](./docs/architecture.md#webapp)
     * [Webhooks](./docs/architecture.md#webhooks)
+    * [Code Updates to eShop](./docs/code.md)
 * [Prerequisites](./docs/prerequisites.md)
     * [Gihub Codespaces](./docs/prerequisites.md#github-codespaces)
 * [Infrastructure](./docs/infrastructure.md) 
