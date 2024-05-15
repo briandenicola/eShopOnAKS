@@ -9,6 +9,6 @@ TBD
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Navigation
-[Return to Main Index 🏠](../readme.md) ‖
+[Return to Main Index 🏠](../README.md) ‖
 [Previous Section ⏪](./cost-management.md) 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
