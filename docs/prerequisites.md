@@ -39,16 +39,16 @@ The following tools and build environment has been tested to work on Linux and o
         ```pwsh
         pwsh ./scripts/aks-preview-features.ps1
         ```
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#prerequisites">back to top</a>)</p>
 
 Github Codespaces
 =============
 Github Codespaces is a cloud-based development environment that you can access from anywhere.  It is a great way to get started with the eShop project without having to install any tools on your local machine.  You can use the following steps to get started with Github Codespaces:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#prerequisites">back to top</a>)</p>
 
 ## Navigation
 [Return to Main Index 🏠](../README.md) ‖
 [Previous Section ⏪](./architecture.md)  ‖ [Next Section ⏩](./infrastructure.md)
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#prerequisites">back to top</a>)</p>

@@ -44,13 +44,13 @@ Table of contents
 * [Contributing](./CONTRIBUTING.md)
 * [Acknowledgments](#Acknowledgments)
 <!--te-->
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#overview">back to top</a>)</p>
 
 Architecture 
 ============
 ![eShop Reference Application architecture diagram](.assets/eshop_architecture.png)
 ![eShop Reference Application Home page](.assets/eshop_homepage.png)
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#overview">back to top</a>)</p>
 
 Roadmap
 ============
@@ -59,7 +59,7 @@ Roadmap
 - [x] Add Keda Scalers Examples
 - [X] Review Azure Monitor and Application Insights
 - [ ] Update documentation
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#overview">back to top</a>)</p>
 
 Acknowledgments
 ============
@@ -67,4 +67,4 @@ Acknowledgments
 * [The dotnet Team](https://github.com/dotnet)
 * [Ben Coleman](https://github.com/benc-uk/kube-workshop)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#overview">back to top</a>)</p>
