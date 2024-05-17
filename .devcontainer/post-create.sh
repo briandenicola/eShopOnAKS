@@ -54,7 +54,4 @@ sudo az aks install-cli -y
 sudo az extension add --name application-insights -y
 sudo az extension add --name aks-preview -y
 
-#Install Azure Static WebApp cli
-sudo npm install -g @azure/static-web-apps-cli
-
 echo "$(date)    post-create complete" >> ~/status
