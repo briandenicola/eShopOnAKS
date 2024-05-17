@@ -34,6 +34,11 @@ The following tools and build environment has been tested to work on Linux and o
 * An account with owner permission on the Azure subscription and Global Admin on the Azure AD tenant
 * An Azure Service Principal with Owner role on the Azure subscription   
 * [Terraform Setup Properly for Azure](https://learn.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-powershell?tabs=bash)
+* The following Preview features enabled on the Azure subscription: AKS-ExtensionManager, AKS-PrometheusAddonPreview, EnableImageCleanerPreview, AKS-KedaPreview, EnableAPIServerVnetIntegrationPreview, TrustedAccessPreview,NetworkObservabilityPreview, AKS-AzurePolicyExternalData
+    * Run the following command to enable the preview features:
+        ```pwsh
+        pwsh ./scripts/aks-preview-features.ps1
+        ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 Github Codespaces
