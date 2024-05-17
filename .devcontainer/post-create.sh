@@ -20,12 +20,6 @@ curl -Lso envsubst https://github.com/a8m/envsubst/releases/download/v1.2.0/envs
 sudo install envsubst /usr/local/bin
 rm -rf ./envsubst
 
-#Install Dapr cli
-wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
-
-#Install Playwright 
-sudo npx playwright install-deps
-
 #Install Task
 sudo sh -c "$(curl -sL https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
