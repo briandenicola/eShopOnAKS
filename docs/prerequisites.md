@@ -1,12 +1,46 @@
 Prerequisites
 =============
-Clone the eShop repository: https://github.com/briandenicola/eshop
-Clone the eShop repository: https://github.com/briandenicola/eshopOnAzure
+
+The following tools and build environment has been tested to work on Linux and on Windows using WSL2.  While all the tools have Windows equivalents, the instructions provided are for Linux and have not been fully tested. 
+
+## Tools
+* Github CodeSpaces, [Azure Cloud Shell](https://shell.azure.com/) Linux, or Windows with WSL2.
+* [dotnet 8](https://dotnet.microsoft.com/download) - The .NET SDK
+* [Visual Studio Code or Equivalent](https://code.visualstudio.com/) - A lightweight code editor
+* [Docker Desktop](https://www.docker.com/products/docker-desktop) - The Docker Desktop to build/push containers
+* [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) - The PowerShell Core for scripting
+* [git](https://git-scm.com/) - The source control tool
+* [Taskfile](https://taskfile.dev/#/) - A task runner for the shell
+* [Terraform](https://www.terraform.io/) - A tool for building Azure infrastructure and infrastructure as code
+* [Flux](https://fluxcd.io/) - A tool for managing Kubernetes clusters
+* [kubectl](https://kubernetes.io/docs/tasks/tools/) - Another tool for managing Kubernetes clusters
+* [helm](https://helm.sh/) - A tool for deploying applications to Kubernetes
+* [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) - A tool for managing Azure resources
+
+## Optional Tools
+* [Windows Terminal](https://aka.ms/terminal) - A better terminal for Windows
+* [Zsh](https://ohmyz.sh/) - A better shell for Linux and Windows
+* [.alias.rc](./.alias.rc) - A set of aliases for Linux that can assist with some of the commands in this guide.
+    
+> * **Note:** The Github Codespaces environment has all the tools pre-installed and configured.  You can use the following link to open the eShop project in Github Codespaces: [Open in Github Codespaces](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
+> * **Note:** Scripts to help with the installation of all these tools can be found here: [Install Scripts](https://github.com/briandenicola/tooling)
+
+## Code
+* Clone the eShop repository: https://github.com/briandenicola/eshop
+* Clone the eShop repository: https://github.com/briandenicola/eshopOnAzure
+
+## Envrionment
+* An Azure subscription. An MSDN subscription will work.
+* An account with owner permission on the Azure subscription and Global Admin on the Azure AD tenant
+* An Azure Service Principal with Owner role on the Azure subscription   
+* [Terraform Setup Properly for Azure](https://learn.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-powershell?tabs=bash)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 Github Codespaces
 =============
-TBD
+Github Codespaces is a cloud-based development environment that you can access from anywhere.  It is a great way to get started with the eShop project without having to install any tools on your local machine.  You can use the following steps to get started with Github Codespaces:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Navigation
