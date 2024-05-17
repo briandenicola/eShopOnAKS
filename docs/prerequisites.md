@@ -48,6 +48,14 @@ Github Codespaces is a cloud-based development environment that you can access f
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
 <p align="right">(<a href="#prerequisites">back to top</a>)</p>
 
+Firewall
+=============
+* If you are using Github Codespaces, the outbound IP address of the compute node is not statics, the firewalls on your Azure resources will be need to be updated from time to time.
+* This can be completed by running the following command: `task update-firewalls` which in tern runs the following command:
+    ```pwsh
+    pwsh ./scripts/update-firewalls.ps1 -AppName $AppName -SubscriptionId $SubscriptionId
+    ```
+
 ## Navigation
 [Return to Main Index 🏠](../README.md) ‖
 [Previous Section ⏪](./architecture.md)  ‖ [Next Section ⏩](./infrastructure.md)
