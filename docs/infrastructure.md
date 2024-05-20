@@ -12,9 +12,9 @@ Infrastructure
 :one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
 
 ### Run the tasks individually:
-:one: `task apply`  - Applies the Terraform plan to create the Azure infrastructure
-:two: `task creds`  - Gets the credential file for the newly created AKS cluster
-:three: `task dns`    - Gets the IP Address of the Istio Gateway
+- :one: `task apply`  - Applies the Terraform plan to create the Azure infrastructure
+- :two: `task creds`  - Gets the credential file for the newly created AKS cluster
+- :three: `task dns`    - Gets the IP Address of the Istio Gateway
 
 Resource Groups
 ============

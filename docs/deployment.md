@@ -6,7 +6,7 @@ Deployment
 * Some information is gathered by convention.  Others are gathered from the Azure resources created in the previous section.
 
 ## Task Steps:
-:one: `task deploy`     - Deploys application via Helm
+- :one: `task deploy`     - Deploys application via Helm
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
 Helm Chart

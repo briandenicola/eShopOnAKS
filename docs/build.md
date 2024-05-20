@@ -7,7 +7,7 @@ Build
 * The build process is kicked off using the command: `task build` command which runs the `scripts/build-containers.ps1` script.  The script sets the application variables, subscription context. Then it logs into the Azure Container Registry, gets the latest git commit version id. Finally, it builds then publishes each service to the Azure Container Registry.
 
 ## Task Steps:
-:one: `task build`     - Builds and pushes the containers
+- :one: `task build`     - Builds and pushes the containers
 <p align="right">(<a href="#build">back to top</a>)</p>
 
 Example Build
