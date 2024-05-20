@@ -9,7 +9,7 @@ Infrastructure
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ## Task Steps:
-:one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
+- :one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
 
 ### Run the tasks individually:
 - :one: `task apply`  - Applies the Terraform plan to create the Azure infrastructure
