@@ -8,11 +8,13 @@ Infrastructure
 * The infrastructure is deployed to a single Azure region (defaults to `westus3`) and consists of the following components:
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-## Task Commands:
-* `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
-* `task apply`  - Applies the Terraform plan to create the Azure infrastructure
-* `task creds`  - Gets the credential file for the newly created AKS cluster
-* `task dns`    - Gets the IP Address of the Istio Gateway
+## Task Steps:
+:one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
+
+### Run the tasks individually:
+:one: `task apply`  - Applies the Terraform plan to create the Azure infrastructure
+:two: `task creds`  - Gets the credential file for the newly created AKS cluster
+:three: `task dns`    - Gets the IP Address of the Istio Gateway
 
 Resource Groups
 ============
@@ -249,19 +251,19 @@ Eventbus
 
 ## Resources
 ### Core Resource Group
-<img src="../.assets/core_rg.png" width="512px" />
+<img src="../.assets/core_rg.png" width="1024px" />
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ### AKS Resource Group
-<img src="../.assets/aks_rg.png" width="512px" />
+<img src="../.assets/aks_rg.png" width="1024px" />
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ### Monitoring Resource Group
-<img src="../.assets/monitoring_rg.png" width="512px" />
+<img src="../.assets/monitoring_rg.png" width="1024px" />
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ### Application Resource Group
-<img src="../.assets/app_rg.png" width="512px" />
+<img src="../.assets/app_rg.png" width="1024px" />
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ## Navigation

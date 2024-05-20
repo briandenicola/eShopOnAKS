@@ -9,10 +9,10 @@ The following configurations will be covered in this section:
 
 The configurations are deployed via Helm Charts.  It can be found in the [eshop-k8s-extensions](../charts/eshop-k8s-extensions) folder and triggered with `task gateway` and `task certs`.  The `task gateway` puls the required values from Terraform's output vaiables and passes them along to the Helm Chart.
 
-## Task Commands:
-* `task gateway`  - Update configurations with proper values Key
-* `task certs`    - Gets the Challenge Information required for Cert Manager
-* `task gateway`  - Run a second time after updating the Helm Chart values.yaml file with the challenge settings
+## Task Steps:
+:one: `task gateway`  - Update configurations with proper values Key
+:two: `task certs`    - Gets the Challenge Information required for Cert Manager
+:three: `task gateway`  - Run a second time after updating the Helm Chart values.yaml file with the challenge settings
 
 <p align="right">(<a href="#post-cluster-configuration">back to top</a>)</p>
 

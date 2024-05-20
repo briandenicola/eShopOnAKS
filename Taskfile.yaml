@@ -75,7 +75,7 @@ tasks:
       WEBAPP_DOMAIN: '{{.APP_NAME}}.{{.DOMAIN_ROOT}}'
       
   build: 
-    desc: Builds containers
+    desc: Builds and pushes the containers
     dir: ./scripts
     cmds:
     - pwsh ./build-containers.ps1 -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -SourceRootDirectory {{.SOURCE_DIR}} -verbose

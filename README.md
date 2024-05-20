@@ -7,7 +7,7 @@ The accompanying e-book Dapr for .NET developers uses the sample code in this re
 Table of contents
 =================
 <!--ts-->
-* [Architecture](#architecture)
+* [Architecture](./docs/architecture.md#basket-api)
     * [Basket API](./docs/architecture.md#basket-api)
     * [Catalog API](./docs/architecture.md#catalog-api)
     * [Identity API](./docs/architecture.md#identity-api)
@@ -18,7 +18,7 @@ Table of contents
     * [Code Updates to eShop](./docs/code.md)
 * [Prerequisites](./docs/prerequisites.md)
     * [Gihub Codespaces](./docs/prerequisites.md#github-codespaces)
-    * [Firewall Update](./docs/prerequisites.md#firewalls)
+    * [Firewall Update](./docs/prerequisites.md#firewall)
 * [Infrastructure](./docs/infrastructure.md) 
     * [Networking](./docs/infrastructure.md#networking)
     * [AKS Cluster Components](./docs/infrastructure.md#aks-cluster-components)

@@ -59,10 +59,10 @@ The following tools and build environment has been tested to work on Linux and o
 * A validate, external DNS domain name to create a wildcard URL for the eShop application   
 * [Terraform Configured for Azure](https://learn.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-powershell?tabs=bash)
 * The following Preview features enabled on the Azure subscription: AKS-ExtensionManager, AKS-PrometheusAddonPreview, EnableImageCleanerPreview, AKS-KedaPreview, EnableAPIServerVnetIntegrationPreview, TrustedAccessPreview,NetworkObservabilityPreview, AKS-AzurePolicyExternalData
-    * Run the following command to enable the preview features:
-        ```pwsh
-        pwsh ./scripts/aks-preview-features.ps1
-        ```
+* :exclamation:  Run the following command to enable the preview features: 
+    ```pwsh
+    pwsh ./scripts/aks-preview-features.ps1
+    ```
 <p align="right">(<a href="#prerequisites">back to top</a>)</p>
 
 Github Codespaces

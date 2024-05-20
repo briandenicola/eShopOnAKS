@@ -4,10 +4,9 @@ Deployment
 * The build process is kicked off using the command: `task deploy` command which runs the script `scripts/deploy-services.ps1`. 
 * The script gathers the required infromation needed to pass to the Helm Chart and then deploys the application.
 * Some information is gathered by convention.  Others are gathered from the Azure resources created in the previous section.
-<p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-## Task Commands:
-* `task deploy`     - Deploys application via Helm
+## Task Steps:
+:one: `task deploy`     - Deploys application via Helm
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
 Helm Chart
