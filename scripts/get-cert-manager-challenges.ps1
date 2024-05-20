@@ -15,7 +15,7 @@ foreach( $ingress in $ingresses) {
   Write-Output "Update eshop-k8s-extensions Helm Chart Values.yaml file with the following values for ${HOST_NAME}:"
   Write-Output "`t SERVICE_NAME: ${CHALLENGE_SERVICE_NAME}"
   Write-Output "`t CHALLENGE_PATH: ${CHALLENGE_PATH}"
-  Write-Output 
+  Write-Output ""
 }
 
 Write-Output 'Please re-run `task configs` to update the Helm Chart values.yaml file with the challenge settings.'
