@@ -49,8 +49,8 @@ The following tools and build environment has been tested to work on Linux and o
     DOMAIN_ROOT | Default root domain used for all URLs & certs | bjdazure.tech
 
 ## Code
-* Clone the eShop repository: https://github.com/briandenicola/eshop
-* Clone the eShop repository: https://github.com/briandenicola/eshopOnAzure
+* Clone the eShop repository: `git clone https://github.com/briandenicola/eshop`
+* Clone the eShop repository: `git clone https://github.com/briandenicola/eshopOnAzure`
 
 ## Envrionment
 * An Azure subscription. An MSDN subscription will work.

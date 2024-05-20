@@ -5,7 +5,7 @@ Deployment
 * The script gathers the required infromation needed to pass to the Helm Chart and then deploys the application.
 * Some information is gathered by convention.  Others are gathered from the Azure resources created in the previous section.
 
-## Task Steps:
+## :heavy_check_mark: Deploy Task Steps:
 - :one: `task deploy`     - Deploys application via Helm
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
@@ -17,34 +17,34 @@ Helm Chart
 * The Powershell script `scripts/deploy-services.ps1` is a helper script that wraps the helm upgrade command.
 * Some values are gathered from the Azure resources created in the previous section.
 ```pwsh
-$commit_version = Get-GitCommitVersion -Source "."
-$app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
-$app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
-$eventubs_password = New-Password -Length 30
+    $commit_version = Get-GitCommitVersion -Source "."
+    $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
+    $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
+    $eventubs_password = New-Password -Length 30
 ```
 * Other values are determined by convention as defined in the ./scripts/modules/eshop_naming.ps1 script.
 * The ultimate Helm command that is run is:
 ```helm
-> helm upgrade -i ${CHART_NAME} `
---set APP_NAME=$AppName `
---set NAMESPACE=$APP_NAMESPACE `
---set GIT_COMMIT_VERSION=$commit_version `
---set WORKLOAD_ID.CLIENT_ID=$($app_msi.client_id) `
---set WORKLOAD_ID.TENANT_ID=$($app_msi.tenant_id) `
---set WORKLOAD_ID.NAME=$APP_SERVICE_ACCT `
---set KEYVAULT.NAME=$APP_KV_NAME `
---set EVENTBUS.PASSWORD=$eventbus_password `
---set ACR.NAME=$APP_ACR_NAME `
---set REGION=$($cogs.region) `
---set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
---set ISTIO.GATEWAY=$APP_ISTIO_GATEWAY `
---set ISTIO.IDENTITY.EXTERNAL_URL="$APP_IDENTITY_URL" `
---set ISTIO.WEBAPP.EXTERNAL_URL="$APP_URL" `
-../charts/app
-> helm list
-NAME                    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
-eshop                   default         2               2024-05-20 09:25:22.748077861 -0500 CDT deployed        eshop-1.0.0                     1.0.0
-eshop-k8s-extensions    default         2               2024-05-20 09:15:06.180620377 -0500 CDT deployed        eshop-k8s-extensions-1.0.0      1.0.0
+    > helm upgrade -i ${CHART_NAME} `
+    --set APP_NAME=$AppName `
+    --set NAMESPACE=$APP_NAMESPACE `
+    --set GIT_COMMIT_VERSION=$commit_version `
+    --set WORKLOAD_ID.CLIENT_ID=$($app_msi.client_id) `
+    --set WORKLOAD_ID.TENANT_ID=$($app_msi.tenant_id) `
+    --set WORKLOAD_ID.NAME=$APP_SERVICE_ACCT `
+    --set KEYVAULT.NAME=$APP_KV_NAME `
+    --set EVENTBUS.PASSWORD=$eventbus_password `
+    --set ACR.NAME=$APP_ACR_NAME `
+    --set REGION=$($cogs.region) `
+    --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
+    --set ISTIO.GATEWAY=$APP_ISTIO_GATEWAY `
+    --set ISTIO.IDENTITY.EXTERNAL_URL="$APP_IDENTITY_URL" `
+    --set ISTIO.WEBAPP.EXTERNAL_URL="$APP_URL" `
+    ../charts/app
+    > helm list
+    NAME                    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
+    eshop                   default         2               2024-05-20 09:25:22.748077861 -0500 CDT deployed        eshop-1.0.0                     1.0.0
+    eshop-k8s-extensions    default         2               2024-05-20 09:15:06.180620377 -0500 CDT deployed        eshop-k8s-extensions-1.0.0      1.0.0
 ```
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
@@ -55,39 +55,39 @@ Virtual Services
 * The Virtual Service configuration can be extended with additional features such as rate limiting, retries, and timeouts.
 * Example Virtual Service configuration:
 ```yaml
-        apiVersion: networking.istio.io/v1beta1
-        kind: VirtualService
-        metadata:
-        name:  webapp-vs
-        namespace: {{ .Values.NAMESPACE }}
-        spec:
-        hosts:
-        -  {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
-        gateways:
-        -  {{ .Values.ISTIO.GATEWAY }}
-        http:
-        - route:
-        - destination:
-                host: webapp
-                port:
-                number: 80
-        ---
-        apiVersion: networking.istio.io/v1beta1
-        kind: VirtualService
-        metadata:
-        name:  identity-api-vs
-        namespace: {{ .Values.NAMESPACE }}
-        spec:
-        hosts:
-        -  {{ .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
-        gateways:
-        -  {{ .Values.ISTIO.GATEWAY }}
-        http:
-        - route:
-        - destination:
-                host: identity-api
-                port:
-                number: 80
+    apiVersion: networking.istio.io/v1beta1
+    kind: VirtualService
+    metadata:
+    name:  webapp-vs
+    namespace: {{ .Values.NAMESPACE }}
+    spec:
+    hosts:
+    -  {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
+    gateways:
+    -  {{ .Values.ISTIO.GATEWAY }}
+    http:
+    - route:
+    - destination:
+            host: webapp
+            port:
+            number: 80
+    ---
+    apiVersion: networking.istio.io/v1beta1
+    kind: VirtualService
+    metadata:
+    name:  identity-api-vs
+    namespace: {{ .Values.NAMESPACE }}
+    spec:
+    hosts:
+    -  {{ .Values.ISTIO.IDENTITY.EXTERNAL_URL }}
+    gateways:
+    -  {{ .Values.ISTIO.GATEWAY }}
+    http:
+    - route:
+    - destination:
+            host: identity-api
+            port:
+            number: 80
 ```
 
 Secrets & Config Map

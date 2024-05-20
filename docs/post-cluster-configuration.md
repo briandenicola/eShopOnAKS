@@ -1,15 +1,14 @@
 Post Cluster Configuration
 =============
-After the cluster has been stood up, there are a few configurations that need to be done to ensure that the cluster is ready for deployment that can not be completed easily with Flux/Gitops. This section will cover the following configurations.
+* After the cluster has been stood up, there are a few configurations that need to be done to ensure that the cluster is ready for deployment that can not be completed easily with Flux/Gitops. This section will cover the following configurations.
+* The following configurations will be covered in this section:
+  * [Cert Manager Configuration](#cert-manager-configuration)
+  * [Istio Ingress Gateway Configuration](#istio-ingress-gateway-configuration)
+  * [Open Telemetry Configuration](#open-telemetry-configuration)
+* The configurations are deployed via Helm Charts.  It can be found in the [eshop-k8s-extensions](../charts/eshop-k8s-extensions) folder and triggered with `task gateway` and `task certs`.  
+* The `task gateway` puls the required values from Terraform's output vaiables and passes them along to the Helm Chart.
 
-The following configurations will be covered in this section:
-* Cert Manager Configuration
-* Istio Ingress Gateway Configuration
-* Open Telemetry Configuration
-
-The configurations are deployed via Helm Charts.  It can be found in the [eshop-k8s-extensions](../charts/eshop-k8s-extensions) folder and triggered with `task gateway` and `task certs`.  The `task gateway` puls the required values from Terraform's output vaiables and passes them along to the Helm Chart.
-
-## Task Steps:
+## :heavy_check_mark: Deploy Task Steps:
 - :one: `task gateway`  - Update configurations with proper values Key
 - :two: `task certs`    - Gets the Challenge Information required for Cert Manager
 - :three: `task gateway`  - Run a second time after updating the Helm Chart values.yaml file with the challenge settings
