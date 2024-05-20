@@ -20,7 +20,7 @@ Get-AKSCredentials -AKSName $APP_K8S_NAME -AKSResourceGroup $AKS_RG_NAME
 $commit_version = Get-GitCommitVersion -Source "."
 $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
 $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
-$eventubs_password = New-Password -Length 30
+$eventbus_password = New-Password -Length 30
 
 # Install App using Helm Chart
 Write-Log -Message "Deploying ${CHART_NAME} version ${commit_version} to ${APP_K8S_NAME} into ${APP_NAMESPACE} namespace. . ."
@@ -32,7 +32,7 @@ helm upgrade -i ${CHART_NAME} `
     --set WORKLOAD_ID.TENANT_ID=$($app_msi.tenant_id) `
     --set WORKLOAD_ID.NAME=$APP_SERVICE_ACCT `
     --set KEYVAULT.NAME=$APP_KV_NAME `
-    --set EVENTBUS.PASSWORD=$eventubs_password `
+    --set EVENTBUS.PASSWORD=$eventbus_password `
     --set ACR.NAME=$APP_ACR_NAME `
     --set REGION=$($cogs.region) `
     --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `

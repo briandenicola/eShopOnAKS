@@ -16,7 +16,7 @@ ISTIO:
   GATEWAY                               : ""
   WEBHOOKS:
     PORT                                : 8080
-    EXTERNAL_URL                        : "http://webhooks-api"
+    INTERNAL                            : "http://webhooks-api"
   MOBILE:
     PORT                                : 8080  
   PAYMENT:

@@ -7,7 +7,7 @@ Workload Identity
 =============
 <p align="right">(<a href="#security">back to top</a>)</p>
 
-Key Vault CSI Configuration
+mTLS with Istio
 =============
 <p align="right">(<a href="#security">back to top</a>)</p>
 

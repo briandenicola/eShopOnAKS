@@ -17,13 +17,36 @@ The following tools and build environment has been tested to work on Linux and o
 * [helm](https://helm.sh/) - A tool for deploying applications to Kubernetes
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) - A tool for managing Azure resources
 
-## Optional Tools
+### Optional Tools
 * [Windows Terminal](https://aka.ms/terminal) - A better terminal for Windows
 * [Zsh](https://ohmyz.sh/) - A better shell for Linux and Windows
 * [.alias.rc](./.alias.rc) - A set of aliases for Linux that can assist with some of the commands in this guide.
     
 > * **Note:** The Github Codespaces environment has all the tools pre-installed and configured.  You can use the following link to open the eShop project in Github Codespaces: [Open in Github Codespaces](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
 > * **Note:** Scripts to help with the installation of all these tools can be found here: [Install Scripts](https://github.com/briandenicola/tooling)
+
+### Task
+* The deployment of this application has been automated using [Taskfile](https://taskfile.dev/#/).  This was done instead of using a CI/CD pipeline to make it easier to understand the deployment process.  
+* The Taskfile is a simple way to run commands and scripts in a consistent manner.  
+* The [Taskfile](../Taskfile.yaml) definition is located in the root of the repository
+* Running `task` command will run the default command - which just list all the available tasks.
+    * `task build`              : Builds containers
+    * `task certs`              : Gets the Challenge Information required for Cert Manager
+    * `task creds`              : Gets credential file for newly created AKS cluster
+    * `task deploy`             : Deploys application via Helm
+    * `task dns`                : Gets the IP Addresss of the Istio Gateway
+    * `task down`               : Destroys all Azure resources and cleans up Terraform
+    * `task gateway`            : Update configurations with proper values Key
+    * `task up`                 : Creates Azure infrastructure and deploys application code
+    * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
+* The Task file declares 4 default values that can be updated to suit specific requirements: 
+    Name | Usage | Default Value
+    ------ | ------ | ------
+    TITLE | Value used in Azure Tags | eShop On AKS
+    SKU | Default SKU type for AKS nodes | Standard_D4ads_v5
+    COUNT | Number of nodes in the AKS cluster | 2
+    DEFAULT_REGION | Default region to deploy to | westus3
+    DOMAIN_ROOT | Default root domain used for all URLs & certs | bjdazure.tech
 
 ## Code
 * Clone the eShop repository: https://github.com/briandenicola/eshop
@@ -32,7 +55,8 @@ The following tools and build environment has been tested to work on Linux and o
 ## Envrionment
 * An Azure subscription. An MSDN subscription will work.
 * An account with owner permission on the Azure subscription and Global Admin on the Azure AD tenant
-* An Azure Service Principal with Owner role on the Azure subscription   
+* An Azure Service Principal with Owner role on the Azure subscription
+* A validate, external DNS domain name to create a wildcard URL for the eShop application   
 * [Terraform Configured for Azure](https://learn.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-powershell?tabs=bash)
 * The following Preview features enabled on the Azure subscription: AKS-ExtensionManager, AKS-PrometheusAddonPreview, EnableImageCleanerPreview, AKS-KedaPreview, EnableAPIServerVnetIntegrationPreview, TrustedAccessPreview,NetworkObservabilityPreview, AKS-AzurePolicyExternalData
     * Run the following command to enable the preview features:

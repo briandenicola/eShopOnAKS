@@ -58,7 +58,7 @@ tasks:
       AKS: 
         sh: terraform -chdir=./infrastructure output -raw AKS_CLUSTER_NAME
 
-  configs:
+  gateway:
     desc: Update configurations with proper values Key
     cmds:
     - helm upgrade --install eshop-k8s-extensions
@@ -112,7 +112,7 @@ tasks:
     desc: Gets the IP Addresss of the Istio Gateway
     dir: ./scripts
     cmds:
-    - echo 'Create an DNS (A) Record "*.{{.APP_NAME}}.{{.DOMAIN_ROOT}}"" resolving to {{.IP}}'
+    - echo 'Manually create an DNS (A) Record "*.{{.APP_NAME}}.{{.DOMAIN_ROOT}}"" resolving to {{.IP}}'
     vars:
       APP_NAME: 
         sh: terraform -chdir=../infrastructure output -raw APP_NAME

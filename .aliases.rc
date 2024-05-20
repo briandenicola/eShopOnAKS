@@ -8,7 +8,7 @@ alias docker-prune='docker container prune -f && docker image prune -f && docker
 alias docker-clean='docker rm -f $(docker ps -aq)'
 alias terraform-clean='rm -rf terraform.tfstate.d .terraform.lock.hcl .terraform terraform.tfstate terraform.tfstate.backup .terraform.tfstate.lock.info'
 alias git-commitversion='git rev-parse HEAD | head -c 8'
-alias istio-version="kubectl -n aks-istio-system get deployments -o jsonpath='{.items[0].metadata.labels.istio\.io/rev}'"
+alias istio-version="kubectl --namespace aks-istio-system get deployments -o jsonpath='{.items[0].metadata.labels.istio\.io/rev}'"
 alias git-commit='bash ~/scripts/Miscellaneous/git-commit.sh'
 alias rg='az group list -o table'
 alias my-pip='curl -m 1 -s ifconfig.me'

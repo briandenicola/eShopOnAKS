@@ -13,16 +13,17 @@ Build
 * Typically, the build process is automated using a CI pipeline such as Github Actions or Azure DevOps.  The build process is run locally for this example for simplicity.
 <p align="right">(<a href="#build">back to top</a>)</p>
 
+
 Example Build
 =============
 ```pwsh
 task build
-task: [build] pwsh ./build-containers.ps1 -AppName bonefish-62420 -SubscriptionName BJD_Apps_Subscription -SourceRootDirectory ~/code/eShop -verbose
-VERBOSE: [05/17/2024 14:27:36] - Setting subscription context to BJD_Apps_Subscription ...
-VERBOSE: [05/17/2024 14:27:37] - Logging into bonefish62420containers Azure Container Repo ...
+task: [build] pwsh ./build-containers.ps1 -AppName airedale-60249 -SubscriptionName Apps_Subscription -SourceRootDirectory ~/code/eShop -verbose
+VERBOSE: [05/17/2024 14:27:36] - Setting subscription context to Apps_Subscription ...
+VERBOSE: [05/17/2024 14:27:37] - Logging into airedale60249containers Azure Container Repo ...
 Login Succeeded
 VERBOSE: [05/17/2024 14:27:39] - Get Latest Git commit version id ...
-VERBOSE: [05/17/2024 14:27:39] - Building and publish /home/brian/code/eShop/src/Basket.API:7be56fbd to bonefish62420containers.azurecr.io ...
+VERBOSE: [05/17/2024 14:27:39] - Building and publish /home/brian/code/eShop/src/Basket.API:7be56fbd to airedale60249containers.azurecr.io ...
 MSBuild version 17.9.8+b34f75857 for .NET
   Determining projects to restore...
   All projects are up-to-date for restore.
@@ -32,19 +33,19 @@ MSBuild version 17.9.8+b34f75857 for .NET
   Basket.API -> /home/brian/code/eShop/src/Basket.API/bin/Release/net8.0/Basket.API.dll
   Basket.API -> /home/brian/code/eShop/src/Basket.API/bin/Release/net8.0/publish/
   Building image 'basket-api' with tags '7be56fbd' on top of base image 'mcr.microsoft.com/dotnet/aspnet:8.0'.
-  Uploading layer 'sha256:09f376ebb190216b0459f470e71bec7b5dfa611d66bf008492b40dcc5f1d8eae' to 'bonefish62420containers.azurecr.io'.
-  Uploading layer 'sha256:89ef64df9fcef4318b596929f6c531b0ea4692f6f3b1bc51065a3e4d7204920b' to 'bonefish62420containers.azurecr.io'.
-  Uploading layer 'sha256:dda00774a7f984737f62e73eeba4dec3f7266790f3bd1cb073e7d2b4030e78e2' to 'bonefish62420containers.azurecr.io'.
-  Uploading layer 'sha256:7954f8acfab5a6b488754e38c8ca8d20d458e56504b2b0d73df09146a2fbc9ea' to 'bonefish62420containers.azurecr.io'.
+  Uploading layer 'sha256:09f376ebb190216b0459f470e71bec7b5dfa611d66bf008492b40dcc5f1d8eae' to 'airedale60249containers.azurecr.io'.
+  Uploading layer 'sha256:89ef64df9fcef4318b596929f6c531b0ea4692f6f3b1bc51065a3e4d7204920b' to 'airedale60249containers.azurecr.io'.
+  Uploading layer 'sha256:dda00774a7f984737f62e73eeba4dec3f7266790f3bd1cb073e7d2b4030e78e2' to 'airedale60249containers.azurecr.io'.
+  Uploading layer 'sha256:7954f8acfab5a6b488754e38c8ca8d20d458e56504b2b0d73df09146a2fbc9ea' to 'airedale60249containers.azurecr.io'.
 ....
-  Finished uploading layer 'sha256:b22a0bc0ecb25a862ea107320af39d32d91d56fbaeba3ccd66a4f5178e5107d8' to 'bonefish62420containers.azurecr.io'.
+  Finished uploading layer 'sha256:b22a0bc0ecb25a862ea107320af39d32d91d56fbaeba3ccd66a4f5178e5107d8' to 'airedale60249containers.azurecr.io'.
   Layer 'sha256:7954f8acfab5a6b488754e38c8ca8d20d458e56504b2b0d73df09146a2fbc9ea' already exists.
   Uploading config to registry at blob 'sha256:a90eb5b8d24fbc2c73c87b006e77c286efe9472ab1b56d905b8fcb33ad999ea5',
   Uploaded config to registry.
-  Uploading tag '7be56fbd' to 'bonefish62420containers.azurecr.io'.
-  Uploaded tag '7be56fbd' to 'bonefish62420containers.azurecr.io'.
-  Pushed image 'webhookclient:7be56fbd' to registry 'bonefish62420containers.azurecr.io'.
-VERBOSE: [05/17/2024 14:28:57] - Application successfully built and pushed to bonefish62420containers. . . ...
+  Uploading tag '7be56fbd' to 'airedale60249containers.azurecr.io'.
+  Uploaded tag '7be56fbd' to 'airedale60249containers.azurecr.io'.
+  Pushed image 'webhookclient:7be56fbd' to registry 'airedale60249containers.azurecr.io'.
+VERBOSE: [05/17/2024 14:28:57] - Application successfully built and pushed to airedale60249containers. . . ...
 ```
 <p align="right">(<a href="#build">back to top</a>)</p>
 

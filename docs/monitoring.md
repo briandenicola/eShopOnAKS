@@ -3,6 +3,23 @@ Monitoring
 TBD
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
 
+Open Telemetry Pipeline
+=============
+      <!-- pipelines:
+        traces:
+          receivers: [zipkin]
+          processors: [batch]
+          exporters: [debug,azuremonitor]
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug,azuremonitor]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug,azuremonitor] -->
+
+
 Metrics
 =============
 <p align="right">(<a href="#monitoring">back to top</a>)</p>

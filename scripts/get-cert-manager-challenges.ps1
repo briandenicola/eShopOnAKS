@@ -18,4 +18,4 @@ foreach( $ingress in $ingresses) {
   Write-Output ""
 }
 
-Write-Output 'Please re-run `task configs` to update the Helm Chart values.yaml file with the challenge settings.'
+Write-Output 'Please re-run `task gateway` after updating the Helm Chart values.yaml file with the challenge settings.'

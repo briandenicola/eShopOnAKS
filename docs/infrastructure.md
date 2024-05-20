@@ -2,10 +2,17 @@ Infrastructure
 ============
 * The eShop infrastructure is deployed to Azure using Terraform.  
 * The build process is kicked off using the command: `task up` command which kick start terraform.  
-* Terraform will generate a random name that is used as the foundation for all the resources created in Azure.  The random name is generated using the `random_pet` and `random_integer` resources in Terraform.  This value should be saved as it is used throughout the deployment. The example name `bonefish-62420` is used in the rest of the documents
+* Afater the infrastructure is deployed, the `task creds` command is used to get the AKS credentials and the `task dns` command is display the data needed for the DNS record that needs to be created manually.
+* Terraform will generate a random name that is used as the foundation for all the resources created in Azure.  The random name is generated using the `random_pet` and `random_integer` resources in Terraform.  This value should be saved as it is used throughout the deployment. The example name `airedale-60249` is used in the rest of the documents
 * The infrastructure deploy can take up to 30 minutes to complete.
 * The infrastructure is deployed to a single Azure region (defaults to `westus3`) and consists of the following components:
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
+
+## Task Commands:
+* `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
+* `task apply`  - Applies the Terraform plan to create the Azure infrastructure
+* `task creds`  - Gets the credential file for the newly created AKS cluster
+* `task dns`    - Gets the IP Address of the Istio Gateway
 
 Resource Groups
 ============
@@ -29,6 +36,7 @@ Networking
 * A delegated subnet for PostgreSQL named `sql` is created with a /24 address space and delegated to `Microsoft.DBforPostgreSQL/flexibleServers`
 * The virtual network uses Azure DNS for name resolution and all Private DNS Zones required for the Azure resources private endpoints are linked to the virtual network.
 * The eShop application will be accessible from the internet and by default has a Domain Name under `bjdazure.tech`. This is intially defined in the `DOMAIN_ROOT` variable in the `Taskfile.yaml` file.
+* One DNS record named `*.${APP_NAME}.${DOMAIN_ROOT}` needs to becreated in the Azure DNS zone for the eShop application as part of the application deployment.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 AKS Cluster Components
@@ -40,6 +48,19 @@ AKS Cluster Components
 * An Azure container registry is deployed along side the AKS cluster to store the container images in the same resource group.
 * Azure Service Mesh is installed as part of the cluster
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
+
+Azure Service Mesh
+============
+* Azure Service Mesh is installed as part of the AKS cluster deployment.
+* The default configuration is used for most of the Azure Service Mesh components.
+* Customization for Azure Service Mesh is defined in the `istio-shared-configmap-asm-1-20` configmap that is deployed as part of the GitOps deployment defined below.
+* The Azure Service Mesh is configured to forward trace logs to an Open Telemetry endpoing using the Zipkin protocol as defined:
+```yaml
+    defaultConfig:
+      tracing:
+        zipkin:
+          address: otel-collector.otel-system.svc.cluster.local:9411
+```
 
 GitOps
 ============
@@ -84,69 +105,166 @@ Eventbus
 
 # Example Setup
 ```pwsh
-task apply
-task: [apply] terraform -chdir=./infrastructure apply -auto-approve -var "region=westus3" -var "vm_size=Standard_D4ads_v5" -var "node_count=2" -var "tags=eShop On AKS" -compact-warnings
-data.http.myip: Reading...
-random_password.password: Refreshing state... [id=none]
-random_integer.services_cidr: Refreshing state... [id=72]
-random_integer.vnet_cidr: Refreshing state... [id=157]
-random_integer.pod_cidr: Refreshing state... [id=117]
-tls_private_key.rsa: Refreshing state... [id=8298f1606184149a208ca3684222a1cc6d2451eb]
-random_pet.this: Refreshing state... [id=bonefish]
-random_password.postgresql_user_password: Refreshing state... [id=none]
-random_id.this: Refreshing state... [id=89Q]
-data.http.myip: Read complete after 0s [id=http://checkip.amazonaws.com/]
-data.azurerm_subscription.current: Reading...
-azurerm_resource_group.app: Refreshing state... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_app_rg]
-azurerm_resource_group.monitoring: Refreshing state... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_monitoring_rg]
-azurerm_resource_group.aks: Refreshing state... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_aks_rg]
-data.azurerm_client_config.current: Reading...
-azurerm_resource_group.chaos: Refreshing state... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_chaos_rg]
-azurerm_resource_group.core: Refreshing state... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_core_rg]
-...
-  # azurerm_resource_group.monitoring will be updated in-place
-  ~ resource "azurerm_resource_group" "monitoring" {
-        id       = "/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_monitoring_rg"
-        name     = "bonefish-62420_monitoring_rg"
-      ~ tags     = {
-          - "AppName"     = "bonefish-62420"
-          - "Application" = "eShop On AKS"
-          - "DeployedOn"  = "2024-05-15T18:18:14Z"
-          - "Tier"        = "Application Monitoring Components"
-        } -> (known after apply)
-        # (1 unchanged attribute hidden)
-    }
+  > task up
+  task: [up] terraform -chdir=./infrastructure workspace new westus3 || true
+  Created and switched to workspace "westus3"!
 
-Plan: 6 to add, 7 to change, 6 to destroy.
-azurerm_monitor_data_collection_rule_association.this: Destroying... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_aks_rg/providers/Microsoft.ContainerService/managedClusters/bonefish-62420-aks/providers/Microsoft.Insights/dataCollectionRuleAssociations/bonefish-62420-ama-datacollection-rules-association]
-azurerm_kubernetes_flux_configuration.flux_config: Destroying... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_aks_rg/providers/Microsoft.ContainerService/managedClusters/bonefish-62420-aks/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/aks-flux-extension]
-azurerm_resource_group.chaos: Modifying... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_chaos_rg]
-azurerm_resource_group.app: Modifying... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_app_rg]
-azurerm_monitor_diagnostic_setting.aks: Destroying... [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991/resourceGroups/bonefish-62420_aks_rg/providers/Microsoft.ContainerService/managedClusters/bonefish-62420-aks|bonefish-62420-aks-diag]
-...
-azurerm_kubernetes_cluster.this: Still creating... [1m50s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [2m0s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [2m10s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [2m20s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [2m30s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [2m40s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [2m50s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [3m0s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [3m10s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [3m20s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [3m30s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [3m40s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [3m50s elapsed]
-azurerm_kubernetes_cluster.this: Still creating... [4m0s elapsed]
-...
+  You are now on a new, empty workspace. Workspaces isolate their state,
+  so if you run "terraform plan" Terraform will not see any existing state
+  for this configuration.
+  task: [up] terraform -chdir=./infrastructure workspace select westus3
+  task: [up] terraform -chdir=./infrastructure init
+
+  Initializing the backend...
+
+  Initializing provider plugins...
+  - Finding latest version of hashicorp/http...
+  - Finding azure/azapi versions matching "~> 1.0"...
+  - Finding hashicorp/azurerm versions matching "~> 3.0"...
+  - Finding latest version of hashicorp/random...
+  - Finding latest version of hashicorp/tls...
+  - Installing hashicorp/http v3.4.2...
+  - Installed hashicorp/http v3.4.2 (signed by HashiCorp)
+  - Installing azure/azapi v1.13.1...
+  - Installed azure/azapi v1.13.1 (signed by a HashiCorp partner, key ID 6F0B91BDE98478CF)
+  - Installing hashicorp/azurerm v3.104.0...
+  - Installed hashicorp/azurerm v3.104.0 (signed by HashiCorp)
+  - Installing hashicorp/random v3.6.1...
+  - Installed hashicorp/random v3.6.1 (signed by HashiCorp)
+  - Installing hashicorp/tls v4.0.5...
+  - Installed hashicorp/tls v4.0.5 (signed by HashiCorp)
+  ...
+
+  task: [apply] terraform -chdir=./infrastructure apply -auto-approve -var "region=westus3" -var "vm_size=Standard_D4ads_v5" -var "node_count=2" -var "tags=eShop On AKS" -compact-warnings
+  data.http.myip: Reading...
+  random_password.password: Refreshing state... [id=none]
+  random_integer.services_cidr: Refreshing state... [id=72]
+  random_integer.vnet_cidr: Refreshing state... [id=157]
+  random_integer.pod_cidr: Refreshing state... [id=117]
+  tls_private_key.rsa: Refreshing state... [id=8298f1606184149a208ca3684222a1cc6d2451eb]
+  random_pet.this: Refreshing state... [id=bonefish]
+  random_password.postgresql_user_password: Refreshing state... [id=none]
+  random_id.this: Refreshing state... [id=89Q]
+  data.http.myip: Read complete after 0s [id=http://checkip.amazonaws.com/]
+  data.azurerm_subscription.current: Reading...
+  azurerm_resource_group.app: Refreshing state... [id=/subscriptions/72145e1d-d1c1-4d0a-9b9a-7cf5ae2a627c/resourceGroups/airedale-60249_app_rg]
+  azurerm_resource_group.monitoring: Refreshing state... [id=/subscriptions/72145e1d-d1c1-4d0a-9b9a-7cf5ae2a627c/resourceGroups/airedale-60249_monitoring_rg]
+  azurerm_resource_group.aks: Refreshing state... [id=/subscriptions/72145e1d-d1c1-4d0a-9b9a-7cf5ae2a627c/resourceGroups/airedale-60249_aks_rg]
+  data.azurerm_client_config.current: Reading...
+  azurerm_resource_group.chaos: Refreshing state... [id=/subscriptions/72145e1d-d1c1-4d0a-9b9a-7cf5ae2a627c/resourceGroups/airedale-60249_chaos_rg]
+  azurerm_resource_group.core: Refreshing state... [id=/subscriptions/72145e1d-d1c1-4d0a-9b9a-7cf5ae2a627c/resourceGroups/airedale-60249_core_rg]
+  ...
+  Terraform has been successfully initialized!
+
+  You may now begin working with Terraform. Try running "terraform plan" to see
+  any changes that are required for your infrastructure. All Terraform commands
+  should now work.
+
+  If you ever set or change modules or backend configuration for Terraform,
+  rerun this command to reinitialize your working directory. If you forget, other
+  commands will detect it and remind you to do so if necessary.
+  task: [apply] terraform -chdir=./infrastructure apply -auto-approve -var "region=westus3" -var "vm_size=Standard_D4ads_v5" -var "node_count=2" -var "tags=eShop On AKS" -compact-warnings
+  data.http.myip: Reading...
+  data.http.myip: Read complete after 1s [id=http://checkip.amazonaws.com/]
+  data.azurerm_client_config.current: Reading...
+  data.azurerm_subscription.current: Reading...
+  data.azurerm_client_config.current: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbGllbnRJZD1kMTNhZjMzZS1kYTE2LTQyOTUtODIyZC0wOWI3ZDkzMjA4ZmM7b2JqZWN0SWQ9NDEzZTdkMGMtNDBlYy00NzRhLTkxZGMtMjFkMDRkMTc0NTlmO3N1YnNjcmlwdGlvbklkPTE3ZTBiMjcxLWU5MmItNGMwOC1iZjE5LWViOGJlNmM5Njk5MTt0ZW5hbnRJZD0xNmIzYzAxMy1kMzAwLTQ2OGQtYWM2NC03ZWRhMDgyMGI2ZDM=]
+  data.azurerm_subscription.current: Read complete after 0s [id=/subscriptions/17e0b271-e92b-4c08-bf19-eb8be6c96991]
+  ...
+  Changes to Outputs:
+    + ACR_NAME                = (known after apply)
+    + AI_CONNECTION_STRING    = (sensitive value)
+    + AKS_CLUSTER_NAME        = (known after apply)
+    + AKS_RESOURCE_GROUP      = (known after apply)
+    + APP_NAME                = (known after apply)
+    + APP_RESOURCE_GROUP      = (known after apply)
+    + ARM_TENANT_ID           = "361a4aff-0638-4945-b3ee-ae0af6f7a66a"
+    + ARM_WORKLOAD_APP_ID     = (known after apply)
+    + CHAOS_RESOURCE_GROUP    = (known after apply)
+    + CHAOS_RESOURCE_LOCATION = "westus"
+    + INGRESS_CLIENT_ID       = (known after apply)
+    + KEYVAULT_NAME           = (known after apply)
+  tls_private_key.rsa: Creating...
+  random_integer.vnet_cidr: Creating...
+  random_integer.vnet_cidr: Creation complete after 0s [id=82]
+  random_pet.this: Creating...
+  random_password.password: Creating...
+  random_integer.pod_cidr: Creating...
+  random_integer.services_cidr: Creating...
+  random_id.this: Creating...
+  random_pet.this: Creation complete after 0s [id=airedale]
+  random_id.this: Creation complete after 0s [id=61k]
+  random_password.postgresql_user_password: Creating...
+  random_integer.services_cidr: Creation complete after 0s [id=80]
+  random_integer.pod_cidr: Creation complete after 0s [id=108]
+  random_password.password: Creation complete after 0s [id=none]
+  random_password.postgresql_user_password: Creation complete after 0s [id=none]
+  tls_private_key.rsa: Creation complete after 1s [id=6ec326b1e98ac86c6abed16c57f68570c349ec0e]
+  ...
+  Apply complete! Resources: 85 added, 0 changed, 0 destroyed.
+
+  Outputs:
+
+  ACR_NAME = "airedale60249containers"
+  AI_CONNECTION_STRING = <sensitive>
+  AKS_CLUSTER_NAME = "airedale-60249-aks"
+  AKS_RESOURCE_GROUP = "airedale-60249_aks_rg"
+  APP_NAME = "airedale-60249"
+  APP_RESOURCE_GROUP = "airedale-60249_app_rg"
+  ARM_TENANT_ID = "361a4aff-0638-4945-b3ee-ae0af6f7a66a"
+  ARM_WORKLOAD_APP_ID = "2e920c07-21cc-4552-920c-ad0d37cc5177"
+  CHAOS_RESOURCE_GROUP = "airedale-60249_chaos_rg"
+  CHAOS_RESOURCE_LOCATION = "westus"
+  INGRESS_CLIENT_ID = "ae25748d-7d5b-4e31-a7c2-0c1a1db03a03"
+  KEYVAULT_NAME = "airedale-60249-kv"
+  task: [creds] az aks get-credentials -g airedale-60249_aks_rg -n airedale-60249-aks --overwrite-existing
+  The behavior of this command has been altered by the following extension: aks-preview
+  Merged "airedale-60249-aks" as current context in /home/brian/.kube/config
+  task: [creds] kubelogin convert-kubeconfig -l azurecli
+  task: [dns] echo 'Manually create an DNS (A) Record "*.airedale-60249.bjdazure.tech"" resolving to REDACTED'
+  Manually create an DNS (A) Record "*.airedale-60249.bjdazure.tech"" resolving to REDACTED"
+
+  > flux get all
+  NAME                                    REVISION                SUSPENDED       READY   MESSAGE
+  gitrepository/aks-flux-extension        main@sha1:d6258e11      False           True    stored artifact for revision 'main@sha1:d6258e11'
+
+  NAME                            REVISION        SUSPENDED       READY   MESSAGE
+  helmrepository/jetstack         sha256:ab2be102 False           True    stored artifact: revision 'sha256:ab2be102'
+  helmrepository/keda             sha256:1d9a8ff1 False           True    stored artifact: revision 'sha256:1d9a8ff1'
+  helmrepository/kubecost         sha256:4d70613e False           True    stored artifact: revision 'sha256:4d70613e'
+  helmrepository/kubereboot       sha256:2dc95812 False           True    stored artifact: revision 'sha256:2dc95812'
+
+  NAME                                            REVISION        SUSPENDED       READY   MESSAGE
+  helmchart/flux-system-cert-manager-release      v1.14.5         False           True    pulled 'cert-manager' chart with version 'v1.14.5'
+  helmchart/flux-system-http-add-on               0.8.0           False           True    pulled 'keda-add-ons-http' chart with version '0.8.0'
+  helmchart/flux-system-kubecost-release          1.101.3         False           True    pulled 'cost-analyzer' chart with version '1.101.3'
+  helmchart/flux-system-kured-release             5.3.1           False           True    pulled 'kured' chart with version '5.3.1'
+
+  NAME                                            REVISION                SUSPENDED       READY   MESSAGE
+  kustomization/aks-flux-extension-apps           main@sha1:d6258e11      False           True    Applied revision: main@sha1:d6258e11
+  kustomization/aks-flux-extension-istio-cfg      main@sha1:d6258e11      False           True    Applied revision: main@sha1:d6258e11
+  kustomization/aks-flux-extension-istio-gw       main@sha1:d6258e11      False           True    Applied revision: main@sha1:d6258e11
 ```
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-### Resource Layout
-TBD 
+## Resources
+### Core Resource Group
+<img src="../.assets/core_rg.png" width="512px" />
+<p align="right">(<a href="#infrastructure">back to top</a>)</p>
+
+### AKS Resource Group
+<img src="../.assets/aks_rg.png" width="512px" />
+<p align="right">(<a href="#infrastructure">back to top</a>)</p>
+
+### Monitoring Resource Group
+<img src="../.assets/monitoring_rg.png" width="512px" />
+<p align="right">(<a href="#infrastructure">back to top</a>)</p>
+
+### Application Resource Group
+<img src="../.assets/app_rg.png" width="512px" />
+<p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ## Navigation
-
 [Return to Main Index 🏠](../README.md) ‖
-[Previous Section ⏪](./prerequisites.md) ‖ [Next Section ⏩](./build.md)
+[Previous Section ⏪](./prerequisites.md) ‖ [Next Section ⏩](./post-cluster-configuration.md)
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>

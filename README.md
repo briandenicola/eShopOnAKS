@@ -29,12 +29,15 @@ Table of contents
 * [Application Build](./docs/build.md)
     * [Example Build](./docs/build.md#dotnet-publish)
 * [Application Deployment](./docs/deployment.md)
-    * [Pod Disruption Budget](./docs/deployment.md#pod-disruption-budget)
-    * [Secrets Management](./docs/deployment.md#secrets-management)
-    * [Service Mesh](./docs/deployment.md#service-mesh)
-    * [Github Actions](./docs/deployment.md#github-actions)
+    * [Helm](./docs/deployment.md#helm-chart)
+    * [Ingress](./docs/deployment.md#ingress)
+    * [Certificates](./docs/deployment.md#certificates)
+    * [Secrets & Configuration](./docs/deployment.md#secrets-management)
 * [Monitoring Application](./docs/monitoring.md)
+    * [Open Telemetry Pipeline](./docs/monitoring.md#open-telemetry-pipeline)
 * [Scaling](./docs/scaling.md)
+    * [Keda HTTP Scaler](./docs/scaling.md#keda-http-scaler)
+    * [Pod Disruption Budget](./docs/scaling.md#pod-disruption-budget)
 * [Security](./docs/security.md)
 * [Cost Management](./docs/cost-management.md)
 * [Troubleshooting](./docs/troubleshooting.md)
@@ -54,11 +57,11 @@ Architecture
 
 Roadmap
 ============
-- [X] Build container images
-- [X] Deploy to Kubernetes
+- [x] Build container images
+- [x] Deploy to Kubernetes
 - [x] Add Keda Scalers Examples
-- [X] Review Azure Monitor and Application Insights
-- [ ] Update documentation
+- [x] Review Azure Monitor and Application Insights
+- [x] Update documentation
 <p align="right">(<a href="#overview">back to top</a>)</p>
 
 Acknowledgments
