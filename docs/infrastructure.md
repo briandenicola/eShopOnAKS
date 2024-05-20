@@ -6,7 +6,6 @@ Infrastructure
 * Terraform will generate a random name that is used as the foundation for all the resources created in Azure.  The random name is generated using the `random_pet` and `random_integer` resources in Terraform.  This value should be saved as it is used throughout the deployment. The example name `airedale-60249` is used in the rest of the documents
 * The infrastructure deploy can take up to 30 minutes to complete.
 * The infrastructure is deployed to a single Azure region (defaults to `westus3`) and consists of the following components:
-<p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ## Task Steps:
 - :one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
@@ -15,6 +14,7 @@ Infrastructure
 - :one: `task apply`  - Applies the Terraform plan to create the Azure infrastructure
 - :two: `task creds`  - Gets the credential file for the newly created AKS cluster
 - :three: `task dns`    - Gets the IP Address of the Istio Gateway
+<p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 Resource Groups
 ============
