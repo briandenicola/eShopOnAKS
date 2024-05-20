@@ -29,6 +29,14 @@ The following tools and build environment has been tested to work on Linux and o
 * The deployment of this application has been automated using [Taskfile](https://taskfile.dev/#/).  This was done instead of using a CI/CD pipeline to make it easier to understand the deployment process.  
 * The Taskfile is a simple way to run commands and scripts in a consistent manner.  
 * The [Taskfile](../Taskfile.yaml) definition is located in the root of the repository
+* The Task file declares 4 default values that can be updated to suit specific requirements: 
+    Name | Usage | Default Value
+    ------ | ------ | ------
+    TITLE | Value used in Azure Tags | eShop On AKS
+    SKU | Default SKU type for AKS nodes | Standard_D4ads_v5
+    COUNT | Number of nodes in the AKS cluster | 2
+    DEFAULT_REGION | Default region to deploy to | westus3
+    DOMAIN_ROOT | Default root domain used for all URLs & certs | bjdazure.tech
 * Running `task` command will run the default command - which just list all the available tasks.
     * `task build`              : Builds containers
     * `task certs`              : Gets the Challenge Information required for Cert Manager
@@ -39,14 +47,7 @@ The following tools and build environment has been tested to work on Linux and o
     * `task gateway`            : Update configurations with proper values Key
     * `task up`                 : Creates Azure infrastructure and deploys application code
     * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
-* The Task file declares 4 default values that can be updated to suit specific requirements: 
-    Name | Usage | Default Value
-    ------ | ------ | ------
-    TITLE | Value used in Azure Tags | eShop On AKS
-    SKU | Default SKU type for AKS nodes | Standard_D4ads_v5
-    COUNT | Number of nodes in the AKS cluster | 2
-    DEFAULT_REGION | Default region to deploy to | westus3
-    DOMAIN_ROOT | Default root domain used for all URLs & certs | bjdazure.tech
+
 
 ## Code
 * Clone the eShop repository: `git clone https://github.com/briandenicola/eshop`
