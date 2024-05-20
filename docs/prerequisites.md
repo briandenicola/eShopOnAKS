@@ -48,19 +48,17 @@ The following tools and build environment has been tested to work on Linux and o
     * `task up`                 : Creates Azure infrastructure and deploys application code
     * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
 
-
 ## Code
-* Clone the eShop repository: `git clone https://github.com/briandenicola/eshop`
-* Clone the eShop repository: `git clone https://github.com/briandenicola/eshopOnAzure`
+* Clone the eShop Source repository: `git clone https://github.com/briandenicola/eshop`
+* Clone the eshop Infrastructure repository: `git clone https://github.com/briandenicola/eshopOnAzure`
 
 ## Envrionment
 * An Azure subscription. An MSDN subscription will work.
 * An account with owner permission on the Azure subscription and Global Admin on the Azure AD tenant
 * An Azure Service Principal with Owner role on the Azure subscription
-* A validate, external DNS domain name to create a wildcard URL for the eShop application   
-* [Terraform Configured for Azure](https://learn.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-powershell?tabs=bash)
-* The following Preview features enabled on the Azure subscription: AKS-ExtensionManager, AKS-PrometheusAddonPreview, EnableImageCleanerPreview, AKS-KedaPreview, EnableAPIServerVnetIntegrationPreview, TrustedAccessPreview,NetworkObservabilityPreview, AKS-AzurePolicyExternalData
-* :exclamation:  Run the following command to enable the preview features: 
+* A valid, external DNS domain name to create a wildcard URL for the eShop application   
+* :exclamation: Follow this to [Configured Terraform](https://learn.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-powershell?tabs=bash) properly for Azure
+* :exclamation: Run the following command to enable the preview features on your Azure Subscription: AKS-ExtensionManager, AKS-PrometheusAddonPreview, EnableImageCleanerPreview, AKS-KedaPreview, EnableAPIServerVnetIntegrationPreview, TrustedAccessPreview,NetworkObservabilityPreview, AKS-AzurePolicyExternalData
     ```pwsh
     pwsh ./scripts/aks-preview-features.ps1
     ```

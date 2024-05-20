@@ -59,7 +59,6 @@ The webhooks-api allows your server to receive HTTP POST payloads when certain e
 <p align="right">(<a href="#Architecture">back to top</a>)</p>
 
 ## Navigation
-
 [Return to Main Index 🏠](../README.md) ‖
 [Next Section ⏩](./prerequisites.md)
 <p align="right">(<a href="#Architecture">back to top</a>)</p>
