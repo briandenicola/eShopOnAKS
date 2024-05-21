@@ -1,6 +1,6 @@
 resource "random_password" "postgresql_user_password" {
-  length           = 25
-  special          = false
+  length  = 25
+  special = false
 }
 
 resource "azurerm_postgresql_flexible_server" "this" {
@@ -18,13 +18,13 @@ resource "azurerm_postgresql_flexible_server" "this" {
 }
 
 resource "azapi_update_resource" "azurerm_postgresql_configuration_vector_enable" {
-  type = "Microsoft.DBforPostgreSQL/flexibleServers/configurations@2023-03-01-preview"
-  resource_id  = "${azurerm_postgresql_flexible_server.this.id}/configurations/azure.extensions"
+  type        = "Microsoft.DBforPostgreSQL/flexibleServers/configurations@2023-03-01-preview"
+  resource_id = "${azurerm_postgresql_flexible_server.this.id}/configurations/azure.extensions"
 
   body = jsonencode({
     properties = {
       source = "user-override"
-      value = "vector"
+      value  = "vector"
     }
   })
 }

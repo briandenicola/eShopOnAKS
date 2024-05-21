@@ -4,6 +4,6 @@ output "SQL_RESOURCE_ID" {
 }
 
 output "SQL_NAME" {
-  value = azurerm_postgresql_flexible_server.this
+  value     = azurerm_postgresql_flexible_server.this
   sensitive = false
 }
