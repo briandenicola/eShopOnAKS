@@ -60,13 +60,6 @@ spec:
           securityContext:
             privileged: false
             allowPrivilegeEscalation: false          
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: {{ .Values.ISTIO.BASKET.PORT }}
-            initialDelaySeconds: 10
-            periodSeconds: 30
-            timeoutSeconds: 3
           envFrom:
           - configMapRef:
               name: basket-cm
@@ -80,7 +73,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: eshop-eventbus-secrets
-                key:  RABBITMQ_CONNECTION_STRING
+                key:  RABBITMQ_CONNECTION_STRING                
 {{- if .Values.DEPLOY.REDIS -}}
 {{- else }}               
           volumeMounts:

@@ -7,11 +7,16 @@ spec:
     hosts:
     - {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
     scaleTargetRef:
-        name: webapp
-        kind: Deployment
-        apiVersion: apps/v1
+        deployment: myAppDeployment
         service: webapp
-        port: {{ .Values.ISTIO.WEBAPP.PORT }}
+        name: webapp       
+        port: 80
     replicas:
         min: 1
         max: 5
+    scaledownPeriod: 300
+    scalingMetric:
+        requestRate:
+            granularity: 1s
+            targetValue: 100
+            window: 1m        
