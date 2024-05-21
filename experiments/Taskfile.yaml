@@ -5,6 +5,13 @@ tasks:
     cmds: 
     - task --list 
 
+  up:
+    desc: Runs all commands
+    cmds:
+    - task: extensions
+    - task: targets
+    - task: experiments
+
   extensions:
     desc: Installing Chaos Mesh via Helm
     cmds:
@@ -30,7 +37,7 @@ tasks:
       REGION:
         sh:  terraform -chdir=../infrastructure output -raw CHAOS_RESOURCE_LOCATION        
 
-  experiment:
+  experiments:
     desc: Creates an Chaos Engineering
     cmds:
     - az group deployment create -n ChaosExperiment -g {{.RG}} --template-file ./azurechaos.experiment.json --parameters aksClusterName={{.AKS}} --parameters aksClusterResourceGroup={{.AKS_RG}} 
