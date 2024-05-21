@@ -14,7 +14,7 @@ export default defineConfig({
   reporter: 'html',
   
   use: {
-    baseURL: process.env["APPLICATION_URI"]. //'http://localhost:5045',
+    baseURL: process.env["APPLICATION_URI"], //'http://localhost:5045',
 
     trace: 'on-first-retry',
     ...devices['Desktop Chrome'],
