@@ -77,23 +77,6 @@
                                     },
                                     {
                                         "type": "continuous",
-                                        "selectorId": "4f2b278f-8ec5-4839-b046-2606971c2f3f",
-                                        "duration": "PT5M",
-                                        "parameters": [
-                                            {
-                                                "key": "jsonSpec",
-                                                "value": "{\n  \"action\": \"random\",\n  \"mode\": \"all\",\n  \"patterns\": [\n   \t\"azure.com\",\n    \"chaos-mesh.*\",\n    \"github.com\"\n  ],\n  \"selector\": {\n    \"namespaces\": [\"eshop\"]\n  }\n}"
-                                            }
-                                        ],
-                                        "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:DNSChaos/2.1"
-                                    },
-                                    {
-                                        "type": "delay",
-                                        "duration": "PT2M",
-                                        "name": "urn:csci:microsoft:chaosStudio:TimedDelay/1.0"
-                                    },
-                                    {
-                                        "type": "continuous",
                                         "selectorId": "35f0f478-a339-40b0-97e1-33168775be20",
                                         "duration": "PT10M",
                                         "parameters": [
@@ -103,6 +86,11 @@
                                             }
                                         ],
                                         "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1"
+                                    },
+                                    {
+                                        "type": "delay",
+                                        "duration": "PT2M",
+                                        "name": "urn:csci:microsoft:chaosStudio:TimedDelay/1.0"
                                     },
                                     {
                                         "type": "continuous",
