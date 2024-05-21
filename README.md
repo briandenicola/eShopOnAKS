@@ -1,4 +1,4 @@
-jOverview
+Overview
 =================
 A sample .NET Core distributed application based on eShopOnContainers, powered by Dapr. The current version targets .NET 7.
 
