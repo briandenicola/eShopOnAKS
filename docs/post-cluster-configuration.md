@@ -31,10 +31,10 @@ Post Cluster Configuration
 * Due to a quirk in how Cert Manager works, the `task gateway` has to be run twice.
 * During the first deployment of the Helm chart, Cert Manager will spin up pods to handle the HTTP01 challenge and will create a Ingress configuration for each challenge.
 * The `task certs` command will then get the challenge configuration that Cert Manager created, which will be used to manually updated in the [Helm Chart values.yaml](../charts/eshop-k8s-extensions/values.yaml) file:
-        * IDENTITY_URL_SERVICE_NAME   - The service name for the identity.${APP_NAME}.${DOMAIN_ROOT} challenge
-        * IDENTITY_URL_CHALLENGE_PATH - The Ingress Path for the identity.${APP_NAME}.${DOMAIN_ROOT} challenge
-        * SHOP_URL_SERVICE_NAME       - The service name for the shop.${APP_NAME}.${DOMAIN_ROOT} challenge
-        * SHOP_URL_CHALLENGE_PATH     - The Ingress Path for the shop.${APP_NAME}.${DOMAIN_ROOT} challenge
+    * IDENTITY_URL_SERVICE_NAME   - The service name for the identity.${APP_NAME}.${DOMAIN_ROOT} challenge
+    * IDENTITY_URL_CHALLENGE_PATH - The Ingress Path for the identity.${APP_NAME}.${DOMAIN_ROOT} challenge
+    * SHOP_URL_SERVICE_NAME       - The service name for the shop.${APP_NAME}.${DOMAIN_ROOT} challenge
+    * SHOP_URL_CHALLENGE_PATH     - The Ingress Path for the shop.${APP_NAME}.${DOMAIN_ROOT} challenge
 * `task gateway` will then be run again to update the Helm Chart with the challenge settings allowing Let's Encrypt to valiate domain ownership and issue the certificate.
   * After the certificate is issued, then the Ingress and validation pods are removed.
 <p align="right">(<a href="#post-cluster-configuration">back to top</a>)</p>

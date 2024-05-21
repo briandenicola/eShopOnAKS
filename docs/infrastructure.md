@@ -91,25 +91,27 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ## Redis
-* Azure Redis Cache is deployed using the Premium SKU with a predefined capacity of 1 GB.
-* To save on costs, Redis deployment can be skipped by setting `enable_redis` to false in the `terraform.tfvars` file. Redis can then be deployed as a pod in the AKS cluster.
-* It is deployed using Private Link and only accessible from the Azure virtual network.
-* It is deployed into the Application Resource Group.
+* Redis can be deployed either in Azure as a managed service or as a pod in the AKS cluster to save costs.
+  * This is controled by the `DEPLOY_REDIS` variable in teh `Taskfile.yaml` file.
+* If deployed in Azure, Azure Redis Cache is deployed using the Premium SKU with a predefined capacity of 1 GB.
+  * It is deployed using Private Link and only accessible from the Azure virtual network.
+  * It is deployed into the Application Resource Group.
 * The connection string used by the `basket-api` is stored in the Azure Key Vault under the secret named `redis_connection_string`.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ## PostgreSQL
-* PostgreSQL is deployed using the `GP_Standard_D2ds_v4` Flex Server SKU in Azure. The vector extension has been added to the server post creation.  
-* To save on costs, PostgreSQL deployment can be skipped by setting `enable_postgresql` to false in the `terraform.tfvars` file. PostgreSQL can then be deployed as a pod in the AKS cluster.
-* PostgreSQL is deployed into a delegated subnet and only accessible from the Azure virtual network.
+* PostgreSQL can be deployed either in Azure as a managed service or as a pod in the AKS cluster to save costs.
+  * This is controled by the `DEPLOY_SQL` variable in teh `Taskfile.yaml` file.
 * The databases `webhooksdb`, `cataglogdb`, `identitydb`, and `orderingdb` are created in the PostgreSQL server.  
-* The connection string used by the appliation is stored in the Azure Key Vault under the secret named ${db_name}_connection_string. 
-  * For example, the connection string for the catalog-api service is `catalogdb_connection_string`
-* It is deployed into the Application Resource Group.  
+* If deployed in Azure, PostgreSQL is deployed using the `GP_Standard_D2ds_v4` Flex Server SKU in Azure. The vector extension has been added to the server post creation.  
+  * PostgreSQL is deployed into a delegated subnet and only accessible from the Azure virtual network.
+  * The connection string used by the appliation is stored in the Azure Key Vault under the secret named ${db_name}_connection_string. 
+    * For example, the connection string for the catalog-api service is `catalogdb_connection_string`
+  * It is deployed into the Application Resource Group.  
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ## Eventbus
-* Eventbus is the only infrastructure component that is not a managed service in Azure.  T
+* Eventbus is the only infrastructure component that is not a managed service in Azure.
 * he Eventbus is a RabbitMQ cluster that is deployed to the AKS cluster.  The Eventbus is used for asynchronous communication between the microservices in the eShop application.  
 * The Eventbus is deployed using the Helm chart along with the rest of the eShop application under charts/app.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>

@@ -18,8 +18,13 @@ Deployment
     $commit_version = Get-GitCommitVersion -Source "."
     $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
     $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
-    $eventubs_password = New-Password -Length 30
 
+    $eventubs_password = New-Password -Length 30
+    $sql_password = New-Password -Length 30
+
+    $deploy_redis = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_CACHE_NAME )
+    $deploy_sql   = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_SQL_NAME )
+    
     helm upgrade -i ${CHART_NAME} `
     --set APP_NAME=$AppName `
     --set NAMESPACE=$APP_NAMESPACE `
@@ -29,12 +34,15 @@ Deployment
     --set WORKLOAD_ID.NAME=$APP_SERVICE_ACCT `
     --set KEYVAULT.NAME=$APP_KV_NAME `
     --set EVENTBUS.PASSWORD=$eventbus_password `
+    --set POSTGRESQL.PASSWORD=$sql_password `
     --set ACR.NAME=$APP_ACR_NAME `
     --set REGION=$($cogs.region) `
     --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
     --set ISTIO.GATEWAY=$APP_ISTIO_GATEWAY `
     --set ISTIO.IDENTITY.EXTERNAL_URL="$APP_IDENTITY_URL" `
     --set ISTIO.WEBAPP.EXTERNAL_URL="$APP_URL" `
+    --set DEPLOY.REDIS="$deploy_redis" `
+    --set DEPLOY.SQL="$deploy_sql" `    
     ../charts/app
 ```
 
@@ -95,18 +103,18 @@ Deployment
             number: 80
 ```
 
-## Secrets & Config Map
+## Secrets & ConfigMaps
 * Each service has a dedicated Config Map which is used to store the configuration settings for the particular service.
     * An exercise for the reader is to replace the Config Maps with Azure App Configuration.
-* The deployment will create a set of Kubernetes Secrets that are used by the application via the Azure Keyvault CSI driver.
-* The following connection strings were stored in the Keyvault as secrets:
+* The deployment will create a set of Kubernetes Secrets that are used by the application.
     * catalogdb-connection-string
     * identitydb-connection-string
     * orderingdb-connection-string
     * webhooksdb-connection-string
     * redis-connection-string
-* The secrets were created during the infrastructure standup process.
-* The SecretProviderClass maps the Keyvault secrets to Kubernetes secrets named `eshop-sql-secrets` in the eshop namespace,
+* If Redis and PostgreSQL are deployed in Azure then the connection strings are stored in KeyVault and accessible via the Keyvault CSI driver.
+    * The KeyVault Secrets were created during the infrastructure standup process.
+    * The SecretProviderClass maps the Keyvault secrets to Kubernetes secrets named `eshop-sql-secrets` and `eshop-redis-secrets` in the eshop namespace,
 * Another secret containing the connection string for the EventBus service will also be created and stored in a secret named `eshop-eventbus-secrets` in the eshop namespace.
 * These secrets are then referenced by individual services deployments
 <p align="right">(<a href="#deployment">back to top</a>)</p>
