@@ -8,13 +8,22 @@ Post Cluster Configuration
 * The configurations are deployed via Helm Charts.  It can be found in the [eshop-k8s-extensions](../charts/eshop-k8s-extensions) folder and triggered with `task gateway` and `task certs`.  
 * The `task gateway` puls the required values from Terraform's output vaiables and passes them along to the Helm Chart.
 
-## :heavy_check_mark: Deploy Task Steps:
+# Steps
+## :heavy_check_mark: Deploy Task Steps
 - :one: `task gateway`  - Update configurations with proper values Key
 - :two: `task certs`    - Gets the Challenge Information required for Cert Manager
 - :three: `task gateway`  - Run a second time after updating the Helm Chart values.yaml file with the challenge settings
 
+## ## :heavy_check_mark: Manual Configuration Steps
+```pwsh
+  helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS={{.APP_NAME}}@bjdazure.tech --set APP_NAME={{.APP_NAME}} --set WEBAPP_DOMAIN={{.APP_NAME}}.{{.DOMAIN_ROOT}} --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
+  pwsh ./get-cert-manager-challenges.ps1
+  vi /charts/eshop-k8s-extensions/values.yaml
+  helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS={{.APP_NAME}}@bjdazure.tech --set APP_NAME={{.APP_NAME}} --set WEBAPP_DOMAIN={{.APP_NAME}}.{{.DOMAIN_ROOT}} --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
+```
 <p align="right">(<a href="#post-cluster-configuration">back to top</a>)</p>
 
+# Post Cluster Configuration
 ## Cert Manager Configuration
 * Cert Manager is configured to issue a certificate with the WEBAPP_URL  and the SHOP_URL DNS names
 * The certificates are stored in the 'istio-ingress-tls' secret in the 'aks-istio-ingress' namespace.
@@ -31,10 +40,8 @@ Post Cluster Configuration
 <p align="right">(<a href="#post-cluster-configuration">back to top</a>)</p>
 
 ## Istio Ingress Gateway Configuration
-The Istio Ingress Gateway is configured to route traffic to the correct services.  The Gateway will be configured to listen for both HTTP and HTTPS traffic for any requests to the WEBAPP_DOMAIN, which is defined as '*.${APP_NAME}.${DOMAIN_ROOT}'.  
-
-The TLS secret is created by Cert Manager and and stored in the 'istio-ingress-tls' secret in the 'aks-istio-ingress' namespace.
-
+* The Istio Ingress Gateway is configured to route traffic to the correct services.  The Gateway will be configured to listen for both HTTP and HTTPS traffic for any requests to the WEBAPP_DOMAIN, which is defined as '*.${APP_NAME}.${DOMAIN_ROOT}'.  
+* The TLS secret is created by Cert Manager and and stored in the 'istio-ingress-tls' secret in the 'aks-istio-ingress' namespace.
 ```yaml
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
@@ -81,11 +88,9 @@ spec:
         maxbatchsize: 100
         maxbatchinterval: 10s
 ```
-
 <p align="right">(<a href="#post-cluster-configuration">back to top</a>)</p>
 
-Example Run
-=============  
+# Example Configuration
 ```pwsh
   > task gateway
   task: [gateway] helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS=airedale-60249@bjdazure.tech --set APP_NAME=airedale-60249 --set WEBAPP_DOMAIN=airedale-60249.bjdazure.tech --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
@@ -155,7 +160,6 @@ Example Run
   No resources found in aks-istio-ingress namespace.
 ```
 
-## Navigation
-[Return to Main Index 🏠](../README.md) ‖
-[Previous Section ⏪](./infrastructure.md) ‖ [Next Section ⏩](./build.md)
+# Navigation
+[Previous Section ⏪](./infrastructure.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./build.md)
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>

@@ -53,7 +53,7 @@ The following tools and build environment has been tested to work on Linux and o
 * Clone the eShop Source repository: `git clone https://github.com/briandenicola/eshop`
 * Clone the eshop Infrastructure repository: `git clone https://github.com/briandenicola/eshopOnAzure`
 
-## Envrionment
+## Enivronment
 * An Azure subscription. An MSDN subscription will work.
 * An account with owner permission on the Azure subscription and Global Admin on the Azure AD tenant
 * An Azure Service Principal with Owner role on the Azure subscription

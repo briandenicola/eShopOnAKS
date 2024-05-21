@@ -3,8 +3,7 @@ Scaling
 TBD
 <p align="right">(<a href="#scaling">back to top</a>)</p>
 
-KEDA HTTP Scaler
-=============
+# KEDA HTTP Scaler
 <!-- kind: HTTPScaledObject
 apiVersion: http.keda.sh/v1alpha1
 metadata:
@@ -23,8 +22,7 @@ spec:
         min: 1
         max: 5 -->
         
-Pod Disruption Budget
-=============
+# Pod Disruption Budget
 <!-- apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -35,7 +33,6 @@ spec:
     matchLabels:
       app: {{ .Chart.Name }} -->
 
-## Navigation
-[Return to Main Index 🏠](../README.md) ‖
-[Previous Section ⏪](./monitoring.md) ‖ [Next Section ⏩](./security.md)
+# Navigation
+[Previous Section ⏪](./monitoring.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./cost-management.md)
 <p align="right">(<a href="#scaling">back to top</a>)</p>

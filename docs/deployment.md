@@ -5,27 +5,22 @@ Deployment
 * The script gathers the required infromation needed to pass to the Helm Chart and then deploys the application.
 * Some information is gathered by convention.  Others are gathered from the Azure resources created in the previous section.
 
-## :heavy_check_mark: Deploy Task Steps:
+# Steps
+## :heavy_check_mark: Deploy Task Steps
 - :one: `task deploy`     - Deploys application via Helm
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
-Helm Chart
-=============
-* The Helm Chart is located in the [charts/app](../charts/app) folder.
-* Default values have been set for some of the configurations.  These can be overridden by passing in the values via the `--set` flag.
-* The Helm chart metadata is stored in the default namespace
-* The Powershell script `scripts/deploy-services.ps1` is a helper script that wraps the helm upgrade command.
-* Some values are gathered from the Azure resources created in the previous section.
+## :heavy_check_mark: Manual Build Steps
 ```pwsh
+    . ./scripts/modules/eshop_naming.ps1 -AppName $AppName
+    . ./scripts/modules/eshop_functions.ps1
+
     $commit_version = Get-GitCommitVersion -Source "."
     $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
     $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
     $eventubs_password = New-Password -Length 30
-```
-* Other values are determined by convention as defined in the ./scripts/modules/eshop_naming.ps1 script.
-* The ultimate Helm command that is run is:
-```helm
-    > helm upgrade -i ${CHART_NAME} `
+
+    helm upgrade -i ${CHART_NAME} `
     --set APP_NAME=$AppName `
     --set NAMESPACE=$APP_NAMESPACE `
     --set GIT_COMMIT_VERSION=$commit_version `
@@ -41,6 +36,17 @@ Helm Chart
     --set ISTIO.IDENTITY.EXTERNAL_URL="$APP_IDENTITY_URL" `
     --set ISTIO.WEBAPP.EXTERNAL_URL="$APP_URL" `
     ../charts/app
+```
+
+# Components
+## Helm Chart
+* The Helm Chart is located in the [charts/app](../charts/app) folder.
+* Default values have been set for some of the configurations.  These can be overridden by passing in the values via the `--set` flag.
+* The Helm chart metadata is stored in the default namespace
+* The Powershell script `scripts/deploy-services.ps1` is a helper script that wraps the helm upgrade command.
+* Other values are determined by convention as defined in the ./scripts/modules/eshop_naming.ps1 script.
+* Once deployed, you can view the Helm releases by running the following command:
+```helm
     > helm list
     NAME                    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
     eshop                   default         2               2024-05-20 09:25:22.748077861 -0500 CDT deployed        eshop-1.0.0                     1.0.0
@@ -48,8 +54,7 @@ Helm Chart
 ```
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
-Virtual Services
-=============
+## Virtual Services
 * The deployment will configure two Istio Virtual Servicves. One for the Web Application and One for the Identity API.
 * The Istio Gateway will terminate the SSL connection and route the traffic to the appropriate service over port 80.
 * The Virtual Service configuration can be extended with additional features such as rate limiting, retries, and timeouts.
@@ -90,8 +95,7 @@ Virtual Services
             number: 80
 ```
 
-Secrets & Config Map
-=============
+## Secrets & Config Map
 * Each service has a dedicated Config Map which is used to store the configuration settings for the particular service.
     * An exercise for the reader is to replace the Config Maps with Azure App Configuration.
 * The deployment will create a set of Kubernetes Secrets that are used by the application via the Azure Keyvault CSI driver.
@@ -107,8 +111,7 @@ Secrets & Config Map
 * These secrets are then referenced by individual services deployments
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
-Example Deployment
-=============
+# Example Deployment
 ```pwsh
     > task deploy
     task: [deploy] pwsh ./deploy-services.ps1 -AppName airedale-60249 -SubscriptionName Apps_Subscription -Domain bjdazure.tech -verbose
@@ -172,7 +175,6 @@ Example Deployment
 ```
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
-## Navigation
-[Return to Main Index 🏠](../README.md) ‖
-[Previous Section ⏪](./build.md) ‖ [Next Section ⏩](./monitoring.md)
+# Navigation
+[Previous Section ⏪](./build.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./monitoring.md)
 <p align="right">(<a href="#deployment">back to top</a>)</p>

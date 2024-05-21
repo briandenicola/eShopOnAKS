@@ -2,16 +2,31 @@ Build
 =============
 * The eShop application will build and publish the application to a container registry. The build step is dependent upon a successful infrastructure deployment from the previous section. 
 * The build uses a feature of dotnet8 in which the `dotnet publish` command can create docker containers without the requirement of a the traditional `Dockerfile`.  Pushing to the containers to the Azure Container Registry does still require docker to be installed and running. 
-* Each service in the eShop application is built and published using the following command as defined in the [scripts/modules/eshop_functions.ps1](https://github.com/briandenicola/eShopOnAKS/blob/main/scripts/modules/eshop_functions.ps1#L121) script: 
-    * `dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${ContainerRegistry} $SourcePath`
+* Each service in the eShop application is built and published using the following command as defined in the [scripts/modules/eshop_functions.ps1](https://github.com/briandenicola/eShopOnAKS/blob/main/scripts/modules/eshop_functions.ps1#L121) script.
 * The build process is kicked off using the command: `task build` command which runs the `scripts/build-containers.ps1` script.  The script sets the application variables, subscription context. Then it logs into the Azure Container Registry, gets the latest git commit version id. Finally, it builds then publishes each service to the Azure Container Registry.
 
-## :heavy_check_mark: Deploy Task Steps:
+# Steps
+## :heavy_check_mark: Deploy Task Steps
 - :one: `task build`     - Builds and pushes the containers
 <p align="right">(<a href="#build">back to top</a>)</p>
 
-Example Build
-=============
+## :heavy_check_mark: Manual Build Steps
+```pwsh
+  . ./scripts/modules/eshop_naming.ps1 -AppName $AppName
+  $ContainerImageTag=$(git rev-parse HEAD | head -c 8)
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/Basket.API
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/Catalog.API
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/Identity.API
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/Mobile.Bff.Shopping
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/OrderProcessor
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/Ordering.API
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/PaymentProcessor
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/WebApp
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/Webhooks.API
+  dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io 
+```
+
+# Example Build
 ```pwsh
   > task build
   task: [build] pwsh ./build-containers.ps1 -AppName airedale-60249 -SubscriptionName Apps_Subscription -SourceRootDirectory ~/code/eShop -verbose
@@ -45,7 +60,6 @@ Example Build
 ```
 <p align="right">(<a href="#build">back to top</a>)</p>
 
-## Navigation
-[Return to Main Index 🏠](../README.md) ‖
-[Previous Section ⏪](./infrastructure.md) ‖ [Next Section ⏩](./deployment.md)
+# Navigation
+[Previous Section ⏪](./infrastructure.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./deployment.md)
 <p align="right">(<a href="#build">back to top</a>)</p>

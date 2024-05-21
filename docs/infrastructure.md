@@ -8,10 +8,10 @@ Infrastructure
 * The infrastructure is deployed to a single Azure region (defaults to `westus3`) and consists of the following components:
 
 # Steps
-## :heavy_check_mark: Deploy Task Steps:
+## :heavy_check_mark: Deploy Task Steps
 - :one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
 
-### :heavy_check_mark: Or run the tasks individually:
+### :heavy_check_mark: Or run the tasks individually
 > _**Note**: If terraform fails for any resaon, you can run these commands individually to retry the deployment._
 - :one: `task apply`  - Applies the Terraform plan to create the Azure infrastructure
 - :two: `task creds`  - Gets the credential file for the newly created AKS cluster
@@ -20,15 +20,13 @@ Infrastructure
 ## :heavy_check_mark: Deploy Manually
 ```pwsh
   terraform -chdir=./infrastructure
-  terraform -chdir=./infrastructure apply -var "region={{.REGION}}" \
-    -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}" \
-    -var "tags={{.TITLE}}"
+  terraform -chdir=./infrastructure apply -var "region={{.REGION}}"  -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}"  -var "tags={{.TITLE}}"
   az aks get-credentials -g {{.AKS_NAME}} -n {{.RG}}
 ```
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-Resource Groups
-============
+# Infrastructure Components
+## Resource Groups
 Name | Usage
 ------ | ----
 Application Resource Group ("${app_name}_app_rg") | Used by components of the eShop application
@@ -40,8 +38,7 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 > **Note**: All resource groups are tagged with the `Application="eShop On AKS"`
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-Networking
-============
+## Networking
 * A single Azure virtual network with a /16 address space is created in the Core Resource Group.
 * A subnet for AKS named `nodes` is created in the virtual network with a /24 address space.
 * A subnet for AKS's API  named `api-server` is created in the virtual network and delegated to `Microsoft.ContainerService/managedClusters`
@@ -52,8 +49,7 @@ Networking
 * One DNS record named `*.${APP_NAME}.${DOMAIN_ROOT}` needs to becreated in the Azure DNS zone for the eShop application as part of the application deployment.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-AKS Cluster Components
-============
+## AKS Cluster Components
 * A managed AKS cluster is deployed to the AKS Resource Group with 2 node pools - one for system resources and one for user workloads.
 * KeyVault CSI driver, Keda, and Azure Policy are enabled on the AKS cluster.
 * The Flux operator is deployed to the AKS cluster to manage the deployment of post-deployment resources (see #GitOps below)
@@ -62,8 +58,7 @@ AKS Cluster Components
 * Azure Service Mesh is installed as part of the cluster
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-Azure Service Mesh
-============
+### Azure Service Mesh
 * Azure Service Mesh is installed as part of the AKS cluster deployment.
 * The default configuration is used for most of the Azure Service Mesh components.
 * Customization for Azure Service Mesh is defined in the `istio-shared-configmap-asm-1-20` configmap that is deployed as part of the GitOps deployment defined below.
@@ -75,33 +70,37 @@ Azure Service Mesh
           address: otel-collector.otel-system.svc.cluster.local:9411
 ```
 
-GitOps
-============
+### Flux & GitOps
 * The Flux operater is responsible for managing the deployment of additional components to the AKS cluster.
 * Flux uses kustomize to apply the manifests in the `cluster-config` directory to the AKS cluster.
 * Flux installs Cert-Manager to manage the certificates for the eShop application, Keda's HTTP Scaler, Kured for node reboots, and Kubecost for cost management.
 * Flux also customizes Azure Service Mesh 
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-Monitoring
-============
+### Workload Identity
+* The application runs as a Managed Identity with the name format of ${APP_NAME}-app-identity
+* The Managed Identity is federated with a AKS Service Account named ${APP_NAME}-app-identity to enable Workload Identities
+* The Managed Identity is granted the `Key Vault Secrets User` role on the Key Vault
+<p align="right">(<a href="#security">back to top</a>)</p>
+
+## Monitoring
 * Log Analytics Application Insights, Azure Managed Prometheus, and Grafana are deployed to the Monitoring Resource Group.
 * All resources have their diagnostic settings enabled and are configured to send logs and metrics to Log Analytics.
 * The AKS cluster is configured with Azure Managed Prometheus and Grafana for monitoring and visualization.
 * Azure Monitor/Prometheus is deployed to the `westus2` region due to regional restrictions.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-Redis
-============
+## Redis
 * Azure Redis Cache is deployed using the Premium SKU with a predefined capacity of 1 GB.
+* To save on costs, Redis deployment can be skipped by setting `enable_redis` to false in the `terraform.tfvars` file. Redis can then be deployed as a pod in the AKS cluster.
 * It is deployed using Private Link and only accessible from the Azure virtual network.
 * It is deployed into the Application Resource Group.
 * The connection string used by the `basket-api` is stored in the Azure Key Vault under the secret named `redis_connection_string`.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-PostgreSQL
-============
+## PostgreSQL
 * PostgreSQL is deployed using the `GP_Standard_D2ds_v4` Flex Server SKU in Azure. The vector extension has been added to the server post creation.  
+* To save on costs, PostgreSQL deployment can be skipped by setting `enable_postgresql` to false in the `terraform.tfvars` file. PostgreSQL can then be deployed as a pod in the AKS cluster.
 * PostgreSQL is deployed into a delegated subnet and only accessible from the Azure virtual network.
 * The databases `webhooksdb`, `cataglogdb`, `identitydb`, and `orderingdb` are created in the PostgreSQL server.  
 * The connection string used by the appliation is stored in the Azure Key Vault under the secret named ${db_name}_connection_string. 
@@ -109,8 +108,7 @@ PostgreSQL
 * It is deployed into the Application Resource Group.  
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-Eventbus
-============
+## Eventbus
 * Eventbus is the only infrastructure component that is not a managed service in Azure.  T
 * he Eventbus is a RabbitMQ cluster that is deployed to the AKS cluster.  The Eventbus is used for asynchronous communication between the microservices in the eShop application.  
 * The Eventbus is deployed using the Helm chart along with the rest of the eShop application under charts/app.
@@ -260,24 +258,23 @@ Eventbus
 ```
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-## Resources
-### Core Resource Group
+# Screenshots
+## Core Resource Group
 <img src="../.assets/core_rg.png" width="1024px" />
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-### AKS Resource Group
+## AKS Resource Group
 <img src="../.assets/aks_rg.png" width="1024px" />
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-### Monitoring Resource Group
+## Monitoring Resource Group
 <img src="../.assets/monitoring_rg.png" width="1024px" />
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-### Application Resource Group
+## Application Resource Group
 <img src="../.assets/app_rg.png" width="1024px" />
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-## Navigation
-[Return to Main Index 🏠](../README.md) ‖
-[Previous Section ⏪](./prerequisites.md) ‖ [Next Section ⏩](./post-cluster-configuration.md)
+# Navigation
+[Previous Section ⏪](./prerequisites.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./post-cluster-configuration.md)
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
