@@ -1,5 +1,5 @@
 data "azurerm_kubernetes_service_versions" "current" {
-  location = azurerm_resource_group.core.location
+  location = azurerm_resource_group.aks.location
 }
 
 locals {
@@ -24,11 +24,6 @@ resource "azurerm_kubernetes_cluster" "this" {
   depends_on = [ 
     azurerm_user_assigned_identity.aks_identity,
     azurerm_user_assigned_identity.aks_kubelet_identity,
-    azurerm_log_analytics_workspace.this,
-    azurerm_subnet.api,
-    azurerm_subnet.kubernetes,
-    azurerm_user_assigned_identity.aks_identity,
-    azurerm_user_assigned_identity.aks_kubelet_identity
   ]
 
   name                         = local.aks_name
@@ -51,7 +46,7 @@ resource "azurerm_kubernetes_cluster" "this" {
 
   api_server_access_profile {
     vnet_integration_enabled = true
-    subnet_id                = azurerm_subnet.api.id
+    subnet_id                = data.azurerm_subnet.api.id
     authorized_ip_ranges     = local.allowed_ip_range
   }
 
@@ -85,7 +80,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     vm_size             = var.vm_size
     zones               = local.zones
     os_disk_size_gb     = 127
-    vnet_subnet_id      = azurerm_subnet.kubernetes.id
+    vnet_subnet_id      = data.azurerm_subnet.kubernetes.id
     os_sku              = "Mariner"
     os_disk_type        = "Ephemeral"
     type                = "VirtualMachineScaleSets"
@@ -136,11 +131,11 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   oms_agent {
-    log_analytics_workspace_id      = azurerm_log_analytics_workspace.this.id
+    log_analytics_workspace_id      = var.azurerm_log_analytics_workspace_id
   }
 
   microsoft_defender {
-    log_analytics_workspace_id      = azurerm_log_analytics_workspace.this.id
+    log_analytics_workspace_id      = var.azurerm_log_analytics_workspace_id
   }
 
   monitor_metrics {

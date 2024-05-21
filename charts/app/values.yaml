@@ -4,8 +4,22 @@ GIT_COMMIT_VERSION                      : ""
 ACR:
   NAME                                  : ""
 
+DEPLOY:
+  REDIS                                 : false
+  SQL                                   : false
+
 APP_INSIGHTS:
   CONNECTION_STRING                     : ""
+
+POSTGRESQL:
+  USER                                  : "manager"
+  PASSWORD                              : ""
+  PORT                                  : "5432"
+
+REDIS:
+  USER                                  : "redis"
+  PASSWORD                              : "redis"
+  PORT                                  : "6379"
 
 EVENTBUS:
   USER                                  : "guest"

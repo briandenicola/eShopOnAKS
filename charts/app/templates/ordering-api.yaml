@@ -42,6 +42,8 @@ spec:
         prometheus.io/path: "/metrics"
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      nodeSelector:
+        App: eshop      
       containers:
         - name: ordering-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/ordering-api:" .Values.GIT_COMMIT_VERSION }}
@@ -64,10 +66,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 3     
-          volumeMounts:
-          - name: secrets-store-inline
-            mountPath: "/mnt/secrets-store"                       
-            readOnly: true
           envFrom:
           - configMapRef:
               name: ordering-cm
@@ -75,20 +73,27 @@ spec:
           - name: ConnectionStrings__eventbus
             valueFrom:
               secretKeyRef:
-                name: eventbus-secret
+                name: eshop-eventbus-secrets
                 key:  RABBITMQ_CONNECTION_STRING        
           - name: ConnectionStrings__orderingdb
             valueFrom:
               secretKeyRef:
-                name: eshop-kv-secrets 
+                name: eshop-sql-secrets 
                 key: orderingdb-connection-string
+{{- if .Values.DEPLOY.SQL -}}
+{{- else }}                  
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"                       
+            readOnly: true  
       volumes:
       - name: secrets-store-inline
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: "eshop-secrets"          
+            secretProviderClass: eshop-secrets
+{{- end }}         
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"

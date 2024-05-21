@@ -9,27 +9,31 @@ output "APP_RESOURCE_GROUP" {
 }
 
 output "ACR_NAME" {
-  value     = azurerm_container_registry.this.name
+  value     = module.aks.ACR_NAME
   sensitive = false
 }
 
 output "AKS_CLUSTER_NAME" {
-  value     = azurerm_kubernetes_cluster.this.name
+  value     = module.aks.AKS_CLUSTER_NAME
   sensitive = false
 }
 
 output "AKS_RESOURCE_GROUP" {
-  value     = azurerm_kubernetes_cluster.this.resource_group_name
+  value     = module.aks.AKS_RESOURCE_GROUP
   sensitive = false
 }
 
-output "CHAOS_RESOURCE_GROUP" {
-  value     = azurerm_resource_group.chaos.name
+output "INGRESS_CLIENT_ID" {
+  value = module.aks.INGRESS_CLIENT_ID
+}
+
+output "CHAOS_RESOURCE_GROUP" {  
+  value     = module.chaos[0].CHAOS_RESOURCE_GROUP_NAME
   sensitive = false
 }
 
 output "CHAOS_RESOURCE_LOCATION" {
-  value     = azurerm_resource_group.chaos.location
+  value     = module.chaos[0].CHAOS_RESOURCE_GROUP_LOCATION
   sensitive = false
 }
 
@@ -43,14 +47,10 @@ output "ARM_WORKLOAD_APP_ID" {
   sensitive = false
 }
 output "AI_CONNECTION_STRING" {
-    value = azurerm_application_insights.this.connection_string
+    value = module.monitoring.AI_CONNECTION_STRING
     sensitive = true
 }
 
 output "KEYVAULT_NAME" {
-    value = azurerm_key_vault.this.name
-}
-
-output "INGRESS_CLIENT_ID" {
-    value = azurerm_user_assigned_identity.aks_service_mesh_identity.client_id
+    value = module.keyvault.KEYVAULT_NAME
 }

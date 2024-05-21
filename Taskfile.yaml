@@ -8,6 +8,8 @@ env:
   DEFAULT_REGION: "westus3"
   COUNT: 2
   DOMAIN_ROOT: "bjdazure.tech"
+  DEPLOY_SQL: false
+  DEPLOY_REDIS: false
 
 tasks:
   default: 
@@ -33,6 +35,8 @@ tasks:
        -var "vm_size={{.SKU}}" 
        -var "node_count={{.COUNT}}"
        -var "tags={{.TITLE}}" 
+       -var "deploy_postgresql={{.DEPLOY_SQL}}"
+       -var "deploy_redis={{.DEPLOY_REDIS}}"
        -compact-warnings
     vars: 
       REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
@@ -44,6 +48,8 @@ tasks:
       -var "vm_size={{.SKU}}" 
       -var "node_count={{.COUNT}}" 
       -var "tags={{.TITLE}}"
+      -var "deploy_postgresql={{.DEPLOY_SQL}}"
+      -var "deploy_redis={{.DEPLOY_REDIS}}"      
     vars: 
       REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
 

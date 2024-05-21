@@ -106,8 +106,8 @@ Deployment
     * webhooksdb-connection-string
     * redis-connection-string
 * The secrets were created during the infrastructure standup process.
-* The SecretProviderClass maps the Keyvault secrets to Kubernetes secrets named `eshop-kv-secrets` in the eshop namespace,
-* Another secret containing the connection string for the EventBus service will also be created and stored in a secret named `eventbus-secret` in the eshop namespace.
+* The SecretProviderClass maps the Keyvault secrets to Kubernetes secrets named `eshop-sql-secrets` in the eshop namespace,
+* Another secret containing the connection string for the EventBus service will also be created and stored in a secret named `eshop-eventbus-secrets` in the eshop namespace.
 * These secrets are then referenced by individual services deployments
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
@@ -152,8 +152,8 @@ Deployment
 
     > kubectl --namespace eshop get secrets
     NAME               TYPE     DATA   AGE
-    eshop-kv-secrets   Opaque   5      6m35s
-    eventbus-secret    Opaque   2      6m39s
+    eshop-sql-secrets   Opaque   5      6m35s
+    eshop-eventbus-secrets    Opaque   2      6m39s
 
     > kubectl --namespace eshop get configmap
     NAME                 DATA   AGE

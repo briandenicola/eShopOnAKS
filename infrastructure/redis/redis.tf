@@ -1,7 +1,7 @@
 resource "azurerm_redis_cache" "this" {
   name                = local.redis_name
-  resource_group_name = azurerm_resource_group.app.name
-  location            = azurerm_resource_group.app.location
+  resource_group_name = var.redis_resource_group_name
+  location            = var.region
   capacity            = 1
   family              = "P"
   sku_name            = "Premium"
@@ -15,7 +15,7 @@ resource "azurerm_redis_cache" "this" {
 resource "azurerm_monitor_diagnostic_setting" "redis" {
   name                        = "diag"
   target_resource_id          = azurerm_redis_cache.this.id
-  log_analytics_workspace_id  = azurerm_log_analytics_workspace.this.id
+  log_analytics_workspace_id  = var.log_analytics_workspace_id
   
   metric {
     category = "AllMetrics"
@@ -24,9 +24,9 @@ resource "azurerm_monitor_diagnostic_setting" "redis" {
 
 resource "azurerm_private_endpoint" "redis_account" {
   name                = "${local.redis_name}-ep"
-  resource_group_name = azurerm_resource_group.app.name
-  location            = azurerm_resource_group.app.location
-  subnet_id           = azurerm_subnet.private-endpoints.id
+  resource_group_name = var.redis_resource_group_name
+  location            = var.region
+  subnet_id           = var.subnet_id
 
   private_service_connection {
     name                           = "${local.redis_name}-ep"

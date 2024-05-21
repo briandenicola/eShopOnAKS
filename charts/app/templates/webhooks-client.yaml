@@ -44,6 +44,8 @@ spec:
         prometheus.io/path: "/metrics"       
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      nodeSelector:
+        App: eshop      
       containers:
         - name: webhookclient
           image: {{ print .Values.ACR.NAME ".azurecr.io/webhookclient:" .Values.GIT_COMMIT_VERSION }}

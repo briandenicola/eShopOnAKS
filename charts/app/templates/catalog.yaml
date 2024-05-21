@@ -41,7 +41,9 @@ spec:
         prometheus.io/port: {{ .Values.ISTIO.CATALOG.PORT | quote }}
         prometheus.io/path: "/metrics"        
     spec:
-      serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}  
+      serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      nodeSelector:
+        App: eshop      
       containers:
         - name: catalog-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/catalog-api:" .Values.GIT_COMMIT_VERSION }}
@@ -64,11 +66,7 @@ spec:
               port: {{ .Values.ISTIO.CATALOG.PORT }}
             initialDelaySeconds: 10
             periodSeconds: 30
-            timeoutSeconds: 3     
-          volumeMounts:
-          - name: secrets-store-inline
-            mountPath: "/mnt/secrets-store"                       
-            readOnly: true               
+            timeoutSeconds: 3                 
           envFrom:
             - configMapRef:
                 name: catalog-cm
@@ -76,20 +74,27 @@ spec:
           - name: ConnectionStrings__eventbus
             valueFrom:
               secretKeyRef:
-                name: eventbus-secret
+                name: eshop-eventbus-secrets
                 key:  RABBITMQ_CONNECTION_STRING           
           - name: ConnectionStrings__catalogdb
             valueFrom:
               secretKeyRef:
-                name: eshop-kv-secrets
+                name: eshop-sql-secrets
                 key: catalogdb-connection-string
+{{- if .Values.DEPLOY.SQL -}}
+{{- else }}                  
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"                       
+            readOnly: true  
       volumes:
       - name: secrets-store-inline
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: eshop-secrets              
+            secretProviderClass: eshop-secrets
+{{- end }}                         
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"

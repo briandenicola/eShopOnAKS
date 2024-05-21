@@ -28,12 +28,6 @@ variable "node_count" {
   default     = 1
 }
 
-variable "postgresql_user_name" {
-  description = "Azure PostgreSQL User Name"
-  type        = string
-  default     = "manager"
-}
-
 variable "github_repo_branch" {
   description = "The branched used for Infrastructure GitOps"
   default     = "main"
@@ -42,4 +36,24 @@ variable "github_repo_branch" {
 variable "zones" {
   description = "The values for zones to deploy AKS nodes to"
   default = ["1"]
+}
+
+variable "deploy_postgresql" {
+  description = "Deploy Azure PostgreSQL as part of the infrastructure build"
+  default     = true
+}
+
+variable "deploy_redis" {
+  description = "Enable Azure Redis as part of the infrastructure build"
+  default     = true
+}
+
+variable "deploy_openai" {
+  description = "Enable Azure OpenAI as part of the infrastructure build"
+  default     = false
+}
+
+variable "deploy_chaos" {
+  description = "Enable Azure Chaos Studio as part of the infrastructure build"
+  default     = true
 }

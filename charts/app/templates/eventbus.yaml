@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: eventbus-secret
+  name: eshop-eventbus-secrets
   namespace: {{ .Values.NAMESPACE }}
 type: Opaque
 data:
@@ -27,6 +27,8 @@ spec:
         app: {{ .Chart.Name }}
         service: eventbus 
     spec:
+      nodeSelector:
+        App: eshop    
       containers:
       - name: rabbitmq
         image: library/rabbitmq:3
@@ -41,7 +43,7 @@ spec:
           - name: RABBITMQ_DEFAULT_PASS
             valueFrom:
               secretKeyRef:
-                name: eventbus-secret
+                name: eshop-eventbus-secrets
                 key:  RABBITMQ_DEFAULT_PASS
       tolerations:
       - key: "ReservedFor"

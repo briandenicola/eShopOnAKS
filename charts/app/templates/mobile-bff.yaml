@@ -43,6 +43,8 @@ spec:
         prometheus.io/path: "/metrics"             
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      nodeSelector:
+        App: eshop      
       containers:
         - name: mobile-bff
           image: {{ print .Values.ACR.NAME ".azurecr.io/mobile-bff-shopping:" .Values.GIT_COMMIT_VERSION }}
@@ -59,13 +61,13 @@ spec:
           securityContext:
             privileged: false
             allowPrivilegeEscalation: false          
-          # livenessProbe:
-          #   httpGet:
-          #     path: /health
-          #     port: {{ .Values.ISTIO.MOBILE.PORT }}
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 30
-          #   timeoutSeconds: 3                      
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.ISTIO.MOBILE.PORT }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 3                      
           envFrom:
           - configMapRef:
               name: mobile-bff-cm

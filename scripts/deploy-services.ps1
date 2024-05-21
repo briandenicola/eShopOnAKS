@@ -21,6 +21,10 @@ $commit_version = Get-GitCommitVersion -Source "."
 $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
 $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
 $eventbus_password = New-Password -Length 30
+$sql_password = New-Password -Length 30
+
+$deploy_redis = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_CACHE_NAME )
+$deploy_sql   = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_SQL_NAME )
 
 # Install App using Helm Chart
 Write-Log -Message "Deploying ${CHART_NAME} version ${commit_version} to ${APP_K8S_NAME} into ${APP_NAMESPACE} namespace. . ."
@@ -33,12 +37,15 @@ helm upgrade -i ${CHART_NAME} `
     --set WORKLOAD_ID.NAME=$APP_SERVICE_ACCT `
     --set KEYVAULT.NAME=$APP_KV_NAME `
     --set EVENTBUS.PASSWORD=$eventbus_password `
+    --set POSTGRESQL.PASSWORD=$sql_password `
     --set ACR.NAME=$APP_ACR_NAME `
     --set REGION=$($cogs.region) `
     --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
     --set ISTIO.GATEWAY=$APP_ISTIO_GATEWAY `
     --set ISTIO.IDENTITY.EXTERNAL_URL="$APP_IDENTITY_URL" `
     --set ISTIO.WEBAPP.EXTERNAL_URL="$APP_URL" `
+    --set DEPLOY.REDIS="$deploy_redis" `
+    --set DEPLOY.SQL="$deploy_sql" `
     ../charts/app
 
 if($?){

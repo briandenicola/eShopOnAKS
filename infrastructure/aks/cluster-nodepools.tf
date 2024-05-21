@@ -11,7 +11,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
 
   name                  = "apps"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
-  vnet_subnet_id        = azurerm_subnet.kubernetes.id
+  vnet_subnet_id        = data.azurerm_subnet.kubernetes.id
   vm_size               = var.vm_size
   enable_auto_scaling   = true
   mode                  = "User"
@@ -22,6 +22,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
   min_count             = var.node_count
   max_count             = var.node_count + 3
   zones                 = local.zones
+  node_labels           = { 
+    App                 = "eshop"
+  }
 
   upgrade_settings {
     max_surge = "25%"

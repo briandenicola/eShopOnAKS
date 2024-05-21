@@ -1,15 +1,11 @@
 resource "azurerm_monitor_alert_prometheus_rule_group" "prometheus_node_recording_rule_group" {
-  depends_on = [
-    azurerm_monitor_data_collection_rule.azuremonitor
-  ]
-
   name                = "${local.resource_name}-NodeRecordingRuleGroup"
-  location            = azurerm_resource_group.monitoring.location
-  resource_group_name = azurerm_resource_group.monitoring.name
+  location            = var.monitoring_location
+  resource_group_name = var.monitoring_resource_group_name
   cluster_name        = azurerm_kubernetes_cluster.this.name
   interval            = "PT1M"
   rule_group_enabled  = true
-  scopes              = [azurerm_monitor_workspace.this.id]
+  scopes              = [var.azure_monitor_id]
   
   rule {
     record = "instance:node_num_cpu:sum"
@@ -58,16 +54,12 @@ resource "azurerm_monitor_alert_prometheus_rule_group" "prometheus_node_recordin
 }
 
 resource "azurerm_monitor_alert_prometheus_rule_group" "prometheus_kubernetes_rule_groups" {
-  depends_on = [
-    azurerm_monitor_data_collection_rule.azuremonitor
-  ]
-
   name                = "${local.resource_name}-KubernetesRecordingRuleGroup"
-  location            = azurerm_resource_group.monitoring.location
-  resource_group_name = azurerm_resource_group.monitoring.name
+  location            = var.monitoring_location
+  resource_group_name = var.monitoring_resource_group_name
   cluster_name        = azurerm_kubernetes_cluster.this.name
   interval            = "PT1M"
-  scopes              = [azurerm_monitor_workspace.this.id]
+  scopes              = [var.azure_monitor_id]
   rule_group_enabled  = true
   
   rule {

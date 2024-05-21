@@ -1,0 +1,69 @@
+{{- if .Values.DEPLOY.SQL -}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: eshop-sql-secrets
+  namespace: {{ .Values.NAMESPACE }}
+type: Opaque
+data:
+  POSTGRES_MULTIPLE_DATABASES: {{ print "catalogdb,identitydb,orderingdb,webhooksdb" | b64enc }}
+  POSTGRES_USER: {{ .Values.POSTGRESQL.USER | b64enc }}
+  POSTGRES_PASSWORD: {{ .Values.POSTGRESQL.PASSWORD | b64enc }}
+  catalogdb-connection-string: {{ print "Host=postgres." .Values.NAMESPACE ".svc.cluster.local;Username=" .Values.POSTGRESQL.USER ";Password=" .Values.POSTGRESQL.PASSWORD ";Port=" .Values.POSTGRESQL.PORT ";Database=catalogdb" | b64enc }}
+  identitydb-connection-string: {{ print "Host=postgres." .Values.NAMESPACE ".svc.cluster.local;Username=" .Values.POSTGRESQL.USER ";Password=" .Values.POSTGRESQL.PASSWORD ";Port=" .Values.POSTGRESQL.PORT ";Database=identitydb" | b64enc }}
+  orderingdb-connection-string: {{ print "Host=postgres." .Values.NAMESPACE ".svc.cluster.local;Username=" .Values.POSTGRESQL.USER ";Password=" .Values.POSTGRESQL.PASSWORD ";Port=" .Values.POSTGRESQL.PORT ";Database=orderingdb" | b64enc }}
+  webhooksdb-connection-string: {{ print "Host=postgres." .Values.NAMESPACE ".svc.cluster.local;Username=" .Values.POSTGRESQL.USER ";Password=" .Values.POSTGRESQL.PASSWORD ";Port=" .Values.POSTGRESQL.PORT ";Database=webhooksdb" | b64enc }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: postgres  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: postgres
+  template:
+    metadata:
+      labels:
+        service: postgres
+    spec:
+      nodeSelector:
+        App: eshop
+      containers:
+        - name: postgres
+          #image: postgres:latest
+          image: pgvector/pgvector:0.7.0-pg16
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: {{ .Values.POSTGRESQL.PORT }}
+          envFrom:
+          - secretRef:
+              name: eshop-sql-secrets                           
+      tolerations:
+      - key: "ReservedFor"
+        operator: "Equal"
+        value: "apps"
+        effect: "NoSchedule"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: postgres 
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: postgres 
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres 
+      port: {{ .Values.POSTGRESQL.PORT }}
+      targetPort: {{ .Values.POSTGRESQL.PORT }}
+  selector:
+    service: postgres 
+{{- end }}  

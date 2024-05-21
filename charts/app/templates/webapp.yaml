@@ -49,6 +49,8 @@ spec:
         prometheus.io/path: "/metrics"          
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      nodeSelector:
+        App: eshop      
       containers:
         - name: webapp
           image: {{ print .Values.ACR.NAME ".azurecr.io/webapp:" .Values.GIT_COMMIT_VERSION }}
@@ -79,7 +81,7 @@ spec:
           - name: ConnectionStrings__eventbus
             valueFrom:
               secretKeyRef:
-                name: eventbus-secret
+                name: eshop-eventbus-secrets
                 key:  RABBITMQ_CONNECTION_STRING            
       tolerations:
       - key: "ReservedFor"

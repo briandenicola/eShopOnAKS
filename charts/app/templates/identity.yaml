@@ -45,6 +45,8 @@ spec:
         prometheus.io/path: "/metrics"              
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      nodeSelector:
+        App: eshop      
       containers:
         - name: identity-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/identity-api:" .Values.GIT_COMMIT_VERSION }}
@@ -61,17 +63,13 @@ spec:
           securityContext:
             privileged: false
             allowPrivilegeEscalation: false          
-          # livenessProbe:
-          #   httpGet:
-          #     path: /health
-          #     port: {{ .Values.ISTIO.IDENTITY.PORT }}
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 30
-          #   timeoutSeconds: 3    
-          volumeMounts:
-          - name: secrets-store-inline
-            mountPath: "/mnt/secrets-store"                       
-            readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.ISTIO.IDENTITY.PORT }}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 3    
           envFrom:
             - configMapRef:
                 name: identity-cm
@@ -79,15 +77,22 @@ spec:
           - name: ConnectionStrings__identitydb
             valueFrom:
               secretKeyRef:
-                name: eshop-kv-secrets   
+                name: eshop-sql-secrets   
                 key: identitydb-connection-string
+{{- if .Values.DEPLOY.SQL -}}
+{{- else }}                  
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"                       
+            readOnly: true  
       volumes:
       - name: secrets-store-inline
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: eshop-secrets              
+            secretProviderClass: eshop-secrets
+{{- end }}            
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"

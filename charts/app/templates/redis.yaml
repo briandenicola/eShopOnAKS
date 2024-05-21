@@ -1,0 +1,64 @@
+{{- if .Values.DEPLOY.REDIS -}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: eshop-redis-secrets 
+  namespace: {{ .Values.NAMESPACE }}
+type: Opaque
+data:
+  redis-connection-string: {{print "redis://" .Values.REDIS.USER ":" .Values.REDIS.PASSWORD "@redis." .Values.NAMESPACE ".svc.cluster.local:" .Values.REDIS.PORT | b64enc }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: redis
+  template:
+    metadata:
+      labels:
+        service: redis
+    spec:
+      nodeSelector:
+        App: eshop       
+      containers:
+      - name: redis
+        image: redis:latest
+        ports:
+        - containerPort: {{ .Values.REDIS.PORT }} 
+        securityContext:
+          allowPrivilegeEscalation: false  
+          runAsUser: 1000       
+          runAsNonRoot: true
+        resources:
+          limits:
+            memory: "2048Mi"
+            cpu: "2"
+          requests:
+            memory: "1024Mi"
+            cpu: "0.25"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis 
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: redis 
+spec:
+  type: ClusterIP
+  ports:
+    - name: redis 
+      port: {{ .Values.REDIS.PORT }}
+      targetPort: {{ .Values.REDIS.PORT }}
+  selector:
+    service: redis 
+{{- end }}  

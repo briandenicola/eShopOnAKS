@@ -38,7 +38,6 @@ Table of contents
 * [Scaling](./docs/scaling.md)
     * [Keda HTTP Scaler](./docs/scaling.md#keda-http-scaler)
     * [Pod Disruption Budget](./docs/scaling.md#pod-disruption-budget)
-* [Security](./docs/security.md)
 * [Cost Management](./docs/cost-management.md)
 * [Troubleshooting](./docs/troubleshooting.md)
     * [Chaos Engineering](./docs/troubleshooting.md#chaos-engineering)

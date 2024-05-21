@@ -42,6 +42,8 @@ spec:
         prometheus.io/path: "/metrics"             
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      nodeSelector:
+        App: eshop      
       containers:
         - name: webhooks-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/webhooks-api:" .Values.GIT_COMMIT_VERSION }}
@@ -72,20 +74,27 @@ spec:
           - name: ConnectionStrings__webhooksdb
             valueFrom:
               secretKeyRef:
-                name: eshop-kv-secrets
+                name: eshop-sql-secrets
                 key: webhooksdb-connection-string                 
           - name: ConnectionStrings__eventbus
             valueFrom:
               secretKeyRef:
-                name: eventbus-secret
+                name: eshop-eventbus-secrets
                 key:  RABBITMQ_CONNECTION_STRING
+{{- if .Values.DEPLOY.SQL -}}
+{{- else }}                  
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"                       
+            readOnly: true  
       volumes:
       - name: secrets-store-inline
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: eshop-secrets                              
+            secretProviderClass: eshop-secrets
+{{- end }}                           
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"

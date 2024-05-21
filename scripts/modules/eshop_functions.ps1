@@ -42,6 +42,21 @@ function New-Password
     return $password
 }
 
+function Find-AzureResource 
+{
+    param( 
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
+        [string] $ResourceGroupName, 
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
+        [string] $ResourceName
+    )
+
+    $exist = az resource list --resource-group $ResourceGroupName --query "[?name=='$ResourceName'] | length(@)"
+
+    if($exist -eq 0) { return $false }
+    return $true
+}
+
 function ConvertFrom-Base64String
 {
     param( 

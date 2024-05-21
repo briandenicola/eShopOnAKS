@@ -41,6 +41,8 @@ spec:
         prometheus.io/path: "/metrics"     
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      nodeSelector:
+        App: eshop      
       containers:
         - name: payment-api
           image: {{ print .Values.ACR.NAME ".azurecr.io/orderprocessor:" .Values.GIT_COMMIT_VERSION }}
@@ -64,10 +66,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 3    
-          volumeMounts:
-          - name: secrets-store-inline
-            mountPath: "/mnt/secrets-store"                       
-            readOnly: true
           envFrom:
             - configMapRef:
                 name: payment-cm
@@ -75,15 +73,8 @@ spec:
           - name: ConnectionStrings__eventbus
             valueFrom:
               secretKeyRef:
-                name: eventbus-secret
-                key:  RABBITMQ_CONNECTION_STRING        
-      volumes:
-      - name: secrets-store-inline
-        csi:
-          driver: secrets-store.csi.k8s.io
-          readOnly: true
-          volumeAttributes:
-            secretProviderClass: eshop-secrets          
+                name: eshop-eventbus-secrets
+                key:  RABBITMQ_CONNECTION_STRING                 
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"
