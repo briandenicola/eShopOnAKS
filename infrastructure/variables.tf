@@ -35,7 +35,7 @@ variable "github_repo_branch" {
 
 variable "zones" {
   description = "The values for zones to deploy AKS nodes to"
-  default = ["1"]
+  default     = ["1"]
 }
 
 variable "deploy_postgresql" {

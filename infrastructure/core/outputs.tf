@@ -12,3 +12,8 @@ output "PE_SUBNET_ID" {
   value     = azurerm_subnet.private-endpoints.id
   sensitive = false
 }
+
+output "SQL_SUBNET_ID" {
+  value     = azurerm_subnet.sql.id
+  sensitive = false
+}

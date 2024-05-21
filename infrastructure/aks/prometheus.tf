@@ -1,5 +1,5 @@
 resource "azurerm_monitor_data_collection_rule_association" "this" {
-  depends_on = [     
+  depends_on = [
     azurerm_kubernetes_cluster.this
   ]
   name                    = "${local.resource_name}-ama-datacollection-rules-association"

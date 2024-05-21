@@ -22,8 +22,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
   min_count             = var.node_count
   max_count             = var.node_count + 3
   zones                 = local.zones
-  node_labels           = { 
-    App                 = "eshop"
+  node_labels = {
+    App = "eshop"
   }
 
   upgrade_settings {

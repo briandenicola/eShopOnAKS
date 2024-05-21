@@ -21,7 +21,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     ]
   }
 
-  depends_on = [ 
+  depends_on = [
     azurerm_user_assigned_identity.aks_identity,
     azurerm_user_assigned_identity.aks_kubelet_identity,
   ]
@@ -51,9 +51,9 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   azure_active_directory_role_based_access_control {
-    managed                = true
-    azure_rbac_enabled     = true
-    tenant_id              = data.azurerm_client_config.current.tenant_id
+    managed            = true
+    azure_rbac_enabled = true
+    tenant_id          = data.azurerm_client_config.current.tenant_id
   }
 
   linux_profile {
@@ -75,21 +75,21 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   default_node_pool {
-    name                = "system"
-    node_count          = 3
-    vm_size             = var.vm_size
-    zones               = local.zones
-    os_disk_size_gb     = 127
-    vnet_subnet_id      = data.azurerm_subnet.kubernetes.id
-    os_sku              = "Mariner"
-    os_disk_type        = "Ephemeral"
-    type                = "VirtualMachineScaleSets"
-    enable_auto_scaling = true
-    min_count           = 3
-    max_count           = 6
-    max_pods            = 250
+    name                         = "system"
+    node_count                   = 3
+    vm_size                      = var.vm_size
+    zones                        = local.zones
+    os_disk_size_gb              = 127
+    vnet_subnet_id               = data.azurerm_subnet.kubernetes.id
+    os_sku                       = "Mariner"
+    os_disk_type                 = "Ephemeral"
+    type                         = "VirtualMachineScaleSets"
+    enable_auto_scaling          = true
+    min_count                    = 3
+    max_count                    = 6
+    max_pods                     = 250
     only_critical_addons_enabled = true
-    temporary_name_for_rotation = "rotation"
+    temporary_name_for_rotation  = "rotation"
     upgrade_settings {
       max_surge = "33%"
     }
@@ -105,21 +105,21 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   maintenance_window_auto_upgrade {
-    frequency = "Weekly"
-    interval  = 1
-    duration  = 4
+    frequency   = "Weekly"
+    interval    = 1
+    duration    = 4
     day_of_week = "Friday"
-    utc_offset = "-06:00"
-    start_time = "20:00"
+    utc_offset  = "-06:00"
+    start_time  = "20:00"
   }
 
   maintenance_window_node_os {
-    frequency = "Weekly"
-    interval  = 1
-    duration  = 4
+    frequency   = "Weekly"
+    interval    = 1
+    duration    = 4
     day_of_week = "Saturday"
-    utc_offset = "-06:00"
-    start_time = "20:00"
+    utc_offset  = "-06:00"
+    start_time  = "20:00"
   }
 
   auto_scaler_profile {
@@ -131,16 +131,16 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   oms_agent {
-    log_analytics_workspace_id      = var.azurerm_log_analytics_workspace_id
+    log_analytics_workspace_id = var.azurerm_log_analytics_workspace_id
   }
 
   microsoft_defender {
-    log_analytics_workspace_id      = var.azurerm_log_analytics_workspace_id
+    log_analytics_workspace_id = var.azurerm_log_analytics_workspace_id
   }
 
   monitor_metrics {
   }
-  
+
   key_vault_secrets_provider {
     secret_rotation_enabled = true
   }

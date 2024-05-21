@@ -67,7 +67,7 @@ module "sql" {
   sql_resource_group_name    = azurerm_resource_group.app.name
   vnet_name                  = module.core.VNET_NAME
   vnet_resource_group_name   = module.core.CORE_RESOURCE_GROUP
-  subnet_id                  = module.core.PE_SUBNET_ID
+  subnet_id                  = module.core.SQL_SUBNET_ID
   log_analytics_workspace_id = module.monitoring.LOG_ANALYTICS_WORKSPACE_ID
   keyvault_id                = module.keyvault.KEYVAULT_RESOURCE_ID
 }

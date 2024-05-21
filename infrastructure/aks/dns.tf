@@ -1,6 +1,6 @@
 resource "azurerm_private_dns_zone" "privatelink_azurecr_io" {
-  name                      = "privatelink.azurecr.io"
-  resource_group_name       = var.vnet_resource_group_name
+  name                = "privatelink.azurecr.io"
+  resource_group_name = var.vnet_resource_group_name
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io" {

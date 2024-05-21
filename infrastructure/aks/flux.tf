@@ -32,7 +32,7 @@ resource "azurerm_kubernetes_flux_configuration" "flux_config" {
     sync_interval_in_seconds   = 120
     retry_interval_in_seconds  = 300
     garbage_collection_enabled = true
-    depends_on = []
+    depends_on                 = []
   }
 
   kustomizations {

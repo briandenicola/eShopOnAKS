@@ -13,10 +13,10 @@ resource "azurerm_redis_cache" "this" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "redis" {
-  name                        = "diag"
-  target_resource_id          = azurerm_redis_cache.this.id
-  log_analytics_workspace_id  = var.log_analytics_workspace_id
-  
+  name                       = "diag"
+  target_resource_id         = azurerm_redis_cache.this.id
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+
   metric {
     category = "AllMetrics"
   }

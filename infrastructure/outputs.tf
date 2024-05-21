@@ -27,7 +27,7 @@ output "INGRESS_CLIENT_ID" {
   value = module.aks.INGRESS_CLIENT_ID
 }
 
-output "CHAOS_RESOURCE_GROUP" {  
+output "CHAOS_RESOURCE_GROUP" {
   value     = module.chaos[0].CHAOS_RESOURCE_GROUP_NAME
   sensitive = false
 }
@@ -47,10 +47,10 @@ output "ARM_WORKLOAD_APP_ID" {
   sensitive = false
 }
 output "AI_CONNECTION_STRING" {
-    value = module.monitoring.AI_CONNECTION_STRING
-    sensitive = true
+  value     = module.monitoring.AI_CONNECTION_STRING
+  sensitive = true
 }
 
 output "KEYVAULT_NAME" {
-    value = module.keyvault.KEYVAULT_NAME
+  value = module.keyvault.KEYVAULT_NAME
 }
