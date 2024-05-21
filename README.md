@@ -49,7 +49,7 @@ Table of contents
 <!--te-->
 <p align="right">(<a href="#overview">back to top</a>)</p>
 
-Architecture 
+Diagram
 ============
 ![eShop Reference Application architecture diagram](.assets/eshop_architecture.png)
 ![eShop Reference Application Home page](.assets/eshop_homepage.png)
