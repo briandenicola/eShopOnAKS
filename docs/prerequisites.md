@@ -27,6 +27,7 @@ The following tools and build environment has been tested to work on Linux and o
 
 ### Task
 * The deployment of this application has been automated using [Taskfile](https://taskfile.dev/#/).  This was done instead of using a CI/CD pipeline to make it easier to understand the deployment process.  
+* Of course, the application can be deployed manually
 * The Taskfile is a simple way to run commands and scripts in a consistent manner.  
 * The [Taskfile](../Taskfile.yaml) definition is located in the root of the repository
 * The Task file declares 4 default values that can be updated to suit specific requirements: 
@@ -37,7 +38,7 @@ The following tools and build environment has been tested to work on Linux and o
     COUNT | Number of nodes in the AKS cluster | 2
     DEFAULT_REGION | Default region to deploy to | westus3
     DOMAIN_ROOT | Default root domain used for all URLs & certs | bjdazure.tech
-* Running `task` command will run the default command - which just list all the available tasks.
+* Running the `task` command without any options will run the default command. This will list all the available tasks.
     * `task build`              : Builds containers
     * `task certs`              : Gets the Challenge Information required for Cert Manager
     * `task creds`              : Gets credential file for newly created AKS cluster
