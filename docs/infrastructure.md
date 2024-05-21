@@ -7,6 +7,7 @@ Infrastructure
 * The infrastructure deploy can take up to 30 minutes to complete.
 * The infrastructure is deployed to a single Azure region (defaults to `westus3`) and consists of the following components:
 
+# Steps
 ## :heavy_check_mark: Deploy Task Steps:
 - :one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
 
@@ -15,6 +16,15 @@ Infrastructure
 - :one: `task apply`  - Applies the Terraform plan to create the Azure infrastructure
 - :two: `task creds`  - Gets the credential file for the newly created AKS cluster
 - :three: `task dns`    - Gets the IP Address of the Istio Gateway
+
+## :heavy_check_mark: Deploy Manually
+```pwsh
+  terraform -chdir=./infrastructure
+  terraform -chdir=./infrastructure apply -var "region={{.REGION}}" \
+    -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}" \
+    -var "tags={{.TITLE}}"
+  az aks get-credentials -g {{.AKS_NAME}} -n {{.RG}}
+```
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 Resource Groups
