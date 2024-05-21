@@ -73,7 +73,7 @@ spec:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: eshop-secrets
+            secretProviderClass: eshop-sql-secrets
 {{- end }}         
       tolerations:
       - key: "ReservedFor"

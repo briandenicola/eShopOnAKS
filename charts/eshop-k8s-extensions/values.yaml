@@ -12,7 +12,7 @@ WEBAPP_DOMAIN                           : ""
 
 CERT:
   EMAIL_ADDRESS                         : ""
-  IDENTITY_URL_SERVICE_NAME             : "default_value"
-  IDENTITY_URL_CHALLENGE_PATH           : "default_value"
-  SHOP_URL_SERVICE_NAME                 : "default_value"
-  SHOP_URL_CHALLENGE_PATH               : "default_value"
+  IDENTITY_URL_SERVICE_NAME             : "cm-acme-http-solver-hhc5p"
+  IDENTITY_URL_CHALLENGE_PATH           : "/.well-known/acme-challenge/3U9oKjr_K1MnlLqXCE9dV57Alqjf1BCtJzFX3z06s5w"
+  SHOP_URL_SERVICE_NAME                 : "cm-acme-http-solver-psxkd"
+  SHOP_URL_CHALLENGE_PATH               : "/.well-known/acme-challenge/MY8wDxr8g6Xdub6_ZmkuGpAdoXa_f8uwqZP2E0qLpDc"
