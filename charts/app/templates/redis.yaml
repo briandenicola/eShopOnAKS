@@ -6,7 +6,10 @@ metadata:
   namespace: {{ .Values.NAMESPACE }}
 type: Opaque
 data:
-  redis-connection-string: {{print "redis://" .Values.REDIS.USER ":" .Values.REDIS.PASSWORD "@redis." .Values.NAMESPACE ".svc.cluster.local:" .Values.REDIS.PORT | b64enc }}
+  redis-connection-string: {{ print "redis." .Values.NAMESPACE ".svc.cluster.local,user=" .Values.REDIS.USER ",password=" .Values.REDIS.PASSWORD  | b64enc }}
+stringData:
+    redis.conf: |
+      user {{ .Values.REDIS.USER }} on +@all ~* >{{ .Values.REDIS.PASSWORD }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,6 +34,7 @@ spec:
       containers:
       - name: redis
         image: redis:latest
+        command: ["redis-server", "/etc/redis/redis.conf"]
         ports:
         - containerPort: {{ .Values.REDIS.PORT }} 
         securityContext:
@@ -44,6 +48,17 @@ spec:
           requests:
             memory: "1024Mi"
             cpu: "0.25"
+        volumeMounts:
+        - name: redis
+          mountPath: "/etc/redis"
+          readOnly: true
+      volumes:
+      - name: redis
+        secret:
+          secretName: eshop-redis-secrets 
+          items:
+          - key: redis.conf
+            path: redis.conf
 ---
 kind: Service
 apiVersion: v1

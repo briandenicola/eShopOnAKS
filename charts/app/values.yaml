@@ -18,7 +18,7 @@ POSTGRESQL:
 
 REDIS:
   USER                                  : "redis"
-  PASSWORD                              : "redis"
+  PASSWORD                              : ""
   PORT                                  : "6379"
 
 EVENTBUS:

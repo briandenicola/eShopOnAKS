@@ -22,6 +22,7 @@ $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -App
 $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
 $eventbus_password = New-Password -Length 30
 $sql_password = New-Password -Length 30
+$redis_password = New-Password -Length 30
 
 $deploy_redis = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_CACHE_NAME )
 $deploy_sql   = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_SQL_NAME )
@@ -38,6 +39,7 @@ helm upgrade -i ${CHART_NAME} `
     --set KEYVAULT.NAME=$APP_KV_NAME `
     --set EVENTBUS.PASSWORD=$eventbus_password `
     --set POSTGRESQL.PASSWORD=$sql_password `
+    --set REDIS.PASSWORD=$redis_password `
     --set ACR.NAME=$APP_ACR_NAME `
     --set REGION=$($cogs.region) `
     --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
