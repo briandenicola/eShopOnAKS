@@ -4,6 +4,9 @@ A sample .NET Core distributed application based on eShopOnContainers, powered b
 
 The accompanying e-book Dapr for .NET developers uses the sample code in this repository to demonstrate Dapr features and benefits. You can read the online version and download the PDF for free.
 
+<img src=".assets/eshop_architecture.png" width="1024px" />
+<p align="right">(<a href="#overview">back to top</a>)</p>
+
 Table of contents
 =================
 <!--ts-->
@@ -43,25 +46,25 @@ Table of contents
     * [Secrets & ConfigMaps](./docs/deployment.md#secrets--configmaps)
     * [Example Deployment](./docs/build.md#example-deployment)
 * [Monitoring Application](./docs/monitoring.md)
-    * [Open Telemetry Pipeline](./docs/monitoring.md#open-telemetry-pipeline)
+    * [Open Telemetry Pipeline](./docs/monitoring.md#open-telemetry-pipeline)    
+    * [Metrics Examples](./docs/monitoring.md#example-metrics---grafana-dashboards-and-prometheus-queries)
+    * [Logging Examples](./docs/monitoring.md#example-application-logs---application-insights)
+    * [Tracing Examples](./docs/monitoring.md#example-distributive-traces---application-insights)
+    * [Optional Next Steps](./docs/monitoring.md#optional-next-steps)
 * [Testing](./docs/testing.md)
     * [Playwright](./docs/testing.md#playwright)
     * [Chaos Engineering](./docs/testing.md#chaos-engineering) 
+    * [Optional Next Steps](./docs/testing.md#optional-next-steps)
 * [Scaling](./docs/scaling.md)
-    * [Keda HTTP Scaler](./docs/scaling.md#keda-http-scaler)
     * [Pod Disruption Budget](./docs/scaling.md#pod-disruption-budget)
+    * [Keda HTTP Scaler](./docs/scaling.md#keda-http-scaler)
+    * [Optional Next Steps](./docs/scaling.md#optional-next-steps)
 * [Cost Management](./docs/cost-management.md)
 * [Roadmap](#Roadmap)
 * [Code of Conduct](./CODE_OF_CONDUCT.md)
 * [Contributing](./CONTRIBUTING.md)
 * [Acknowledgments](#Acknowledgments)
 <!--te-->
-<p align="right">(<a href="#overview">back to top</a>)</p>
-
-Diagrams
-============
-![eShop Reference Application architecture diagram](.assets/eshop_architecture.png)
-![eShop Reference Application Home page](.assets/eshop_homepage.png)
 <p align="right">(<a href="#overview">back to top</a>)</p>
 
 Roadmap

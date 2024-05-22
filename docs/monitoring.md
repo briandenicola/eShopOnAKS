@@ -6,6 +6,7 @@ Monitoring
 * Azure Service Mesh is also configured to send logs to the OTEL Collector for distributed traces.
 * Grafana dashboards have been created to visualize the metrics collected by the OTEL Collector. It has its own UI and can be accessed via the Azure Portal.
 * Application Insights is used to monitor the application logs and distributed traces. It is accessible directly in the Azure Portal.
+* Review the [code updates](./code.md) that was made to the eShop application to enable monitoring.
 
 ## Open Telemetry Pipeline
 ```yaml
