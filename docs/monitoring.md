@@ -1,9 +1,13 @@
 Monitoring
 =============
-TBD
-<p align="right">(<a href="#monitoring">back to top</a>)</p>
+* Azure Monitor Workspaces with Application Insights and Managed Grafna has been deployed for application monitoring.
+* An Open Telemetry Collector, deployed in `otel-system` namespace on AKS, is used to collect and export metrics, logs, and traces to Azure Monitor.
+* The OTEL pipeline is configured with Zipkin receiver for traces and OTLP receiver for metrics and logs.
+* Azure Service Mesh is also configured to send logs to the OTEL Collector for distributed traces.
+* Grafana dashboards have been created to visualize the metrics collected by the OTEL Collector. It has its own UI and can be accessed via the Azure Portal.
+* Application Insights is used to monitor the application logs and distributed traces. It is accessible directly in the Azure Portal.
 
-# Open Telemetry Pipeline
+## Open Telemetry Pipeline
 ```yaml
   pipelines:
     traces:
@@ -19,8 +23,12 @@ TBD
       processors: [batch]
       exporters: [debug,azuremonitor]
 ```
+<p align="right">(<a href="#monitoring">back to top</a>)</p>
 
-# Metrics - Grafana Example Dashboards and Prometheus Queries 
+# Example Metrics - Grafana Dashboards and Prometheus Queries 
+> The following are example metrics and queries that can be used to monitor the eShop application. 
+
+
 ## Threads
 <img src="../.assets/grafana-threads.png" width="1024px" />
 
@@ -31,7 +39,8 @@ TBD
 <img src="../.assets/grafana-network.png" width="1024px" />
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
 
-# Application Logs - Application Insights
+# Example Application Logs - Application Insights
+> The following are just a sample of how Application Insights can be used to monitor the eShop application. 
 ## Logging
 <img src="../.assets/appinsights-logging.png" width="1024px" />
 
@@ -39,9 +48,13 @@ TBD
 <img src="../.assets/appinsights-app-map.png" width="1024px" />
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
 
-# Traces - Application Insights
+# Example Distributive Traces - Application Insights
 <img src="../.assets/appinsights-dist-trace.png" width="1024px" />
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
+
+# Next Steps
+* :bulb: Explore the Grafana dashboards to view additional metrics and dashboards
+* :bulb: Create custom queries in Application Insights to monitor specific application logs
 
 # Navigation
 [Previous Section ⏪](./deployment.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./testing.md)
