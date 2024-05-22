@@ -19,5 +19,5 @@ kubectl --namespace kubecost-system port-forward svc/kubecost-system-kubecost-re
 <p align="right">(<a href="#cost-management">back to top</a>)</p>
 
 ## Navigation
-[Previous Section ⏪](./scaling.md)  ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./testing.md)
+[Previous Section ⏪](./scaling.md)  ‖ [Return to Main Index 🏠](../README.md) 
 <p align="right">(<a href="#cost-management">back to top</a>)</p>

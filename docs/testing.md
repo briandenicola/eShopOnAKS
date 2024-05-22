@@ -55,5 +55,5 @@ Testing and Troubleshooting
 <p align="right">(<a href="#testing-and-troubleshooting">back to top</a>)</p>
 
 # Navigation
-[Previous Section ⏪](./cost-management.md) ‖ [Return to Main Index 🏠](../README.md) 
+[Previous Section ⏪](./monitoring.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./scaling.md)
 <p align="right">(<a href="#testing-and-troubleshooting">back to top</a>)</p>

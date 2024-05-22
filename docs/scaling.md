@@ -34,5 +34,5 @@ spec:
       app: {{ .Chart.Name }} -->
 
 # Navigation
-[Previous Section ⏪](./monitoring.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./cost-management.md)
+[Previous Section ⏪](./testing.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./cost-management.md)
 <p align="right">(<a href="#scaling">back to top</a>)</p>
