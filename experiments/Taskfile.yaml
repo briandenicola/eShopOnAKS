@@ -40,7 +40,7 @@ tasks:
   experiments:
     desc: Creates an Chaos Engineering and updates AKS Firewall
     cmds:
-    #- az group deployment create -n ChaosExperiment -g {{.RG}} --template-file ./azurechaos.experiment.json --parameters aksClusterName={{.AKS}} --parameters aksClusterResourceGroup={{.AKS_RG}}
+    - az group deployment create -n ChaosExperiment -g {{.RG}} --template-file ./azurechaos.experiment.json --parameters aksClusterName={{.AKS}} --parameters aksClusterResourceGroup={{.AKS_RG}}
     - cd ../scripts; pwsh ./update-firewalls.ps1  -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -verbose
     - task: rbac
     vars:
