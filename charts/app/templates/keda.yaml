@@ -7,7 +7,6 @@ spec:
     hosts:
     - {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
     scaleTargetRef:
-        deployment: myAppDeployment
         service: webapp
         name: webapp       
         port: 80

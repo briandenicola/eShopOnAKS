@@ -7,40 +7,43 @@ Scaling
 * The application has a Pod Disruption Budget (PDB) defined to ensure that at least one pod is available at all times.
 * The PDB is defined in the Helm Chart and is applied to the application deployment.
 ```yaml
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: {{ .Chart.Name }}-pdb
-spec:
-  minAvailable: 1
-  selector:
-    matchLabels:
-      app: {{ .Chart.Name }}
+  apiVersion: policy/v1
+  kind: PodDisruptionBudget
+  metadata:
+    name: {{ .Chart.Name }}-pdb
+  spec:
+    minAvailable: 1
+    selector:
+      matchLabels:
+        app: {{ .Chart.Name }}
 ```
 <p align="right">(<a href="#scaling">back to top</a>)</p>
-
 
 # KEDA Scalers
 * KEDA is used to provide event-driven autoscaling for Kubernetes workloads that goes beyond the standard Kubernetes HPA options.
 * The eShop application has been deployed with a KEDA HTTP Scaler to scale the webapp service on the number of incoming HTTP requests.
 ```yaml
-kind: HTTPScaledObject
-apiVersion: http.keda.sh/v1alpha1
-metadata:
+  kind: HTTPScaledObject
+  apiVersion: http.keda.sh/v1alpha1
+  metadata:
     name: webapp
     namespace: {{ .Values.NAMESPACE }}
-spec:
+  spec:
     hosts:
     - {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
     scaleTargetRef:
-        name: webapp
-        kind: Deployment
-        apiVersion: apps/v1
-        service: webapp
-        port: {{ .Values.ISTIO.WEBAPP.PORT }}
+      service: webapp
+      name: webapp       
+      port: 80
     replicas:
-        min: 1
-        max: 5 -->
+      min: 1
+      max: 5
+    scaledownPeriod: 300
+    scalingMetric:
+      requestRate:
+        granularity: 1s
+        targetValue: 100
+        window: 1m      
 ```
 <p align="right">(<a href="#scaling">back to top</a>)</p>
 
