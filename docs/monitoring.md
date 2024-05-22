@@ -4,7 +4,8 @@ TBD
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
 
 # Open Telemetry Pipeline
-  <!-- pipelines:
+```yaml
+  pipelines:
     traces:
       receivers: [zipkin]
       processors: [batch]
@@ -16,15 +17,30 @@ TBD
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [debug,azuremonitor] -->
+      exporters: [debug,azuremonitor]
+```
 
-# Metrics
+# Metrics - Grafana Example Dashboards and Prometheus Queries 
+## Threads
+<img src="../.assets/grafana-threads.png" width="1024px" />
+
+## Memory Usage
+<img src="../.assets/grafana-memory.png" width="1024px" />
+
+## Network
+<img src="../.assets/grafana-network.png" width="1024px" />
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
 
-# Logs
+# Application Logs - Application Insights
+## Logging
+<img src="../.assets/appinsights-logging.png" width="1024px" />
+
+## Application Map
+<img src="../.assets/appinsights-app-map.png" width="1024px" />
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
 
-# Traces
+# Traces - Application Insights
+<img src="../.assets/appinsights-dist-trace.png" width="1024px" />
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
 
 # Navigation
