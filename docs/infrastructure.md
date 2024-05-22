@@ -95,7 +95,7 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 
 ## Redis
 * Redis can be deployed either in Azure as a managed service or as a pod in the AKS cluster to save costs.
-  * This is controled by the `DEPLOY_REDIS` variable in teh `Taskfile.yaml` file.
+  * This is controled by the `DEPLOY_REDIS` variable in the `Taskfile.yaml` file.
 * If deployed in Azure, Azure Redis Cache is deployed using the Premium SKU with a predefined capacity of 1 GB.
   * It is deployed using Private Link and only accessible from the Azure virtual network.
   * It is deployed into the Application Resource Group.
@@ -104,7 +104,7 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 
 ## PostgreSQL
 * PostgreSQL can be deployed either in Azure as a managed service or as a pod in the AKS cluster to save costs.
-  * This is controled by the `DEPLOY_SQL` variable in teh `Taskfile.yaml` file.
+  * This is controled by the `DEPLOY_SQL` variable in the `Taskfile.yaml` file.
 * The databases `webhooksdb`, `cataglogdb`, `identitydb`, and `orderingdb` are created in the PostgreSQL server.  
 * If deployed in Azure, PostgreSQL is deployed using the `GP_Standard_D2ds_v4` Flex Server SKU in Azure. The vector extension has been added to the server post creation.  
   * PostgreSQL is deployed into a delegated subnet and only accessible from the Azure virtual network.
@@ -113,10 +113,10 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
   * It is deployed into the Application Resource Group.  
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
-## Eventbus
-* Eventbus is the only infrastructure component that is not a managed service in Azure.
-* he Eventbus is a RabbitMQ cluster that is deployed to the AKS cluster.  The Eventbus is used for asynchronous communication between the microservices in the eShop application.  
-* The Eventbus is deployed using the Helm chart along with the rest of the eShop application under charts/app.
+## Event Bus
+* Event Bus is the only infrastructure component that is not a managed service in Azure.
+* Event Bus is a RabbitMQ cluster that is deployed to the AKS cluster.  The Event Bus is used for asynchronous communication between the microservices in the eShop application.  
+* The Event Bus is deployed using the Helm chart along with the rest of the eShop application under charts/app.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 # Example Setup

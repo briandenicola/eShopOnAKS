@@ -10,7 +10,7 @@ The accompanying e-book Dapr for .NET developers uses the sample code in this re
 Table of contents
 =================
 <!--ts-->
-* [Architecture](./docs/architecture.md#basket-api)
+* [Architecture](./docs/architecture.md#architecture)
     * [Technology Stack](./docs/architecture.md#technology-stack)
     * [Webapp](./docs/architecture.md#webapp)
     * [Services - Basket API](./docs/architecture.md#basket-api)

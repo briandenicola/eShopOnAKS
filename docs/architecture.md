@@ -6,8 +6,10 @@ Additional details about the eShop application architecture are provided at [Int
 
 # Technology Stack
 * The eShop application is built using .NET Core and Docker containers.
-* It is cross-platform and runs on Linux, Windows, and macOS but for this example eShop will use Kuberenetes as the application platform.
-* The services communicate with each other using REST APIs or other communication protocols.
+* It is cross-platform and runs on Linux, Windows, and macOS.
+* This example eShop will use Kuberenetes as the application platform.
+* Services communicate with each other using REST, graphQL, or gRPC APIs. Mostly REST.
+* Event Bus ([further info](https://github.com/ShawnMcGough/eShopOnAKS/blob/main/docs/infrastructure.md#eventbus))
 * GitHub Repository
     * The code for the eShop application is hosted on GitHub: [eShop GitHub Repository](https://github.com/briandenicola/eshop)
     * You can explore the repository to understand how the different services are organized and implemented.
@@ -15,30 +17,30 @@ Additional details about the eShop application architecture are provided at [Int
 
 # Services
 ## Identity API
-The identity-api handles user authentication and authorization using OIDC. It provides endpoints for user registration, login, and token management. Users are storaged in a local PostgreSQL database. 
+The identity-api handles user authentication and authorization using OIDC. It provides endpoints for user registration, login, and token management. Users are stored in a local PostgreSQL database. 
 The Identity API is accessible externally via the `https://identity.${APP_NAME}.${DOMAIN_ROOT}` URL and internally via `http://identity-api` URL.
 <p align="right">(<a href="#Architecture">back to top</a>)</p>
 
 ## Basket API
-The basket-api is a microservice responsible for managing the user’s shopping cart or basket. The basket-api uses Redis as the database to store the shopping cart information.The basket-api collaborates with other microservices through the Event bus for asynchronous communication.
-The Basket API is accessible through a cluster only endpoint  via via `http://basket-api`.
+The basket-api is a microservice responsible for managing the user’s shopping cart (aka basket). The basket-api uses Redis as the database to store the shopping cart information.The basket-api collaborates with other microservices through the Event Bus for asynchronous communication.
+The Basket API is accessible through a cluster only endpoint  via `http://basket-api`.
 
 <p align="right">(<a href="#Architecture">back to top</a>)</p>
 
 ## Catalog API
-The catalog-api is responsible for managing product information in the e-commerce system.  The catalog-api uses PostgreSQL as the database to store product information. The catalog-api integrates with the basket, order, and payment services through the Event bus for asynchronous communication.
-The Catalog API is accessible through a cluster only endpoint  via via `http://catalog-api`.
+The catalog-api is responsible for managing product information in the e-commerce system.  The catalog-api uses PostgreSQL as the database to store product information. The catalog-api integrates with the basket, order, and payment services through the Event Bus for asynchronous communication.
+The Catalog API is accessible through a cluster only endpoint  via `http://catalog-api`.
 
 <p align="right">(<a href="#Architecture">back to top</a>)</p>
 
 ## Ordering API
-The ordering-api manages the order processing workflow. It handles creating, updating, and retrieving orders. There are two components - ordering-api and the order-processor. The ordering-api is responsible for managing the order information, while the order-processor processes the order and sends it to the payment service for payment processing.  The ordering-api uses PostgreSQL as the database to store order information. The ordering-api integrates with the basket, catalog, and payment services through the Event bus for asynchronous communication.
-The Ordering API is accessible through a cluster only endpoint  via via `http://ordering-api`.
+The ordering-api manages the order processing workflow. It handles creating, updating, and retrieving orders. There are two components - ordering-api and the order-processor. The ordering-api is responsible for managing the order information, while the order-processor processes the order and sends it to the payment service for payment processing.  The ordering-api uses PostgreSQL as the database to store order information. The ordering-api integrates with the basket, catalog, and payment services through the Event Bus for asynchronous communication.
+The Ordering API is accessible through a cluster only endpoint  via `http://ordering-api`.
 <p align="right">(<a href="#Architecture">back to top</a>)</p>
 
 ## Payment API
-The payment service handles payment processing for completed orders It integrates with external payment gateways or services. It does not have any database dependencies. The payment service integrates with the ordering service through the Event bus for asynchronous communication.
-The Payment API is accessible through a cluster only endpoint  via via `http://payment-api`.
+The payment service handles payment processing for completed orders It integrates with external payment gateways or services. It does not have any database dependencies. The payment service integrates with the ordering service through the Event Bus for asynchronous communication.
+The Payment API is accessible through a cluster only endpoint  via `http://payment-api`.
 <p align="right">(<a href="#Architecture">back to top</a>)</p>
 
 ## Webapp
