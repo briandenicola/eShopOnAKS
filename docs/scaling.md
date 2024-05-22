@@ -48,7 +48,8 @@ spec:
 * :question: Given the current PDB configuration, what would happen using a Node Image update given the default number of replicas per pod?
 * :question: How would you update the application configuration?
 * :question: What other KEDA Scalers could be added to the application?
-* :question: How can you ensure pods are properly spread across AKS nodes or Azure Availablity Zones? :+1: Look into Pod Topology Spread Constraints.
+* :question: How can you ensure pods are properly spread across AKS nodes or Azure Availablity Zones? 
+  * <!-- :+1: _Hint: Pod Topology Spread Constraints_ -->
 <p align="right">(<a href="#scaling">back to top</a>)</p>
 
 # Navigation
