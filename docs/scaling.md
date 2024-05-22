@@ -49,7 +49,7 @@ spec:
 * :question: How would you update the application configuration?
 * :question: What other KEDA Scalers could be added to the application?
 * :question: How can you ensure pods are properly spread across AKS nodes or Azure Availablity Zones? 
-  * <!-- :+1: _Hint: Pod Topology Spread Constraints_ -->
+  <!-- * :+1: _Hint: Pod Topology Spread Constraints_ -->
 <p align="right">(<a href="#scaling">back to top</a>)</p>
 
 # Navigation
