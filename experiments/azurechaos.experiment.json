@@ -71,11 +71,6 @@
                                 "name": "Ruining eShop",
                                 "actions": [
                                     {
-                                        "type": "delay",
-                                        "duration": "PT2M",
-                                        "name": "urn:csci:microsoft:chaosStudio:TimedDelay/1.0"
-                                    },
-                                    {
                                         "type": "continuous",
                                         "selectorId": "35f0f478-a339-40b0-97e1-33168775be20",
                                         "duration": "PT10M",
@@ -99,7 +94,7 @@
                                         "parameters": [
                                             {
                                                 "key": "jsonSpec",
-                                                "value": "{\"action\":\"delay\",\"mode\":\"one\",\"selector\":{\"namespaces\":[\"eshop\"],\"labelSelectors\":{\"service\":\"basket-api\"}},\"delay\":{\"latency\":\"10ms\",\"correlation\":\"100\",\"jitter\":\"0ms\"}}"
+                                                "value": "{\"action\":\"delay\",\"mode\":\"one\",\"selector\":{\"namespaces\":[\"eshop\"],\"labelSelectors\":{\"service\":\"identity-api\"}},\"delay\":{\"latency\":\"1000ms\",\"correlation\":\"100\",\"jitter\":\"0ms\"}}"
                                             }
                                         ],
                                         "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:networkChaos/2.1"

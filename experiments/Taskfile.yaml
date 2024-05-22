@@ -17,13 +17,13 @@ tasks:
     cmds:
     - helm repo add chaos-mesh https://charts.chaos-mesh.org
     - helm repo update
-    - kubectl create ns chaos-testing
-    - helm install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+    - kubectl create ns chaos-testing || true
+    - helm upgrade -i chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
     vars:
       AKS:
         sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
       RG: 
-        sh: az aks list --query "[?name=='{{.AKS}}']" | jq -r ".[].resourceGroup"
+        sh: terraform -chdir=../infrastructure output -raw AKS_RESOURCE_GROUP
 
   targets:
     desc: On boards Chaos Extension onto AKS Cluster Resource
@@ -33,18 +33,38 @@ tasks:
       AKS:
         sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
       RG: 
-        sh:  terraform -chdir=../infrastructure output -raw AKS_RESOURCE_GROUP
+        sh: terraform -chdir=../infrastructure output -raw AKS_RESOURCE_GROUP
       REGION:
-        sh:  terraform -chdir=../infrastructure output -raw CHAOS_RESOURCE_LOCATION        
+        sh: terraform -chdir=../infrastructure output -raw CHAOS_RESOURCE_LOCATION        
 
   experiments:
-    desc: Creates an Chaos Engineering
+    desc: Creates an Chaos Engineering and updates AKS Firewall
     cmds:
-    - az group deployment create -n ChaosExperiment -g {{.RG}} --template-file ./azurechaos.experiment.json --parameters aksClusterName={{.AKS}} --parameters aksClusterResourceGroup={{.AKS_RG}} 
+    #- az group deployment create -n ChaosExperiment -g {{.RG}} --template-file ./azurechaos.experiment.json --parameters aksClusterName={{.AKS}} --parameters aksClusterResourceGroup={{.AKS_RG}}
+    - cd ../scripts; pwsh ./update-firewalls.ps1  -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -verbose
+    - task: rbac
     vars:
       AKS:
         sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
       AKS_RG:
         sh: terraform -chdir=../infrastructure output -raw AKS_RESOURCE_GROUP
       RG: 
-        sh:  terraform -chdir=../infrastructure output -raw CHAOS_RESOURCE_GROUP
+        sh: terraform -chdir=../infrastructure output -raw CHAOS_RESOURCE_GROUP
+      APP_NAME: 
+        sh: terraform -chdir=../infrastructure output -raw APP_NAME
+      SUBSCRIPTION_NAME:
+        sh: az account show --query name -o tsv    
+
+  rbac:
+    desc: Assign Chaos Admin Rights to Cluster
+    cmds:
+    - az role assignment create --assignee "{{.CHAOS_ID}}" --role "Azure Kubernetes Service Cluster Admin Role" --scope {{.SCOPE}} 
+    vars:
+      CHAOS_ID:
+        sh: az resource list --name 'eshop-experiments' --query "[?identity.type=='SystemAssigned'].{principalId:identity.principalId}" --output tsv
+      AKS:
+        sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
+      SCOPE: 
+        sh: az aks list --query "[?name=='{{.AKS}}'].{id:id}" -o tsv
+      
+ 

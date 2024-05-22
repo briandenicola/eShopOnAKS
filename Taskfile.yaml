@@ -107,7 +107,7 @@ tasks:
     desc: Update firewall rules for Keyvault, AKS, and ACR
     dir: ./scripts
     cmds:
-    - bash ./update-firewalls.ps1  -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -verbose
+    - pwsh ./update-firewalls.ps1  -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -verbose
     vars:
       APP_NAME: 
         sh: terraform -chdir=../infrastructure output -raw APP_NAME
