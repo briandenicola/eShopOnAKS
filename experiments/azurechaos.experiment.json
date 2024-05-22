@@ -7,14 +7,14 @@
         },
         "aksClusterResourceGroup": {
             "type": "String"
-        },        
+        },
         "location": {
             "type": "string",
             "defaultValue": "westus",
             "metadata": {
                 "description": "Location"
             }
-        }        
+        }
     },
     "variables": {
         "experimentName": "eshop-experiments",
@@ -22,89 +22,74 @@
         "serviceChaosMeshResourceId": "[concat( variables('aksResourceId'),'/providers/Microsoft.Chaos/targets/Microsoft-AzureKubernetesServiceChaosMesh')]"
     },
     "resources": [
-        {
-            "type": "Microsoft.Chaos/experiments",
-            "apiVersion": "2024-01-01",
-            "name": "[variables('experimentName')]",
-            "location": "[parameters('location')]",
-            "identity": {
-                "type": "SystemAssigned"
-            },
-            "properties": {
-                "selectors": [
-                    {
-                        "type": "List",
-                        "id": "4f2b278f-8ec5-4839-b046-2606971c2f3f",
-                        "targets": [
-                            {
-                                "id": "[variables('serviceChaosMeshResourceId')]",
-                                "type": "ChaosTarget"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "List",
-                        "id": "8f6b49bd-648e-4dd0-9047-e2d8c480be4d",
-                        "targets": [
-                            {
-                                "id": "[variables('serviceChaosMeshResourceId')]",
-                                "type": "ChaosTarget"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "List",
-                        "id": "35f0f478-a339-40b0-97e1-33168775be20",
-                        "targets": [
-                            {
-                                "id": "[variables('serviceChaosMeshResourceId')]",
-                                "type": "ChaosTarget"
-                            }
-                        ]
-                    }
-                ],
-                "steps": [
-                    {
-                        "name": "Pod Chaos...",
-                        "branches": [
-                            {
-                                "name": "Ruining eShop",
-                                "actions": [
-                                    {
-                                        "type": "continuous",
-                                        "selectorId": "35f0f478-a339-40b0-97e1-33168775be20",
-                                        "duration": "PT10M",
-                                        "parameters": [
-                                            {
-                                                "key": "jsonSpec",
-                                                "value": "{\"action\":\"pod-failure\",\"mode\":\"all\",\"duration\":\"600s\",\"selector\":{\"namespaces\":[\"eshop\"]}}"
-                                            }
-                                        ],
-                                        "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1"
-                                    },
-                                    {
-                                        "type": "delay",
-                                        "duration": "PT2M",
-                                        "name": "urn:csci:microsoft:chaosStudio:TimedDelay/1.0"
-                                    },
-                                    {
-                                        "type": "continuous",
-                                        "selectorId": "8f6b49bd-648e-4dd0-9047-e2d8c480be4d",
-                                        "duration": "PT10M",
-                                        "parameters": [
-                                            {
-                                                "key": "jsonSpec",
-                                                "value": "{\"action\":\"delay\",\"mode\":\"one\",\"selector\":{\"namespaces\":[\"eshop\"],\"labelSelectors\":{\"service\":\"identity-api\"}},\"delay\":{\"latency\":\"1000ms\",\"correlation\":\"100\",\"jitter\":\"0ms\"}}"
-                                            }
-                                        ],
-                                        "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:networkChaos/2.1"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
+    {
+        "type": "Microsoft.Chaos/experiments",
+        "apiVersion": "2024-01-01",
+        "name": "[variables('experimentName')]",
+        "location": "[parameters('location')]",
+        "identity": {
+            "type": "SystemAssigned"
+        },
+        "properties": {
+            "selectors": [
+                {
+                    "type": "List",
+                    "id": "4f2b278f-8ec5-4839-b046-2606971c2f3f",
+                    "targets": [{
+                        "id": "[variables('serviceChaosMeshResourceId')]",
+                        "type": "ChaosTarget"
+                    }]
+                },
+                {
+                    "type": "List",
+                    "id": "8f6b49bd-648e-4dd0-9047-e2d8c480be4d",
+                    "targets": [{
+                        "id": "[variables('serviceChaosMeshResourceId')]",
+                        "type": "ChaosTarget"
+                    }]
+                },
+                {
+                    "type": "List",
+                    "id": "35f0f478-a339-40b0-97e1-33168775be20",
+                    "targets": [{
+                        "id": "[variables('serviceChaosMeshResourceId')]",
+                        "type": "ChaosTarget"
+                    }]
+                }
+            ],
+            "steps": [{
+                "name": "Pod Chaos...",
+                "branches": [{
+                    "name": "Ruining eShop",
+                    "actions": [
+                        {
+                            "type": "continuous",
+                            "selectorId": "35f0f478-a339-40b0-97e1-33168775be20",
+                            "duration": "PT10M",
+                            "parameters": [{
+                                "key": "jsonSpec",
+                                "value": "{\"action\":\"pod-failure\",\"mode\":\"all\",\"duration\":\"600s\",\"selector\":{\"namespaces\":[\"eshop\"]}}"
+                            }],
+                            "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1"
+                        },
+                        {
+                            "type": "delay",
+                            "duration": "PT2M",
+                            "name": "urn:csci:microsoft:chaosStudio:TimedDelay/1.0"
+                        },
+                        {
+                            "type": "continuous",
+                            "selectorId": "8f6b49bd-648e-4dd0-9047-e2d8c480be4d",
+                            "duration": "PT10M",
+                            "parameters": [{
+                                "key": "jsonSpec",
+                                "value": "{\"action\":\"delay\",\"mode\":\"one\",\"selector\":{\"namespaces\":[\"eshop\"],\"labelSelectors\":{\"service\":\"identity-api\"}},\"delay\":{\"latency\":\"1000ms\",\"correlation\":\"100\",\"jitter\":\"0ms\"}}"
+                            }],
+                            "name": "urn:csci:microsoft:azureKubernetesServiceChaosMesh:networkChaos/2.1"
+                        }
+                    ]
+                }]
+            }]
         }
-    ]
+    }]
 }
