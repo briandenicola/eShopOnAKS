@@ -52,7 +52,7 @@ Monitoring
 <img src="../.assets/appinsights-dist-trace.png" width="1024px" />
 <p align="right">(<a href="#monitoring">back to top</a>)</p>
 
-# Next Steps
+# Optional Next Steps
 * :bulb: Explore the Grafana dashboards to view additional metrics and dashboards
 * :bulb: Create custom queries in Application Insights to monitor specific application logs
 

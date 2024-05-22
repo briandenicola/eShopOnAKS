@@ -24,7 +24,7 @@ Infrastructure
   az aks get-credentials -g {{.AKS_NAME}} -n {{.RG}}
 ```
 
-## Next Steps
+## Optional Next Steps
 * :bulb: eShop has an OpenAI component that can be deployed. What would be the steps to deploy and configure this component?
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 

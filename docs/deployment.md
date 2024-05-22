@@ -45,7 +45,7 @@ Deployment
     --set DEPLOY.SQL="$deploy_sql" `    
     ../charts/app
 ```
-## Next Steps
+## Optional Next Steps
 * :bulb: eShop has all configurations stored in as AKS Configmaps. How could these be replaced with Azure App Configuration?
 
 # Components
