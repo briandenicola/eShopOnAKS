@@ -49,6 +49,8 @@ Testing and Troubleshooting
 
 ## Completion
 <img src="../.assets/chaos-complete.png" width="1024px" />
+
+## Next Steps
 * :question: What other steps or branches could be added to the Chaos Experiment?
 <p align="right">(<a href="#testing-and-troubleshooting">back to top</a>)</p>
 
