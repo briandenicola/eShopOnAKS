@@ -14,8 +14,7 @@ Testing and Troubleshooting
 <img src="../.assets/playwright-gha-overview.png" width="1024px" />
 
 ## GitHub Actions - Kick Off
->> - **Note:** Change the URL to your specific URL for your deployment of the eShop application.
-
+* Change the URL to your specific URL for your deployment of the eShop application.
 <img src="../.assets/playwright-gha-kickoff.png" />
 
 ## GitHub Actions - Test Results
@@ -31,15 +30,15 @@ Testing and Troubleshooting
     > cd ./experiments
     > task up
 ```
->> - **Note:** The above command will deploy the Chaos toolkit to AKS and configure the proper access to the cluster.
->> - **Note:** The command will also create a basic Chaos experiment to simulate network delays and pods failures in the eShop application.
+## Notes
+- The above command will deploy the Chaos toolkit to AKS and configure the proper access to the cluster.
+- The command will also create a basic Chaos experiment to simulate network delays and pods failures in the eShop application.
 
 ## Run
 * To trigger the experiment, log into the Azure Portal and navigate to the Chaos Experiments resource group, select the Chaos Experiment and click on the "Run" button.
 * During the experiment, run `kubectl --namespace eshop -o wide -w` to monitor the status of the pods.
 * You will see pods fail, and enter a "CrashLoopBackOff" state.  
 * :question: How do you bring the pods back to a healthy state?
-
 <img src="../.assets/chaos-run.png" width="1024px" />
 
 ## Network Delays
@@ -50,9 +49,7 @@ Testing and Troubleshooting
 
 ## Completion
 <img src="../.assets/chaos-complete.png" width="1024px" />
->> - :question: What other steps or branches could be added to the Chaos Experiment?
-
-
+* :question: What other steps or branches could be added to the Chaos Experiment?
 <p align="right">(<a href="#testing-and-troubleshooting">back to top</a>)</p>
 
 # Navigation
