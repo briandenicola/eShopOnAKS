@@ -8,8 +8,8 @@ env:
   DEFAULT_REGION: "westus3"
   COUNT: 2
   DOMAIN_ROOT: "bjdazure.tech"
-  DEPLOY_SQL: true
-  DEPLOY_REDIS: true
+  DEPLOY_SQL: false
+  DEPLOY_REDIS: false
 
 tasks:
   default: 
@@ -57,7 +57,7 @@ tasks:
     desc: Gets credential file for newly created AKS cluster
     cmds:
     - az aks get-credentials -g {{.RG}} -n {{.AKS}} --overwrite-existing
-    - kubelogin convert-kubeconfig -l azurecli
+    - sed -i s/devicecode/azurecli/g ~/.kube/config
     vars:
       RG: 
         sh: terraform -chdir=./infrastructure output -raw AKS_RESOURCE_GROUP
