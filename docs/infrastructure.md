@@ -23,6 +23,9 @@ Infrastructure
   terraform -chdir=./infrastructure apply -var "region={{.REGION}}"  -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}"  -var "tags={{.TITLE}}"
   az aks get-credentials -g {{.AKS_NAME}} -n {{.RG}}
 ```
+
+## Next Steps
+* :bulb: eShop has an OpenAI component that can be deployed. What would be the steps to deploy and configure this component?
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 # Infrastructure Components

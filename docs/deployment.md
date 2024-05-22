@@ -45,6 +45,8 @@ Deployment
     --set DEPLOY.SQL="$deploy_sql" `    
     ../charts/app
 ```
+## Next Steps
+* :bulb: eShop has all configurations stored in as AKS Configmaps. How could these be replaced with Azure App Configuration?
 
 # Components
 ## Helm Chart
@@ -105,7 +107,6 @@ Deployment
 
 ## Secrets & ConfigMaps
 * Each service has a dedicated Config Map which is used to store the configuration settings for the particular service.
-    * An exercise for the reader is to replace the Config Maps with Azure App Configuration.
 * The deployment will create a set of Kubernetes Secrets that are used by the application.
     * catalogdb-connection-string
     * identitydb-connection-string
