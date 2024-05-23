@@ -12,14 +12,14 @@ Post Cluster Configuration
 ## :heavy_check_mark: Deploy Task Steps
 - :one: `task gateway`  - Update configurations with proper values Key
 - :two: `task certs`    - Gets the Challenge Information required for Cert Manager
-- :three: `vi /charts/eshop-k8s-extensions/values.yaml` - Update the Helm Chart values.yaml file with the challenge settings
+- :three: `edit ~/charts/eshop-k8s-extensions/values.yaml` - Update the Helm Chart values.yaml file with the challenge settings
 - :four: `task gateway`  - Run a second time after updating the Helm Chart values.yaml
 
 ## :heavy_check_mark: Manual Configuration Steps
 ```pwsh
   helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS={{.APP_NAME}}@bjdazure.tech --set APP_NAME={{.APP_NAME}} --set WEBAPP_DOMAIN={{.APP_NAME}}.{{.DOMAIN_ROOT}} --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
   pwsh ./get-cert-manager-challenges.ps1
-  vi /charts/eshop-k8s-extensions/values.yaml
+  edit ~/charts/eshop-k8s-extensions/values.yaml
   helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS={{.APP_NAME}}@bjdazure.tech --set APP_NAME={{.APP_NAME}} --set WEBAPP_DOMAIN={{.APP_NAME}}.{{.DOMAIN_ROOT}} --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
 ```
 <p align="right">(<a href="#post-cluster-configuration">back to top</a>)</p>
