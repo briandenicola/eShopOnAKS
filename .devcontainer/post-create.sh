@@ -43,9 +43,4 @@ tar -xf /tmp/flux2.tar.gz -C /tmp
 sudo mv /tmp/flux /usr/local/bin
 rm -f /tmp/flux2.tar.gz
 
-#Install az extensions
-sudo az aks install-cli -y
-sudo az extension add --name application-insights -y
-sudo az extension add --name aks-preview -y
-
 echo "$(date)    post-create complete" >> ~/status
