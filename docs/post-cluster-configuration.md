@@ -12,7 +12,8 @@ Post Cluster Configuration
 ## :heavy_check_mark: Deploy Task Steps
 - :one: `task gateway`  - Update configurations with proper values Key
 - :two: `task certs`    - Gets the Challenge Information required for Cert Manager
-- :three: `task gateway`  - Run a second time after updating the Helm Chart values.yaml file with the challenge settings
+- :three: `vi /charts/eshop-k8s-extensions/values.yaml` - Update the Helm Chart values.yaml file with the challenge settings
+- :four: `task gateway`  - Run a second time after updating the Helm Chart values.yaml
 
 ## :heavy_check_mark: Manual Configuration Steps
 ```pwsh
