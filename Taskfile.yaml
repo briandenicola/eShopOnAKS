@@ -107,7 +107,7 @@ tasks:
     desc: Update firewall rules for Keyvault, AKS, and ACR
     dir: ./scripts
     cmds:
-    - pwsh ./update-firewalls.ps1  -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -verbose
+    - pwsh ./update-firewalls.ps1 -AppName {{.APP_NAME}} -SubscriptionName {{.SUBSCRIPTION_NAME}} -verbose
     vars:
       APP_NAME: 
         sh: terraform -chdir=../infrastructure output -raw APP_NAME
@@ -118,7 +118,7 @@ tasks:
     desc: Gets the IP Addresss of the Istio Gateway
     dir: ./scripts
     cmds:
-    - echo 'Manually create an DNS (A) Record "*.{{.APP_NAME}}.{{.DOMAIN_ROOT}}"" resolving to {{.IP}}'
+    - echo 'Manually create an DNS (A) Record "*.{{.APP_NAME}}.{{.DOMAIN_ROOT}}" resolving to {{.IP}}'
     vars:
       APP_NAME: 
         sh: terraform -chdir=../infrastructure output -raw APP_NAME
