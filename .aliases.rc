@@ -11,4 +11,4 @@ alias git-commitversion='git rev-parse HEAD | head -c 8'
 alias istio-version="kubectl --namespace aks-istio-system get deployments -o jsonpath='{.items[0].metadata.labels.istio\.io/rev}'"
 alias git-commit='bash ~/scripts/Miscellaneous/git-commit.sh'
 alias rg='az group list -o table'
-alias my-pip='curl -m 1 -s ifconfig.me'
+alias my-pip='curl -m 1 -s ifconfig.me;echo'

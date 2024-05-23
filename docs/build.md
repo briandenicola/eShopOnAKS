@@ -7,7 +7,8 @@ Build
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
-- :one: `task build`     - Builds and pushes the containers
+- :one: `task build -- ${{eSHOP_SRC_DIR}}`     - Builds and pushes the containers. `eSHOP_SRC_DIR` defaults to ~/code/eshop if not passed on the cli
+  * Example `task build -- /workspaces/eShop` - if you are working on a Github Codespace
 <p align="right">(<a href="#build">back to top</a>)</p>
 
 ## :heavy_check_mark: Manual Build Steps

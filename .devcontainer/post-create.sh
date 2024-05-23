@@ -5,8 +5,8 @@
 echo "$(date)    post-create start" >> ~/status
 
 #Install jq
-apt update
-apt install -y jq
+sudo apt update
+sudo apt install -y jq
 
 #Install Helm
 curl -fsS "https://get.helm.sh/helm-v3.10.2-linux-amd64.tar.gz" -o /tmp/helm.tar.gz
