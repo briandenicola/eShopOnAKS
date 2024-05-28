@@ -112,8 +112,8 @@ data:
 
       azuremonitor:
         connection_string: {{ .Values.APP_INSIGHTS.CONNECTION_STRING  }}
-        maxbatchsize: 100
-        maxbatchinterval: 10s
+        maxbatchsize: 10
+        maxbatchinterval: 5s
 
     service:
       extensions: [health_check]
