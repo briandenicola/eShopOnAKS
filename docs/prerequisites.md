@@ -67,9 +67,14 @@ The following tools and build environment has been tested to work on Linux and o
 
 Github Codespaces
 =============
-Github Codespaces is a cloud-based development environment that you can access from anywhere.  It is a great way to get started with the eShop project without having to install any tools on your local machine.  You can use the following steps to get started with Github Codespaces:
+Github Codespaces is a cloud-based development environment that you can access from anywhere.  It is a simple to get started with the eShop project without having to install any tools on your local machine.  
+The CodeSpace environment has been configured with the with [Github Copilot](https://github.com/features/copilot) Visual Studio Code extension. Copilot can help you write code, suggest code completions, and even write entire functions for you.  It is a great tool to help you get started with the eShop project.
+
+You can use the following link to launch a Codespaces configured for this project:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
+
+> * **Note:** _Codespaces and Copilot require additional licenses and fees.  Please review the [GitHub Pricing](https://github.com/pricing)_
 <p align="right">(<a href="#prerequisites">back to top</a>)</p>
 
 Firewall
