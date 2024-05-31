@@ -26,6 +26,14 @@ Build
   dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/Webhooks.API
 ```
 
+## Optional Next Steps
+* :bulb: Enable [Azure Defender for Container](https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings) then push the containers again to your Container Registry. Review any [security recommendations](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction).  How would you resolve the recommendations?
+
+![defender](../.assets/defender.png)
+
+<p align="right">(<a href="#build">back to top</a>)</p>
+
+
 # Example Build
 ```pwsh
   > task build
