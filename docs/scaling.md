@@ -52,7 +52,10 @@ Scaling
 * :question: How would you update the application configuration?
 * :question: What other KEDA Scalers could be added to the application?
 * :question: How can you ensure pods are properly spread across AKS nodes or Azure Availablity Zones? 
-  <!-- * :+1: _Hint: Pod Topology Spread Constraints_ -->
+<!-- * :+1: _Hint: Pod Topology Spread Constraints_ -->
+* :question: How resilent is this application design to an Azure Regional Outage? How to improve the design for multiple regions?
+   * Hint: [Azure Mission Critical](https://github.com/Azure/Mission-Critical-Connected)
+  
 <p align="right">(<a href="#scaling">back to top</a>)</p>
 
 # Navigation
