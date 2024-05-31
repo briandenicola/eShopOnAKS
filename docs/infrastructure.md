@@ -5,7 +5,7 @@ Infrastructure
 * Afater the infrastructure is deployed, the `task creds` command is used to get the AKS credentials and the `task dns` command is display the data needed for the DNS record that needs to be created manually.
 * Terraform will generate a random name that is used as the foundation for all the resources created in Azure.  The random name is generated using the `random_pet` and `random_integer` resources in Terraform.  This value should be saved as it is used throughout the deployment. The example name `airedale-60249` is used in the rest of the documents
 * The infrastructure deploy can take up to 30 minutes to complete.
-* The infrastructure is deployed to a single Azure region (defaults to `westus3`) and consists of the following components:
+* The infrastructure is deployed to a single Azure region (defaults to `westus3`)
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
