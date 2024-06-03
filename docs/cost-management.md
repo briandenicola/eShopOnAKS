@@ -1,6 +1,8 @@
 Cost Management
 =============
-[Cost management](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/app-platform/aks/cost-governance-with-kubecost) is an important aspect of managing your Kubernetes cluster. In this section, we will explore how to manage costs of resources within your cluster using the [Kubecost](https://www.kubecost.com/products/self-hosted) extension for AKS.
+[Cost management](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/app-platform/aks/cost-governance-with-kubecost) is an important aspect of managing your Kubernetes cluster. In this section, we will explore how to manage costs of resources within your cluster using [Kubecost](https://www.kubecost.com/products/self-hosted) for AKS.  
+
+> **Note**: _AKS does have a managed Kubecost extension but it is only available for Enterprise Agreement and Microsoft Customer Agreement subscription types._
 
 Kubecost exposes a Grafana Dasboard to view the cost details. To view the dashboard, portforward the Grafana service using the following command:
 ```pwsh

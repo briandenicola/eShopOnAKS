@@ -43,7 +43,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   kubernetes_version           = local.kubernetes_version
   image_cleaner_enabled        = true
   image_cleaner_interval_hours = 48
-  cost_analysis_enabled        = true
+  #cost_analysis_enabled        = true
 
   api_server_access_profile {
     vnet_integration_enabled = true
@@ -149,6 +149,12 @@ resource "azurerm_kubernetes_cluster" "this" {
   service_mesh_profile {
     mode                             = "Istio"
     external_ingress_gateway_enabled = true
+  }
+
+  storage_profile {
+    blob_driver_enabled = true
+    disk_driver_enabled = true
+    file_driver_enabled = true
   }
 
 }
