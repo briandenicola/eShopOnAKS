@@ -5,15 +5,15 @@ Post Cluster Configuration
   * [Cert Manager Configuration](#cert-manager-configuration)
   * [Istio Ingress Gateway Configuration](#istio-ingress-gateway-configuration)
   * [Open Telemetry Configuration](#open-telemetry-configuration)
-* The configurations are deployed via Helm Charts.  It can be found in the [eshop-k8s-extensions](../charts/eshop-k8s-extensions) folder and triggered with `task gateway` and `task certs`.  
-* The `task gateway` puls the required values from Terraform's output vaiables and passes them along to the Helm Chart.
+* The configurations are deployed via Helm Charts.  It can be found in the [eshop-k8s-extensions](../charts/eshop-k8s-extensions) folder and triggered with `task cluster-config` and `task certs`.  
+* The `task cluster-config` puls the required values from Terraform's output vaiables and passes them along to the Helm Chart.
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
-- :one: `task gateway`  - Update configurations with proper values Key
+- :one: `task cluster-config`  - Update configurations with proper values Key
 - :two: `task certs`    - Gets the Challenge Information required for Cert Manager
 - :three: `edit ~/charts/eshop-k8s-extensions/values.yaml` - Update the Helm Chart values.yaml file with the challenge settings
-- :four: `task gateway`  - Run a second time after updating the Helm Chart values.yaml
+- :four: `task cluster-config`  - Run a second time after updating the Helm Chart values.yaml
 
 ## :heavy_check_mark: Manual Configuration Steps
 ```pwsh
@@ -29,14 +29,14 @@ Post Cluster Configuration
 * Cert Manager is configured to issue a certificate with the WEBAPP_URL  and the SHOP_URL DNS names
 * The certificates are stored in the 'istio-ingress-tls' secret in the 'aks-istio-ingress' namespace.
 * Cert Manager is configured to use Let's Encrypt as the certificate issuer with HTTP01 domain validation
-* Due to a quirk in how Cert Manager works, the `task gateway` has to be run twice.
+* Due to a quirk in how Cert Manager works, the `task cluster-config` has to be run twice.
 * During the first deployment of the Helm chart, Cert Manager will spin up pods to handle the HTTP01 challenge and will create a Ingress configuration for each challenge.
 * The `task certs` command will then get the challenge configuration that Cert Manager created, which will be used to manually updated in the [Helm Chart values.yaml](../charts/eshop-k8s-extensions/values.yaml) file:
     * IDENTITY_URL_SERVICE_NAME   - The service name for the identity.${APP_NAME}.${DOMAIN_ROOT} challenge
     * IDENTITY_URL_CHALLENGE_PATH - The Ingress Path for the identity.${APP_NAME}.${DOMAIN_ROOT} challenge
     * SHOP_URL_SERVICE_NAME       - The service name for the shop.${APP_NAME}.${DOMAIN_ROOT} challenge
     * SHOP_URL_CHALLENGE_PATH     - The Ingress Path for the shop.${APP_NAME}.${DOMAIN_ROOT} challenge
-* `task gateway` will then be run again to update the Helm Chart with the challenge settings allowing Let's Encrypt to valiate domain ownership and issue the certificate.
+* `task cluster-config` will then be run again to update the Helm Chart with the challenge settings allowing Let's Encrypt to valiate domain ownership and issue the certificate.
   * After the certificate is issued, then the Ingress and validation pods are removed.
 <p align="right">(<a href="#post-cluster-configuration">back to top</a>)</p>
 
@@ -93,8 +93,8 @@ spec:
 
 # Example Configuration
 ```pwsh
-  > task gateway
-  task: [gateway] helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS=airedale-60249@bjdazure.tech --set APP_NAME=airedale-60249 --set WEBAPP_DOMAIN=airedale-60249.bjdazure.tech --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
+  > task cluster-config
+  task: [cluster-config] helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS=airedale-60249@bjdazure.tech --set APP_NAME=airedale-60249 --set WEBAPP_DOMAIN=airedale-60249.bjdazure.tech --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
   Release "eshop-k8s-extensions" does not exist. Installing it now.
   NAME: eshop-k8s-extensions
   LAST DEPLOYED: Mon May 20 09:11:07 2024

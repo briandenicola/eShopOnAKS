@@ -64,8 +64,8 @@ tasks:
       AKS: 
         sh: terraform -chdir=./infrastructure output -raw AKS_CLUSTER_NAME
 
-  gateway:
-    desc: Update configurations with proper values Key
+  cluster-config:
+    desc: Update cluster configurations
     cmds:
     - helm upgrade --install eshop-k8s-extensions
       --set CERT.EMAIL_ADDRESS={{.APP_NAME}}@{{.DOMAIN_ROOT}}

@@ -111,7 +111,7 @@ data:
         verbosity: detailed
 
       azuremonitor:
-        connection_string: {{ .Values.APP_INSIGHTS.CONNECTION_STRING  }}
+        connection_string: {{ .Values.APP_INSIGHTS.CONNECTION_STRING | quote  }}
         maxbatchsize: 10
         maxbatchinterval: 5s
 
@@ -119,7 +119,7 @@ data:
       extensions: [health_check]
       pipelines:
         traces:
-          receivers: [zipkin]
+          receivers: [otlp,zipkin]
           processors: [batch]
           exporters: [debug,azuremonitor]
         metrics:

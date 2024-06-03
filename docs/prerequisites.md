@@ -45,7 +45,7 @@ The following tools and build environment has been tested to work on Linux and o
     * `task deploy`             : Deploys application via Helm
     * `task dns`                : Gets the IP Addresss of the Istio Gateway
     * `task down`               : Destroys all Azure resources and cleans up Terraform
-    * `task gateway`            : Update configurations with proper values Key
+    * `task cluster-config`     : Update cluster configurations
     * `task up`                 : Creates Azure infrastructure and deploys application code
     * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
 
