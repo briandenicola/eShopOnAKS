@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: payment-cm
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
     app: {{ .Chart.Name }}
     service: payment-api
@@ -20,7 +20,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: payment-api
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
     app: {{ .Chart.Name }}
     service: payment-api
@@ -74,7 +74,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: eshop-eventbus-secrets
-                key:  RABBITMQ_CONNECTION_STRING                 
+                key:  RABBITMQ_CONNECTION_STRING
+          - name: ConnectionStrings__orderingdb
+            valueFrom:
+              secretKeyRef:
+                name: eshop-sql-secrets 
+                key: orderingdb-connection-string                                 
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"
