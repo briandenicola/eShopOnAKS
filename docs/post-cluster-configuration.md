@@ -128,10 +128,10 @@ spec:
           SERVICE_NAME: cm-acme-http-solver-twsdd
           CHALLENGE_PATH: /.well-known/acme-challenge/FdND99zvAOuooTXxkMkRQSlh7lfbjs_dedorIFWhpDu
 
-  Please re-run `task gateway` after updating the Helm Chart values.yaml file with the challenge settings.
+  Please re-run `task cluster-config` after updating the Helm Chart values.yaml file with the challenge settings.
 
-  > task gateway
-  task: [gateway] helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS=airedale-60249@bjdazure.tech --set APP_NAME=airedale-60249 --set WEBAPP_DOMAIN=airedale-60249.bjdazure.tech --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
+  > task cluster-config
+  task: [cluster-config] helm upgrade --install eshop-k8s-extensions --set CERT.EMAIL_ADDRESS=airedale-60249@bjdazure.tech --set APP_NAME=airedale-60249 --set WEBAPP_DOMAIN=airedale-60249.bjdazure.tech --set APP_INSIGHTS.CONNECTION_STRING="InstrumentationKey=REDACTED;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=REDACTED" ./charts/eshop-k8s-extensions
   Release "eshop-k8s-extensions" has been upgraded. Happy Helming!
   NAME: eshop-k8s-extensions
   LAST DEPLOYED: Mon May 20 09:15:06 2024

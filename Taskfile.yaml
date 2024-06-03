@@ -73,6 +73,7 @@ tasks:
       --set WEBAPP_DOMAIN={{.WEBAPP_DOMAIN}} 
       --set APP_INSIGHTS.CONNECTION_STRING="{{.AI_CONNECTION_STRING}}"
       ./charts/eshop-k8s-extensions 
+    - kubectl -n otel-system rollout restart deploy otel-collector
     vars:
       APP_NAME:
         sh: terraform -chdir=./infrastructure output -raw APP_NAME
