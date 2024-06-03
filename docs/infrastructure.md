@@ -9,8 +9,8 @@ Infrastructure
   * This can be controlled by the `DEPLOY_SQL` and `DEPLOY_REDIS` variables in the `Taskfile.yaml` file.
 * The infrastructure is deployed to a single Azure region (defaults to `westus3`)
 
+### Infrastructure Components
 <p style="text-align:center;">
-> _**Note**: A reminder on what is being deployed_
     <img src="../.assets/eshop.png" width="1024px" />
 </p>
 
