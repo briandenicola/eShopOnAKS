@@ -112,7 +112,7 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
   * This is controled by the `DEPLOY_REDIS` variable in the `Taskfile.yaml` file.
 * If deployed in Azure, Azure Redis Cache is deployed using the Premium SKU with a predefined capacity of 1 GB.
   * It is deployed using Private Link and only accessible from the Azure virtual network.
-  * It is deployed into the Application Resource Group.
+  * It is deployed into the Application Resource Group or into the eshop-infra namespace.
 * The connection string used by the `basket-api` is stored in the Azure Key Vault under the secret named `redis_connection_string`.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
@@ -124,13 +124,13 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
   * PostgreSQL is deployed into a delegated subnet and only accessible from the Azure virtual network.
   * The connection string used by the appliation is stored in the Azure Key Vault under the secret named ${db_name}_connection_string. 
     * For example, the connection string for the catalog-api service is `catalogdb_connection_string`
-  * It is deployed into the Application Resource Group.  
+  * It is deployed into the Application Resource Group or into the eshop-infra namespace.
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 ## Event Bus
 * Event Bus is the only infrastructure component that is not a managed service in Azure.
 * Event Bus is a RabbitMQ cluster that is deployed to the AKS cluster.  The Event Bus is used for asynchronous communication between the microservices in the eShop application.  
-* The Event Bus is deployed using the Helm chart along with the rest of the eShop application under charts/app.
+* The Event Bus is deployed using the Helm chart along with the rest of the eShop application under charts/app but to the eshop-infra namespace
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 # Example Setup

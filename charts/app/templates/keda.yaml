@@ -1,21 +1,21 @@
 kind: HTTPScaledObject
 apiVersion: http.keda.sh/v1alpha1
 metadata:
-    name: webapp
-    namespace: {{ .Values.NAMESPACE }}
+  name: webapp
+  namespace: {{ .Values.NAMESPACES.APP }}
 spec:
-    hosts:
-    - {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
-    scaleTargetRef:
-        service: webapp
-        name: webapp       
-        port: 80
-    replicas:
-        min: 1
-        max: 5
-    scaledownPeriod: 300
-    scalingMetric:
-        requestRate:
-            granularity: 1s
-            targetValue: 100
-            window: 1m        
+  hosts:
+  - {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
+  scaleTargetRef:
+    service: webapp
+    name: webapp       
+    port: 80
+  replicas:
+    min: 1
+    max: 5
+  scaledownPeriod: 300
+  scalingMetric:
+    requestRate:
+      granularity: 1s
+      targetValue: 100
+      window: 1m

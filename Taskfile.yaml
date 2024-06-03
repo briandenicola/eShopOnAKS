@@ -141,8 +141,14 @@ tasks:
     - kubectl -n aks-istio-system get pods,services,deployments
     - kubectl -n cert-manager get certificate,certificaterequests,orders
     - kubectl -n eshop get pods,services,deployments,virtualservice
+    - kubectl -n eshop-infra get pods,services,deployments,virtualservice
     - flux get all
-    
+
+  restart:
+    cmds:
+    - kubectl -n eshop-infra rollout restart deploy
+    - kubectl -n eshop rollout restart deploy
+
   down:
     desc: Destroys all Azure resources and cleans up Terraform
     cmds:

@@ -1,4 +1,7 @@
-NAMESPACE                               : "eshop"
+NAMESPACES: 
+  APP                                   : "eshop"
+  INFRA                                 : "eshop-infra"
+
 APP_NAME                                : ""
 GIT_COMMIT_VERSION                      : ""
 ACR:

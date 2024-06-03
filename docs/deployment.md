@@ -74,7 +74,7 @@ Deployment
     kind: VirtualService
     metadata:
     name:  webapp-vs
-    namespace: {{ .Values.NAMESPACE }}
+    namespace: {{ .Values.NAMESPACES.APP }}
     spec:
     hosts:
     -  {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
@@ -91,7 +91,7 @@ Deployment
     kind: VirtualService
     metadata:
     name:  identity-api-vs
-    namespace: {{ .Values.NAMESPACE }}
+    namespace: {{ .Values.NAMESPACES.APP }}
     spec:
     hosts:
     -  {{ .Values.ISTIO.IDENTITY.EXTERNAL_URL }}

@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: webapp-cm
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
     service: webapp
@@ -28,7 +28,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: webapp
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
     service: webapp
@@ -37,6 +37,11 @@ spec:
   selector:
     matchLabels:
       service: webapp
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1            
   template:
     metadata:
       labels:
@@ -50,7 +55,14 @@ spec:
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
       nodeSelector:
-        App: eshop      
+        App: eshop
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000  
+        supplementalGroups: [2000]
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault         
       containers:
         - name: webapp
           image: {{ print .Values.ACR.NAME ".azurecr.io/webapp:" .Values.GIT_COMMIT_VERSION }}
@@ -66,7 +78,11 @@ spec:
               memory: 128Mi
           securityContext:
             privileged: false
-            allowPrivilegeEscalation: false          
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true            
+            capabilities:
+              drop: ["ALL"]         
           livenessProbe:
             httpGet:
               path: /health
@@ -93,7 +109,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: webapp
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
 spec:
@@ -108,7 +124,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name:  webapp-vs
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
 spec:
   hosts:
   -  {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}

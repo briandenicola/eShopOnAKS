@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: webhookclient-cm
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
     service: webhookclient
@@ -23,7 +23,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: webhookclient
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
     service: webhookclient
@@ -32,6 +32,11 @@ spec:
   selector:
     matchLabels:
       service: webhookclient
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1          
   template:
     metadata:
       labels:
@@ -45,7 +50,14 @@ spec:
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
       nodeSelector:
-        App: eshop      
+        App: eshop
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000  
+        supplementalGroups: [2000]
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault            
       containers:
         - name: webhookclient
           image: {{ print .Values.ACR.NAME ".azurecr.io/webhookclient:" .Values.GIT_COMMIT_VERSION }}
@@ -61,7 +73,11 @@ spec:
               memory: 128Mi
           securityContext:
             privileged: false
-            allowPrivilegeEscalation: false          
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true            
+            capabilities:
+              drop: ["ALL"]         
           livenessProbe:
             httpGet:
               path: /health
@@ -82,7 +98,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: webhookclient
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
 spec:

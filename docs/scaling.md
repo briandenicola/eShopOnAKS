@@ -27,7 +27,7 @@ Scaling
   apiVersion: http.keda.sh/v1alpha1
   metadata:
     name: webapp
-    namespace: {{ .Values.NAMESPACE }}
+    namespace: {{ .Values.NAMESPACES.APP }}
   spec:
     hosts:
     - {{ .Values.ISTIO.WEBAPP.EXTERNAL_URL }}

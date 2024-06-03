@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: payment-cm
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
     service: payment-api
@@ -20,7 +20,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: payment-api
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
     service: payment-api
@@ -29,6 +29,11 @@ spec:
   selector:
     matchLabels:
       service: payment-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1         
   template:
     metadata:
       labels:
@@ -42,10 +47,17 @@ spec:
     spec:
       serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
       nodeSelector:
-        App: eshop      
+        App: eshop
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000  
+        supplementalGroups: [2000]
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault          
       containers:
         - name: payment-api
-          image: {{ print .Values.ACR.NAME ".azurecr.io/orderprocessor:" .Values.GIT_COMMIT_VERSION }}
+          image: {{ print .Values.ACR.NAME ".azurecr.io/paymentprocessor:" .Values.GIT_COMMIT_VERSION }}
           imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.PAYMENT.PORT }}
@@ -58,7 +70,11 @@ spec:
               memory: 128Mi
           securityContext:
             privileged: false
-            allowPrivilegeEscalation: false          
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true            
+            capabilities:
+              drop: ["ALL"]        
           livenessProbe:
             httpGet:
               path: /health
@@ -74,12 +90,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: eshop-eventbus-secrets
-                key:  RABBITMQ_CONNECTION_STRING
-          - name: ConnectionStrings__orderingdb
-            valueFrom:
-              secretKeyRef:
-                name: eshop-sql-secrets 
-                key: orderingdb-connection-string                                 
+                key:  RABBITMQ_CONNECTION_STRING                             
       tolerations:
       - key: "ReservedFor"
         operator: "Equal"
@@ -90,7 +101,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: payment-api
-  namespace: {{ .Values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACES.APP }}
   labels:
     app: {{ .Chart.Name }}
     service: payment-api
