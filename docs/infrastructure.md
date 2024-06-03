@@ -7,6 +7,10 @@ Infrastructure
 * The infrastructure deploy can take up to 30 minutes to complete.
 * The infrastructure is deployed to a single Azure region (defaults to `westus3`)
 
+<p style="text-align:center;">
+    <img src=".assets/eshop.png" width="1024px" />
+</p>
+
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
 - :one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
