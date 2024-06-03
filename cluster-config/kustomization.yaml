@@ -4,6 +4,5 @@ resources:
   - ./prometheus
   - ./keda
   - ./kured
-  - ./kubecost
   - ./cert-manager
   

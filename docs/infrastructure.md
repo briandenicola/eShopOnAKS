@@ -68,7 +68,7 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 
 ## AKS Cluster Components
 * A managed AKS cluster is deployed to the AKS Resource Group with 2 node pools - one for system resources and one for user workloads.
-* KeyVault CSI driver, Keda, and Azure Policy are enabled on the AKS cluster.
+* KeyVault CSI driver, Keda, Kubecost, Image Cleaner, Defender for Containers and Azure Policy are enabled on the AKS cluster.
 * The Flux operator is deployed to the AKS cluster to manage the deployment of post-deployment resources (see #GitOps below)
 * The cluster is publically accessible but locked down to only allow traffic from your external IP address and requires Entra ID authentication for access
 * An Azure container registry is deployed along side the AKS cluster to store the container images in the same resource group.
@@ -90,7 +90,7 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 ### Flux & GitOps
 * The Flux operater is responsible for managing the deployment of additional components to the AKS cluster.
 * Flux uses kustomize to apply the manifests in the `cluster-config` directory to the AKS cluster.
-* Flux installs Cert-Manager to manage the certificates for the eShop application, Keda's HTTP Scaler, Kured for node reboots, and Kubecost for cost management.
+* Flux installs Cert-Manager to manage the certificates for the eShop application, Keda's HTTP Scaler and Kured for node reboots.
 * Flux also customizes Azure Service Mesh 
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
