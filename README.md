@@ -1,10 +1,13 @@
 Overview
 =================
-A sample .NET Core distributed application based on eShopOnContainers, powered by Dapr. The current version targets .NET 7.
+This repository is a workshop that demonstrates a method to deploy the eShop application to Azure Kubernetes Service (AKS). The [eShop application](https://github.com/dotnet/eshop) is a sample .NET 8 microservices application based on the [Aspire framework](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview). An accompanying ebook on the eShop application can be found [here](https://learn.microsoft.com/en-us/dotnet/architecture/cloud-native/introduce-eshoponcontainers-reference-app).
 
-The accompanying e-book Dapr for .NET developers uses the sample code in this repository to demonstrate Dapr features and benefits. You can read the online version and download the PDF for free.
+The following is high level architecture of the eShop application and its Azure components. 
+<p style="text-align:center;">
+    <img src=".assets/eshop_architecture.png" width="1024px" />
+    <img src=".assets/eshop.png" width="1024px" />
+</p>
 
-<img src=".assets/eshop_architecture.png" width="1024px" />
 <p align="right">(<a href="#overview">back to top</a>)</p>
 
 Table of contents
