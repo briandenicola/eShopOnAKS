@@ -20,6 +20,7 @@ The following tools and build environment has been tested to work on Linux and o
 ### Optional Tools
 * [Windows Terminal](https://aka.ms/terminal) - A better terminal for Windows
 * [Zsh](https://ohmyz.sh/) - A better shell for Linux and Windows
+* [k9s](https://k9scli.io/) - A terminal-based UI for Kubernetes
 * [.alias.rc](./.alias.rc) - A set of aliases for Linux that can assist with some of the commands in this guide.
     
 > * **Note:** The Github Codespaces environment has all the tools pre-installed and configured.  You can use the following link to open the eShop project in Github Codespaces: [Open in Github Codespaces](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
@@ -48,6 +49,7 @@ The following tools and build environment has been tested to work on Linux and o
     * `task cluster-config`     : Update cluster configurations
     * `task up`                 : Creates Azure infrastructure and deploys application code
     * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
+    * `task status`             : Get the status of the AKS cluster resources
 
 ## Code
 * Clone the eShop Source repository: `git clone https://github.com/briandenicola/eshop`

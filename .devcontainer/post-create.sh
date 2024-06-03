@@ -15,6 +15,13 @@ sudo mv /tmp/linux-amd64/helm /usr/local/bin
 rm -f /tmp/helm.tar.gz
 rm -rf /tmp/linux-amd64
 
+#Install k9s
+curl -sSL "https://github.com/derailed/k9s/releases/download/v0.32.4/k9s_Linux_amd64.tar.gz" -o /tmp/k9s.tar.gz
+tar -xf /tmp/k9s.tar.gz -C /tmp k9s
+sudo mv /tmp/k9s /usr/local/bin
+rm -f /tmp/k9s.tar.gz
+rm -rf /tmp/k9s
+
 #Install envsubst
 curl -Lso envsubst https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-Linux-x86_64
 sudo install envsubst /usr/local/bin
