@@ -52,7 +52,7 @@ helm upgrade -i ${CHART_NAME} `
 
 if($?){
     Write-Log "Application successfully deployed"
-    Write-Log "Open a browser and navigate to Application URL: $APP_URL"
+    Write-Log "Open a browser and navigate to Application URL: https://$APP_URL"
 }
 else {
     Write-Log ("Errors encountered while deploying application. Please review. Application Name: {0}" -f $AppName )
