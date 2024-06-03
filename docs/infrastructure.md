@@ -27,8 +27,15 @@ Infrastructure
 ## :heavy_check_mark: Deploy Manually
 ```pwsh
   terraform -chdir=./infrastructure
-  terraform -chdir=./infrastructure apply -var "region={{.REGION}}"  -var "vm_size={{.SKU}}" -var "node_count={{.COUNT}}"  -var "tags={{.TITLE}}"
+  terraform -chdir=./infrastructure apply \
+    -var "region={{.REGION}}" \
+    -var "vm_size={{.SKU}}"  \
+    -var "node_count={{.COUNT}}" \
+    -var "tags={{.TITLE}}"  \
+    -var "deploy_postgresql={{.DEPLOY_SQL}}" \
+    -var "deploy_redis={{.DEPLOY_REDIS}}" 
   az aks get-credentials -g {{.AKS_NAME}} -n {{.RG}}
+  pwsh ./scripts/get-service-ipaddress.ps1
 ```
 
 ## Optional Next Steps

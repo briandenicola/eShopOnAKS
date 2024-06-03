@@ -86,8 +86,8 @@ spec:
   exporters:
       azuremonitor:
         connection_string: {{ .Values.APP_INSIGHTS.CONNECTION_STRING  }}
-        maxbatchsize: 100
-        maxbatchinterval: 10s
+        maxbatchsize: 10
+        maxbatchinterval: 5s
 ```
 <p align="right">(<a href="#post-cluster-configuration">back to top</a>)</p>
 
