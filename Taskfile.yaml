@@ -132,6 +132,17 @@ tasks:
     cmds:
     - pwsh ./get-cert-manager-challenges.ps1
 
+  status:
+    desc: Gets the overall status of the cluster
+    cmds:
+    - kubectl get nodes -o wide -L kubernetes.azure.com/node-image-version
+    - kubectl -n kube-system get pods
+    - kubectl -n aks-istio-ingress get pods,services,deployments,gateway
+    - kubectl -n aks-istio-system get pods,services,deployments
+    - kubectl -n cert-manager get certificate,certificaterequests,orders
+    - kubectl -n eshop get pods,services,deployments,virtualservice
+    - flux get all
+    
   down:
     desc: Destroys all Azure resources and cleans up Terraform
     cmds:
