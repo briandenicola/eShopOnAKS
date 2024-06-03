@@ -48,7 +48,7 @@ resource "azurerm_kubernetes_flux_configuration" "flux_config" {
   }
 
   kustomizations {
-    name = "apps"
+    name = "addons"
     path = local.app_path
 
     timeout_in_seconds         = 600
