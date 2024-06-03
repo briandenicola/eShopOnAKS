@@ -4,7 +4,7 @@ dotenv: ['.env']
 
 env:
   TITLE: eShop On AKS
-  SKU: "Standard_D4ads_v5"
+  SKU: "Standard_D4s_v5"
   DEFAULT_REGION: "westus3"
   COUNT: 2
   DOMAIN_ROOT: "bjdazure.tech"
