@@ -12,7 +12,9 @@ WEBAPP_DOMAIN                           : ""
 
 CERT:
   EMAIL_ADDRESS                         : ""
-  IDENTITY_URL_SERVICE_NAME             : "default-value"
-  IDENTITY_URL_CHALLENGE_PATH           : "default-value"
+  
   SHOP_URL_SERVICE_NAME                 : "default-value"
   SHOP_URL_CHALLENGE_PATH               : "default-value"
+
+  IDENTITY_URL_SERVICE_NAME             : "default-value"
+  IDENTITY_URL_CHALLENGE_PATH           : "default-value"
