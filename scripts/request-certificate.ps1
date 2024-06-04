@@ -13,25 +13,29 @@ param(
 . ./modules/eshop_naming.ps1 -AppName $AppName -DomainName $DomainName
 
 $PLACEHOLDER_VALUE = "eshop-placeholder"
-$CERT_NAME = ${AppName}-${DomainName}.Replace(".", "-")
+$CERT_NAME = "${AppName}-${DomainName}".Replace(".", "-")
+$WEBAPP_DOMAIN = "${AppName}.${DomainName}"
 
 if( Test-Certificate -CertName $CERT_NAME -Namespace "aks-istio-ingress" ) {
   Write-Log -Message "Certificate already exists for ${CERT_NAME}"
     return
 }
 
-Write-Log -Message "Installing ${CERT_CHART_NAME} to ${APP_K8S_NAME} into AKS-ISTIO-INGRESS namespace"
+Write-Log -Message "Installing chart ${CERT_CHART_NAME} to ${APP_K8S_NAME} into AKS-ISTIO-INGRESS namespace"
 helm upgrade --install eshop-certificates `
   --set APP_NAME=${AppName} `
-  --set WEBAPP_DOMAIN=${.DomainName} `
+  --set WEBAPP_DOMAIN=${WEBAPP_DOMAIN} `
   --set CERT.EMAIL_ADDRESS=${AppName}@${DomainName} `
   --set CERT.SHOP_URL_SERVICE_NAME=${PLACEHOLDER_VALUE} `
   --set CERT.SHOP_URL_CHALLENGE_PATH=${PLACEHOLDER_VALUE} `
   --set CERT.IDENTITY_URL_SERVICE_NAME=${PLACEHOLDER_VALUE} `
   --set CERT.IDENTITY_URL_CHALLENGE_PATH=${PLACEHOLDER_VALUE} `
-./charts/certs 
+../charts/certs 
 
+Write-Log -Message "Pause to allow pods to come online"
 Start-Sleep -Seconds 30
+
+$ingresses=$(kubectl --namespace aks-istio-ingress get ingress -o=jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}')
 
 $urls = @{}
 foreach( $ingress in $ingresses ) {
@@ -46,14 +50,18 @@ foreach( $ingress in $ingresses ) {
 
 $shop_key = ($urls.Keys | Where-Object {$_ -imatch "shop"})
 $identity_key = ($urls.Keys | Where-Object {$_ -imatch "identity"})
+$SHOP_URL_SERVICE_NAME = $urls[$shop_key].CHALLENGE_SERVICE_NAME
+$SHOP_URL_CHALLENGE_PATH = $urls[$shop_key].CHALLENGE_PATH
+$IDENTITY_URL_SERVICE_NAME = $urls[$identity_key].CHALLENGE_SERVICE_NAME
+$IDENTITY_URL_CHALLENGE_PATH = $urls[$identity_key].CHALLENGE_PATH
 
-Write-Log -Message "Modifiying ${CERT_CHART_NAME} to complete certificate request"
+Write-Log -Message "Modifiying chart ${CERT_CHART_NAME} to complete certificate request"
 helm upgrade --install eshop-certificates `
   --set APP_NAME=${AppName} `
-  --set WEBAPP_DOMAIN=${.DomainName} `
+  --set WEBAPP_DOMAIN=${WEBAPP_DOMAIN} `
   --set CERT.EMAIL_ADDRESS=${AppName}@${DomainName} `
-  --set CERT.SHOP_URL_SERVICE_NAME=$urls[$shop_key].CHALLENGE_SERVICE_NAME `
-  --set CERT.SHOP_URL_CHALLENGE_PATH=$urls[$shop_key].CHALLENGE_PATH `
-  --set CERT.IDENTITY_URL_SERVICE_NAME=$urls[$identity_key].CHALLENGE_SERVICE_NAME `
-  --set CERT.IDENTITY_URL_CHALLENGE_PATH=$urls[$identity_key].CHALLENGE_PATH `
-./charts/certs 
+  --set CERT.SHOP_URL_SERVICE_NAME=${SHOP_URL_SERVICE_NAME} `
+  --set CERT.SHOP_URL_CHALLENGE_PATH=${SHOP_URL_CHALLENGE_PATH} `
+  --set CERT.IDENTITY_URL_SERVICE_NAME=${IDENTITY_URL_SERVICE_NAME} `
+  --set CERT.IDENTITY_URL_CHALLENGE_PATH=${IDENTITY_URL_CHALLENGE_PATH} `
+../charts/certs 

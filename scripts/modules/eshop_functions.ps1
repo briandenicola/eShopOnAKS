@@ -229,7 +229,7 @@ function Test-HelmChart
     return $true
 }
 
-functoin Get-Password
+function Get-Password
 {
     param(
         [string] $SecretName
