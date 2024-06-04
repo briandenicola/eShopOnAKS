@@ -19,6 +19,10 @@ Connect-ToAzure -SubscriptionName $SubscriptionName
 #Get-AKSCredentials -AKSName $APP_K8S_NAME -AKSResourceGroup $AKS_RG_NAME
 
 # Determine all required parameters
+$commit_version = Get-GitCommitVersion -Source "."
+$app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
+$app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
+
 $deploy_redis = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_CACHE_NAME )
 $deploy_sql   = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_SQL_NAME )
 
@@ -39,10 +43,7 @@ if( $Force -or -not (Test-HelmChart -ChartName $INFRA_CHART_NAME ) ) {
         ../charts/infrastructure
 }
 
-$commit_version = Get-GitCommitVersion -Source "."
-$app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
-$app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
-
+# Get the passwords
 $eventbus_password = Get-Password  -Namespace $INFRA_NAMESPACE  -SecretName "eshop-eventbus-secrets" -data "RABBITMQ_DEFAULT_PASS"
 $sql_password = Get-Password -Namespace $INFRA_NAMESPACE -SecretName "eshop-sql-secrets" -data "POSTGRES_PASSWORD"
 $redis_password = Get-Password -Namespace $INFRA_NAMESPACE -SecretName "eshop-redis-secrets" -data "REDIS_PASSWORD"
