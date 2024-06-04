@@ -16,7 +16,7 @@ Infrastructure
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
-- :one: `task up`     - Initializes Terraform and then calls `task apply`, `task creds`, and `task dns`
+- :one: `task up`     - Initializes Terraform and then calls `task apply` and `task creds`
 
 ### :heavy_check_mark: Or run the tasks individually
 > _**Note**: If terraform fails for any resaon, you can run these commands individually to retry the deployment._
