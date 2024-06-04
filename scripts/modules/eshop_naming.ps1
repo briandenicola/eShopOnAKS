@@ -16,7 +16,10 @@ Set-Variable -Name APP_SA_NAME          -Value ("{0}files" -f $UriFriendlyAppNam
 Set-Variable -Name APP_SERVICE_ACCT     -Value ("{0}-app-identity" -f $AppName)         -Option Constant
 Set-Variable -Name APP_AI_NAME          -Value ("{0}-appinsights" -f $AppName)          -Option Constant
 Set-Variable -Name APP_NAMESPACE        -Value "eshop"                                  -Option Constant
+Set-Variable -Name INFRA_NAMESPACE      -Value "eshop-infra"                            -Option Constant
 Set-Variable -Name CHART_NAME           -Value "eshop"                                  -Option Constant
+Set-Variable -Name CERT_CHART_NAME      -Value "eshop-certificate"                      -Option Constant
+Set-Variable -Name INFRA_CHART_NAME     -Value "eshop-infra-components"                 -Option Constant
 
 Set-Variable -Name APP_ISTIO_GATEWAY    -Value "aks-istio-ingress/istio-ingressgateway"         -Option Constant
 Set-Variable -Name APP_IDENTITY_URL     -Value ("identity.{0}.{1}" -f $AppName,$DomainName)     -Option Constant

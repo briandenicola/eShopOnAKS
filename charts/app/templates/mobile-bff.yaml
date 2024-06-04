@@ -9,7 +9,6 @@ metadata:
 data:
   AZURE_CLIENT_ID: {{ .Values.WORKLOAD_ID.CLIENT_ID }}
   ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
-  APP_INSIGHTS_CONNECTION_STRING: {{ .Values.APP_INSIGHTS.CONNECTION_STRING }}
   DOTNET_USE_POLLING_FILE_WATCHER: "true"  
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
@@ -17,6 +16,7 @@ data:
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.OTEL.ENDPOINT }}
   services__catalog-api__http__0: {{ print .Values.ISTIO.CATALOG.INTERNAL_URL  }}
   services__identity-api__http__0: {{ print .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  OTEL_SERVICE_NAME: "mobile-bff"
 ---
 kind: Deployment
 apiVersion: apps/v1

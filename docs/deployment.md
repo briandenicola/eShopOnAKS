@@ -1,9 +1,11 @@
 Deployment
 =============
 * Deploys the eShop application via Helm to the AKS cluster.
-* The build process is kicked off using the command: `task deploy` command which runs the script `scripts/deploy-services.ps1`. 
-* The script gathers the required infromation needed to pass to the Helm Chart and then deploys the application.
+* The deploy process is kicked off using the command: `task deploy` command which runs the script `scripts/deploy-services.ps1`. 
+* The script gathers the required infromation needed to pass to the Helm Chart and then deploys the application components.
 * Some information is gathered by convention.  Others are gathered from the Azure resources created in the previous section.
+* The deployment script first deploys the infrastructure components - EventBus and if required Redis and PostgreSQL.
+* The deployment script then deploys the eShop application components.
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
@@ -19,32 +21,44 @@ Deployment
     $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
     $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
 
-    $eventubs_password = New-Password -Length 30
-    $sql_password = New-Password -Length 30
-
     $deploy_redis = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_CACHE_NAME )
     $deploy_sql   = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_SQL_NAME )
-    
+
+    $eventbus_password = New-Password -Length 30
+    $sql_password = New-Password -Length 30
+    $redis_password = New-Password -Length 30
+
+    helm upgrade -i ${INFRA_CHART_NAME} `
+        --set APP_NAME=$AppName `
+        --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
+        --set EVENTBUS.PASSWORD=$eventbus_password `
+        --set POSTGRESQL.PASSWORD=$sql_password `
+        --set REDIS.PASSWORD=$redis_password `
+        --set DEPLOY.REDIS="$deploy_redis" `
+        --set DEPLOY.SQL="$deploy_sql" `
+        ../charts/infrastructure
+
     helm upgrade -i ${CHART_NAME} `
-    --set APP_NAME=$AppName `
-    --set NAMESPACE=$APP_NAMESPACE `
-    --set GIT_COMMIT_VERSION=$commit_version `
-    --set WORKLOAD_ID.CLIENT_ID=$($app_msi.client_id) `
-    --set WORKLOAD_ID.TENANT_ID=$($app_msi.tenant_id) `
-    --set WORKLOAD_ID.NAME=$APP_SERVICE_ACCT `
-    --set KEYVAULT.NAME=$APP_KV_NAME `
-    --set EVENTBUS.PASSWORD=$eventbus_password `
-    --set POSTGRESQL.PASSWORD=$sql_password `
-    --set ACR.NAME=$APP_ACR_NAME `
-    --set REGION=$($cogs.region) `
-    --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
-    --set ISTIO.GATEWAY=$APP_ISTIO_GATEWAY `
-    --set ISTIO.IDENTITY.EXTERNAL_URL="$APP_IDENTITY_URL" `
-    --set ISTIO.WEBAPP.EXTERNAL_URL="$APP_URL" `
-    --set DEPLOY.REDIS="$deploy_redis" `
-    --set DEPLOY.SQL="$deploy_sql" `    
-    ../charts/app
+        --set APP_NAME=$AppName `
+        --set NAMESPACE=$APP_NAMESPACE `
+        --set GIT_COMMIT_VERSION=$commit_version `
+        --set WORKLOAD_ID.CLIENT_ID=$($app_msi.client_id) `
+        --set WORKLOAD_ID.TENANT_ID=$($app_msi.tenant_id) `
+        --set WORKLOAD_ID.NAME=$APP_SERVICE_ACCT `
+        --set KEYVAULT.NAME=$APP_KV_NAME `
+        --set EVENTBUS.PASSWORD=$eventbus_password `
+        --set POSTGRESQL.PASSWORD=$sql_password `
+        --set ACR.NAME=$APP_ACR_NAME `
+        --set REGION=$($cogs.region) `
+        --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
+        --set ISTIO.GATEWAY=$APP_ISTIO_GATEWAY `
+        --set ISTIO.IDENTITY.EXTERNAL_URL="$APP_IDENTITY_URL" `
+        --set ISTIO.WEBAPP.EXTERNAL_URL="$APP_URL" `
+        --set DEPLOY.REDIS="$deploy_redis" `
+        --set DEPLOY.SQL="$deploy_sql" `    
+        ../charts/app
 ```
+
 ## Optional Next Steps
 * :bulb: eShop has all configurations stored in as AKS Configmaps. How could these be replaced with Azure App Configuration?
 
@@ -124,23 +138,47 @@ Deployment
 ```pwsh
     > task deploy
     task: [deploy] pwsh ./deploy-services.ps1 -AppName airedale-60249 -SubscriptionName Apps_Subscription -Domain bjdazure.tech -verbose
-    VERBOSE: [05/20/2024 09:25:15] - Setting subscription context to Apps_Subscription ...
-    VERBOSE: [05/20/2024 09:25:15] - Get airedale-60249-aks AKS Credentials ...
-    The behavior of this command has been altered by the following extension: aks-preview
-    Merged "airedale-60249-aks" as current context in /home/brian/.kube/config
-    VERBOSE: [05/20/2024 09:25:17] - Get Latest Git commit version id ...
-    VERBOSE: [05/20/2024 09:25:17] - Get airedale-60249-appinsights Application Insights Account properties ...
-    VERBOSE: [05/20/2024 09:25:19] - Get airedale-60249-app-identity Manage Identity properties ...
-    VERBOSE: [05/20/2024 09:25:22] - Deploying eshop version d6258e11 to airedale-60249-aks into eshop namespace. . . ...
+    VERBOSE: [6/4/2024 2:02:36 PM] - Setting subscription context to BJD_Core_Subscription ...
+    VERBOSE: [6/4/2024 2:02:38 PM] - Test if Helm chart eshop-infra-components exists ...
+    VERBOSE: [6/4/2024 2:02:39 PM] - Deploying eshop-infra-components to airedale-60249-aks into eshop-infra namespace ...
+    Release "eshop-infra-components" does not exist. Installing it now.
+    NAME: eshop-infra-components
+    LAST DEPLOYED: Tue Jun  4 14:02:40 2024
+    NAMESPACE: default
+    STATUS: deployed
+    REVISION: 1
+    TEST SUITE: None
+    VERBOSE: [6/4/2024 2:02:45 PM] - Get Latest Git commit version id ...
+    VERBOSE: [6/4/2024 2:02:45 PM] - Get airedale-60249-appinsights Application Insights Account properties ...
+    VERBOSE: [6/4/2024 2:05:23 PM] - Get Latest Git commit version id ...
+    VERBOSE: [6/4/2024 2:05:23 PM] - Get airedale-60249-appinsights Application Insights Account properties ...
+    VERBOSE: [6/4/2024 2:05:25 PM] - Get airedale-60249-app-identity Manage Identity properties ...
+    VERBOSE: [6/4/2024 2:05:28 PM] - Get Password for RABBITMQ_DEFAULT_PASS in eshop-sql-secrets ...
+    VERBOSE: [6/4/2024 2:05:28 PM] - Secret eshop-sql-secrets not found in eshop-infra namespace ...
+    VERBOSE: [6/4/2024 2:05:28 PM] - Get Password for POSTGRES_PASSWORD in eshop-eventbus-secrets ...
+    VERBOSE: [6/4/2024 2:05:29 PM] - Secret eshop-eventbus-secrets not found in eshop-infra namespace ...
+    VERBOSE: [6/4/2024 2:05:29 PM] - Get Password for REDIS_PASSWORD in eshop-redis-secrets ...
+    VERBOSE: [6/4/2024 2:05:30 PM] - Deploying eshop version 28273e95 to airedale-60249-aks into eshop namespace ...
     Release "eshop" has been upgraded. Happy Helming!
     NAME: eshop
-    LAST DEPLOYED: Mon May 20 09:25:22 2024
+    LAST DEPLOYED: Tue Jun  4 14:05:30 2024
     NAMESPACE: default
     STATUS: deployed
     REVISION: 2
     TEST SUITE: None
-    VERBOSE: [05/20/2024 09:25:37] - Application successfully deployed ...
-    VERBOSE: [05/20/2024 09:25:37] - Open a browser and navigate to Application URL: shop.airedale-60249.bjdazure.tech ...
+    VERBOSE: [6/4/2024 2:05:33 PM] - Application successfully deployed ...
+    VERBOSE: [6/4/2024 2:05:33 PM] - Open a browser and navigate to Application URL: https://shop.airedale-60249.bjdazure.tech ...
+
+    kubectl --namespace eshop-infra get pods,svc
+    NAME                            READY   STATUS    RESTARTS   AGE
+    pod/eventbus-dc76f694c-pc2bb    2/2     Running   0          11m
+    pod/postgres-85c7c7f66c-nsztw   2/2     Running   0          11m
+    pod/redis-5f47b5b8f5-vjzj4      2/2     Running   0          11m
+
+    NAME               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+    service/eventbus   ClusterIP   100.67.208.46    <none>        5672/TCP   11m
+    service/postgres   ClusterIP   100.67.53.81     <none>        5432/TCP   11m
+    service/redis      ClusterIP   100.67.201.209   <none>        6379/TCP   11m
 
     > kubectl --namespace eshop get serviceaccount
     NAME                          SECRETS   AGE
@@ -150,7 +188,6 @@ Deployment
     NAME                              READY   STATUS    RESTARTS      AGE
     basket-api-7d99bc75cc-pxgc4       2/2     Running   0             6m6s
     catalog-5f499874f5-7xkd6          2/2     Running   0             6m6s
-    eventbus-847cf67bd9-8zgrn         2/2     Running   0             6m6s
     identity-api-58c7685658-7lnp6     2/2     Running   0             6m6s
     mobile-bff-674c78d75f-p89w2       2/2     Running   0             6m6s
     order-processor-f8c57db6b-r45wj   2/2     Running   0             6m6s
@@ -160,9 +197,10 @@ Deployment
     webhooks-api-78bd88f645-fvtdp     2/2     Running   0             6m6s
 
     > kubectl --namespace eshop get secrets
-    NAME               TYPE     DATA   AGE
-    eshop-sql-secrets   Opaque   5      6m35s
-    eshop-eventbus-secrets    Opaque   2      6m39s
+    NAME                     TYPE     DATA   AGE
+    eshop-eventbus-secrets   Opaque   1      9m52s
+    eshop-redis-secrets      Opaque   1      9m52s
+    eshop-sql-secrets        Opaque   4      9m52s
 
     > kubectl --namespace eshop get configmap
     NAME                 DATA   AGE

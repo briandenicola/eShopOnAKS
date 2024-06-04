@@ -1,0 +1,11 @@
+APP_NAME                                : ""
+WEBAPP_DOMAIN                           : ""
+
+CERT:
+  EMAIL_ADDRESS                         : ""
+  
+  SHOP_URL_SERVICE_NAME                 : ""
+  SHOP_URL_CHALLENGE_PATH               : ""
+
+  IDENTITY_URL_SERVICE_NAME             : ""
+  IDENTITY_URL_CHALLENGE_PATH           : ""

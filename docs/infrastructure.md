@@ -133,6 +133,26 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 * The Event Bus is deployed using the Helm chart along with the rest of the eShop application under charts/app but to the eshop-infra namespace
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
+## Open Telemetry
+* An Open Telemetry collector is deployed to collect telemetry data from the services running in the cluster.  The collector is configured to send the telemetry data to Azure Monitor.  The configuration is stored in the 'otel-collector-config' ConfigMap in the 'otel-system' namespace.
+* Open Telemetry is configured with two receiver protocols - OTLP and Zipkin.  The OTLP receiver is configured to listen on port 4317 and the Zipkin receiver is configured to listen on port 9411.  
+
+```yaml
+  receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317            
+      zipkin:
+        endpoint: 0.0.0.0:9411
+  
+  exporters:
+      azuremonitor:
+        connection_string: {{ .Values.APP_INSIGHTS.CONNECTION_STRING  }}
+        maxbatchsize: 10
+        maxbatchinterval: 5s
+```
+
 # Example Setup
 ```pwsh
   > task up
@@ -295,5 +315,5 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 # Navigation
-[Previous Section ⏪](./prerequisites.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./post-cluster-configuration.md)
+[Previous Section ⏪](./prerequisites.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./certificates.md)
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>

@@ -204,3 +204,48 @@ function Get-AppInsightsKey
         connection_string = (az monitor app-insights component show --app $AppInsightsAccountName -g $AppInsightsResourceGroup --query connectionString -o tsv)
     })
 }
+
+function Test-Certificate 
+{
+    param(
+        [string] $CertName,
+        [string] $Namespace
+    )
+
+    Write-Log -Message "Test if certificate ${CertName} exists in ${Namespace} namespace"
+    $status = $(kubectl --namespace aks-istio-ingress get certificate ${CertName} -o jsonpath='{.status.conditions[0].status}')
+
+    if( $status -eq "True" ) { return $true } 
+    return $false
+}
+
+function Test-HelmChart
+{
+    param(
+        [string] $ChartName
+    )
+
+    Write-Log -Message "Test if Helm chart ${ChartName} exists"
+    $deployed = helm list -q | Where-Object {$_ -eq $ChartName}
+
+    if($null -eq $deployed) { return $false }
+    return $true
+}
+
+function Get-Password
+{
+    param(
+        [string] $SecretName,
+        [string] $Namespace,
+        [string] $Data
+    )
+
+    Write-Log -Message "Get Password for ${DATA} in ${SecretName}"
+    $value = $(kubectl --namespace $Namespace get secrets $SecretName -o jsonpath="{.data.$Data}" | ConvertFrom-Base64String)
+
+    if([string]::IsNullOrEmpty($value)) {
+        Write-Log -Message "Secret ${SecretName} not found in ${Namespace} namespace"
+        return "null"
+    }
+    return $value
+}

@@ -1,0 +1,33 @@
+APP_NAME                                : ""
+
+NAMESPACES: 
+  APP                                   : "eshop"
+  INFRA                                 : "eshop-infra"
+  OTEL                                  : "otel-system"           
+  
+OTEL:
+  ZIPKIN_ENDPOINT                       : "http://otel-collector.otel-system.svc.cluster.local:9411/api/v2/spans"
+  ENDPOINT                              : "http://otel-collector.otel-system.svc.cluster.local:4317"
+  VERSION                               : "0.98.0"
+
+APP_INSIGHTS:
+  CONNECTION_STRING                     : ""
+
+POSTGRESQL:
+  USER                                  : "manager"
+  PASSWORD                              : ""
+  PORT                                  : "5432"
+
+REDIS:
+  USER                                  : "redis"
+  PASSWORD                              : ""
+  PORT                                  : "6379"
+
+EVENTBUS:
+  USER                                  : "guest"
+  PASSWORD                              : ""
+  PORT                                  : "5672"
+
+DEPLOY:
+  REDIS                                 : false
+  SQL                                   : false
