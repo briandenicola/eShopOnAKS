@@ -222,18 +222,29 @@ function Test-Certificate
 function Test-HelmChart
 {
     param(
-        [string] $ChartName,
-        [string] $Namespace
+        [string] $ChartName
     )
 
+    Write-Log -Message "Test if Helm chart ${ChartName} exists"
+    $deployed = helm list -q | Where-Object {$_ -eq $ChartName}
+
+    if($null -eq $deployed) { return $false }
     return $true
 }
 
 function Get-Password
 {
     param(
-        [string] $SecretName
+        [string] $SecretName,
+        [string] $Namespace,
+        [string] $Data
     )
 
-    return $true
+    $value = $(kubectl --namespace $Namespace get secrets $SecretName -o jsonpath="{.data.$Data}" | ConvertFrom-Base64EncodedString)
+
+    if([string]::IsNullOrEmpty($value)) {
+        Write-Log -Message "Secret ${SecretName} not found in ${Namespace} namespace"
+        return "null"
+    }
+    return $value
 }
