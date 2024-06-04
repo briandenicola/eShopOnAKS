@@ -240,7 +240,8 @@ function Get-Password
         [string] $Data
     )
 
-    $value = $(kubectl --namespace $Namespace get secrets $SecretName -o jsonpath="{.data.$Data}" | ConvertFrom-Base64EncodedString)
+    Write-Log -Message "Get Password for ${DATA} in ${SecretName}"
+    $value = $(kubectl --namespace $Namespace get secrets $SecretName -o jsonpath="{.data.$Data}" | ConvertFrom-Base64String)
 
     if([string]::IsNullOrEmpty($value)) {
         Write-Log -Message "Secret ${SecretName} not found in ${Namespace} namespace"

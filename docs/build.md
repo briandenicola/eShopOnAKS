@@ -69,5 +69,5 @@ Build
 <p align="right">(<a href="#build">back to top</a>)</p>
 
 # Navigation
-[Previous Section ⏪](./infrastructure.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./deployment.md)
+[Previous Section ⏪](./certificates.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./deployment.md)
 <p align="right">(<a href="#build">back to top</a>)</p>

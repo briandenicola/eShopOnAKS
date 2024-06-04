@@ -43,8 +43,8 @@ $commit_version = Get-GitCommitVersion -Source "."
 $app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
 $app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
 
-$eventbus_password = Get-Password  -Namespace $INFRA_NAMESPACE  -SecretName "eshop-sql-secrets" -data "RABBITMQ_DEFAULT_PASS"
-$sql_password = Get-Password -Namespace $INFRA_NAMESPACE -SecretName "eshop-eventbus-secrets" -data "POSTGRES_PASSWORD"
+$eventbus_password = Get-Password  -Namespace $INFRA_NAMESPACE  -SecretName "eshop-eventbus-secrets" -data "RABBITMQ_DEFAULT_PASS"
+$sql_password = Get-Password -Namespace $INFRA_NAMESPACE -SecretName "eshop-sql-secrets" -data "POSTGRES_PASSWORD"
 $redis_password = Get-Password -Namespace $INFRA_NAMESPACE -SecretName "eshop-redis-secrets" -data "REDIS_PASSWORD"
 
 # Install App using Helm Chart

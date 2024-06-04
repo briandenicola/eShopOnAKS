@@ -24,7 +24,6 @@ tasks:
     - terraform -chdir=./infrastructure init
     - task: apply
     - task: creds
-    - task: dns
     vars: 
       REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
 
@@ -66,12 +65,12 @@ tasks:
 
   cert:
     desc: Update cluster configurations
+    dir: ./scripts    
     cmds:
-    - pwsh ./request-certificate.ps1 -AppName {{.APP_NAME}} -DomainName {{.DOMAIN_NAME}}
+    - pwsh ./request-certificate.ps1 -AppName {{.APP_NAME}} -DomainName {{.DOMAIN_ROOT}} -verbose
     vars:
       APP_NAME:
-        sh: terraform -chdir=./infrastructure output -raw APP_NAME
-      DOMAIN_NAME: '{{.APP_NAME}}.{{.DOMAIN_ROOT}}'
+        sh: terraform -chdir=../infrastructure output -raw APP_NAME
       
   build: 
     desc: Builds and pushes the containers
@@ -132,7 +131,7 @@ tasks:
 
   restart:
     cmds:
-    - kubectl -n eshop-infra rollout restart deploy
+    #- kubectl -n eshop-infra rollout restart deploy
     - kubectl -n eshop rollout restart deploy
 
   down:

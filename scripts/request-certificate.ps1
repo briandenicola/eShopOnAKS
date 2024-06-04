@@ -35,7 +35,13 @@ helm upgrade --install eshop-certificates `
 Write-Log -Message "Pause to allow pods to come online"
 Start-Sleep -Seconds 30
 
-$ingresses=$(kubectl --namespace aks-istio-ingress get ingress -o=jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}')
+#UNCOMMENT for WINDOWS: $ingresses=$(kubectl --namespace aks-istio-ingress get ingress -o=jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}')
+$ingresses=$(kubectl --namespace aks-istio-ingress get ingress -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+
+if( $null -eq $ingresses ) {
+  Write-Log -Message "No Ingresses found in aks-istio-ingress namespace"
+  return
+}
 
 $urls = @{}
 foreach( $ingress in $ingresses ) {
