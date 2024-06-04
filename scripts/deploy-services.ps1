@@ -17,18 +17,36 @@ Connect-ToAzure -SubscriptionName $SubscriptionName
 Get-AKSCredentials -AKSName $APP_K8S_NAME -AKSResourceGroup $AKS_RG_NAME
 
 # Determine all required parameters
-$commit_version = Get-GitCommitVersion -Source "."
-$app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
-$app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
-$eventbus_password = New-Password -Length 30
-$sql_password = New-Password -Length 30
-$redis_password = New-Password -Length 30
-
 $deploy_redis = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_CACHE_NAME )
 $deploy_sql   = -not ( Find-AzureResource -ResourceGroupName $APP_RG_NAME -ResourceName $APP_SQL_NAME )
 
+if( -not (Test-HelmChart -ChartName $INFRA_CHART_NAME -Namespace $INFRA_NAMESPACE) ) {
+    $eventbus_password = New-Password -Length 30
+    $sql_password = New-Password -Length 30
+    $redis_password = New-Password -Length 30
+
+    Write-Log -Message "Deploying ${INFRA_CHART_NAME} to ${INFRA_NAMESPACE} into ${APP_NAMESPACE} namespace"
+    helm upgrade -i ${CHART_NAME} `
+        --set APP_NAME=$AppName `
+        --set APP_INSIGHTS.CONNECTION_STRING=$($app_insights_key.connection_string) `
+        --set EVENTBUS.PASSWORD=$eventbus_password `
+        --set POSTGRESQL.PASSWORD=$sql_password `
+        --set REDIS.PASSWORD=$redis_password `
+        --set DEPLOY.REDIS="$deploy_redis" `
+        --set DEPLOY.SQL="$deploy_sql" `
+        ../charts/infrastucture
+}
+
+$commit_version = Get-GitCommitVersion -Source "."
+$app_insights_key = Get-AppInsightsKey -AppInsightsAccountName $APP_AI_NAME -AppInsightsResourceGroup $MONITORING_RG_NAME
+$app_msi  = Get-MSIAccountInfo -MSIName $APP_SERVICE_ACCT -MSIResourceGroup $APP_RG_NAME
+
+$eventbus_password = Get-Password -SecretName "eshop-sql-secrets"
+$sql_password = Get-Password -SecretName "eshop-eventbus-secrets"
+$redis_password = Get-Password -SecretName "eshop-redis-secrets"
+
 # Install App using Helm Chart
-Write-Log -Message "Deploying ${CHART_NAME} version ${commit_version} to ${APP_K8S_NAME} into ${APP_NAMESPACE} namespace. . ."
+Write-Log -Message "Deploying ${CHART_NAME} version ${commit_version} to ${APP_K8S_NAME} into ${APP_NAMESPACE} namespace"
 helm upgrade -i ${CHART_NAME} `
     --set APP_NAME=$AppName `
     --set NAMESPACE=$APP_NAMESPACE `

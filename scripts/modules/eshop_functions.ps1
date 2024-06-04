@@ -204,3 +204,36 @@ function Get-AppInsightsKey
         connection_string = (az monitor app-insights component show --app $AppInsightsAccountName -g $AppInsightsResourceGroup --query connectionString -o tsv)
     })
 }
+
+function Test-Certificate 
+{
+    param(
+        [string] $CertName,
+        [string] $Namespace
+    )
+
+    Write-Log -Message "Test if certificate ${CertName} exists in ${Namespace} namespace"
+    $status = $(kubectl --namespace aks-istio-ingress get certificate ${CertName} -o jsonpath='{.status.conditions[0].status}')
+
+    if( $status -eq "True" ) { return $true } 
+    return $false
+}
+
+function Test-HelmChart
+{
+    param(
+        [string] $ChartName,
+        [string] $Namespace
+    )
+
+    return $true
+}
+
+functoin Get-Password
+{
+    param(
+        [string] $SecretName
+    )
+
+    return $true
+}

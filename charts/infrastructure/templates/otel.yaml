@@ -1,15 +1,9 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: otel-system
----
-apiVersion: v1
 kind: Service
 metadata:
   name: otel-collector
-  namespace: otel-system
+  namespace: {{ .Values.NAMESPACES.OTEL }}
   labels:
-    app: opencesus
     component: otel-collector
 spec:
   ports:
@@ -28,20 +22,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: otel-collector
-  namespace: otel-system
+  namespace: {{ .Values.NAMESPACES.OTEL }}
   labels:
-    app: opentelemetry
-    component: otel-collector
+    component: opentelemetry
 spec:
   replicas: 1 
   selector:
     matchLabels:
-      app: opentelemetry
+      component: opentelemetry
   template:
     metadata:
       labels:
-        app: opentelemetry
-        component: otel-collector
+        component: opentelemetry
     spec:
       containers:
       - name: otel-collector
@@ -84,7 +76,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: otel-collector-config
-  namespace: otel-system
+  namespace: {{ .Values.NAMESPACES.OTEL }}
 data:
   otel-collector-config.yaml: |
     receivers:

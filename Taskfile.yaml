@@ -64,22 +64,14 @@ tasks:
       AKS: 
         sh: terraform -chdir=./infrastructure output -raw AKS_CLUSTER_NAME
 
-  cluster-config:
+  cert:
     desc: Update cluster configurations
     cmds:
-    - helm upgrade --install eshop-k8s-extensions
-      --set CERT.EMAIL_ADDRESS={{.APP_NAME}}@{{.DOMAIN_ROOT}}
-      --set APP_NAME={{.APP_NAME}} 
-      --set WEBAPP_DOMAIN={{.WEBAPP_DOMAIN}} 
-      --set APP_INSIGHTS.CONNECTION_STRING="{{.AI_CONNECTION_STRING}}"
-      ./charts/eshop-k8s-extensions 
-    - kubectl -n otel-system rollout restart deploy otel-collector
+    - pwsh ./request-certificate.ps1 -AppName {{.APP_NAME}} -DomainName {{.DOMAIN_NAME}}
     vars:
       APP_NAME:
         sh: terraform -chdir=./infrastructure output -raw APP_NAME
-      AI_CONNECTION_STRING:
-        sh: terraform -chdir=./infrastructure output -raw AI_CONNECTION_STRING
-      WEBAPP_DOMAIN: '{{.APP_NAME}}.{{.DOMAIN_ROOT}}'
+      DOMAIN_NAME: '{{.APP_NAME}}.{{.DOMAIN_ROOT}}'
       
   build: 
     desc: Builds and pushes the containers
@@ -125,12 +117,6 @@ tasks:
         sh: terraform -chdir=../infrastructure output -raw APP_NAME
       IP:
         sh: pwsh ./get-service-ipaddress.ps1 
-
-  certs:
-    desc: Gets the Challenge Information required for Cert Manager 
-    dir: ./scripts
-    cmds:
-    - pwsh ./get-cert-manager-challenges.ps1
 
   status:
     desc: Gets the overall status of the cluster
