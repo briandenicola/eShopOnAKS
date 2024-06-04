@@ -16,7 +16,7 @@ spec:
     protocol: TCP
     targetPort: 9411
   selector:
-    component: otel-collector
+    component: opentelemetry
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -24,16 +24,19 @@ metadata:
   name: otel-collector
   namespace: {{ .Values.NAMESPACES.OTEL }}
   labels:
-    component: opentelemetry
+    app: opentelemetry
+    component: otel-collector
 spec:
   replicas: 1 
   selector:
     matchLabels:
-      component: opentelemetry
+      app: opentelemetry
+      component: otel-collector
   template:
     metadata:
       labels:
-        component: opentelemetry
+        app: opentelemetry
+        component: otel-collector
     spec:
       containers:
       - name: otel-collector
@@ -122,5 +125,4 @@ data:
           receivers: [otlp]
           processors: [batch]
           exporters: [debug,azuremonitor]
-
 ---
