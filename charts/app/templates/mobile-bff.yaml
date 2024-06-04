@@ -16,6 +16,7 @@ data:
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.OTEL.ENDPOINT }}
   services__catalog-api__http__0: {{ print .Values.ISTIO.CATALOG.INTERNAL_URL  }}
   services__identity-api__http__0: {{ print .Values.ISTIO.IDENTITY.INTERNAL_URL }}
+  OTEL_SERVICE_NAME: "mobile-bff"
 ---
 kind: Deployment
 apiVersion: apps/v1

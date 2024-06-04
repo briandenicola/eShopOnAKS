@@ -16,6 +16,7 @@ data:
   OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
   OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.OTEL.ENDPOINT }}
+  OTEL_SERVICE_NAME: "webapp"
   services__basket-api__http__0: {{ .Values.ISTIO.BASKET.INTERNAL_URL }}
   services__basket-api__https__0: {{ .Values.ISTIO.BASKET.INTERNAL_URL }}
   services__ordering-api__http__0: {{ .Values.ISTIO.ORDERING.INTERNAL_URL }}

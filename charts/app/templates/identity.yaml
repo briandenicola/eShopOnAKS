@@ -18,6 +18,7 @@ data:
   OrderingApiClient: {{ .Values.ISTIO.ORDERING.INTERNAL_URL }}
   WebAppClient: {{ print "https://" .Values.ISTIO.WEBAPP.EXTERNAL_URL }}
   WebhooksApiClient: {{ .Values.ISTIO.WEBHOOKS.INTERNAL_URL }}
+  OTEL_SERVICE_NAME: "identity-api"
 ---
 kind: Deployment
 apiVersion: apps/v1
