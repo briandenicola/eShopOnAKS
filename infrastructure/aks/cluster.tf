@@ -83,7 +83,6 @@ resource "azurerm_kubernetes_cluster" "this" {
     os_disk_size_gb              = 127
     vnet_subnet_id               = data.azurerm_subnet.kubernetes.id
     os_sku                       = "Mariner"
-    os_disk_type                 = "Ephemeral"
     type                         = "VirtualMachineScaleSets"
     enable_auto_scaling          = true
     min_count                    = 3
