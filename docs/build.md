@@ -9,7 +9,8 @@ Build
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
-- :one: `task build -- ${{eSHOP_SRC_DIR}}`     - Builds and pushes the containers. `eSHOP_SRC_DIR` defaults to ~/code/eshop if not passed on the cli
+- :one: `task build -- ${{eSHOP_SRC_DIR}}` #Builds and pushes the containers.
+  * `eSHOP_SRC_DIR` defaults to ~/code/eshop if not passed on the cli
   * Example `task build -- /workspaces/eShop` - if you are working on a Github Codespace
 - :two: `docker pull ${APP_ACR_NAME}.azurecr.io/webhookclient:${ContainerImageTag}`
 - :three: `trivy image ${APP_ACR_NAME}.azurecr.io/webhookclient:${ContainerImageTag}`
