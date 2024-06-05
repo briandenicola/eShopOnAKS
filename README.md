@@ -88,7 +88,7 @@ Acknowledgments
 * [The eShop Team](https://github.com/dotnet/eshop)
 * [The dotnet Team](https://github.com/dotnet)
 * [Azure Mission Critical](https://github.com/Azure/Mission-Critical-Connected)
-* [Reliable Web Workshop](https://github.com/Azure/reliable-web-app-pattern-dotnet-workshop))
+* [Reliable Web Workshop](https://github.com/Azure/reliable-web-app-pattern-dotnet-workshop)
 * [Ben Coleman](https://github.com/benc-uk/kube-workshop)
 
 
