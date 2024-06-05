@@ -16,7 +16,7 @@ The following tools and build environment has been tested to work on Linux and o
 * [kubectl](https://kubernetes.io/docs/tasks/tools/) - Another tool for managing Kubernetes clusters
 * [helm](https://helm.sh/) - A tool for deploying applications to Kubernetes
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) - A tool for managing Azure resources
-
+* [Trivy]()
 ### Optional Tools
 * [Windows Terminal](https://aka.ms/terminal) - A better terminal for Windows
 * [Zsh](https://ohmyz.sh/) - A better shell for Linux and Windows
