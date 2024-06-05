@@ -44,7 +44,7 @@ rm -f /tmp/istio-${VERSION}.tar.gz
 rm -rf tmp/istio-${VERSION}
 
 #Install Trivy
-VERSION=`curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/'
+VERSION=`curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/'`
 curl -sSL "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz" -o /tmp/trivy.tar.gz
 mkdir /tmp/trivy
 tar -zxf /tmp/trivy.tar.gz -C /tmp/trivy
