@@ -61,6 +61,7 @@ Deployment
 
 ## Optional Next Steps
 * :bulb: eShop has all configurations stored in as AKS Configmaps. How could these be replaced with Azure App Configuration?
+* :bulb: eShop is deployed with a [ISTIO Virtual Service](https://istio.io/latest/docs/reference/config/networking/virtual-service/).  What [advance features](https://istio.io/latest/docs/tasks/traffic-management/) could be leverage to bring reliability to the microservices application?  What other ISTIO CRDs could be leveraged?
 
 # Components
 ## Helm Chart
@@ -81,7 +82,6 @@ Deployment
 ## Virtual Services
 * The deployment will configure two Istio Virtual Servicves. One for the Web Application and One for the Identity API.
 * The Istio Gateway will terminate the SSL connection and route the traffic to the appropriate service over port 80.
-* The Virtual Service configuration can be extended with additional features such as rate limiting, retries, and timeouts.
 * Example Virtual Service configuration:
 ```yaml
     apiVersion: networking.istio.io/v1beta1
