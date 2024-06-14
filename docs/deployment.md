@@ -96,9 +96,9 @@ Deployment
     http:
     - route:
     - destination:
-            host: webapp
-            port:
-            number: 80
+        host: webapp
+        port:
+        number: 80
     ---
     apiVersion: networking.istio.io/v1beta1
     kind: VirtualService
@@ -113,9 +113,9 @@ Deployment
     http:
     - route:
     - destination:
-            host: identity-api
-            port:
-            number: 80
+        host: identity-api
+        port:
+        number: 80
 ```
 
 ## Secrets & ConfigMaps
