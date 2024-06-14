@@ -53,7 +53,6 @@ module "aks" {
   azure_monitor_id                                     = module.monitoring.AZURE_MONITOR_ID
 }
 
-
 module "sql" {
   depends_on = [
     module.core,

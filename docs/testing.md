@@ -52,6 +52,7 @@ Testing and Troubleshooting
 
 ## Optional Next Steps
 * :question: What other steps or branches could be added to the Chaos Experiment?
+* :question: Could Chaos be used to simulate network load? If not, what service could be used to simulate network load?
 <p align="right">(<a href="#testing-and-troubleshooting">back to top</a>)</p>
 
 # Navigation

@@ -39,7 +39,7 @@ Infrastructure
 ```
 
 ## Optional Next Steps
-* :bulb: eShop has an OpenAI component that can be deployed. What would be the steps to deploy and configure this component?
+* :question: eShop has an OpenAI component that can be deployed. What code updates are required and changes to the infrastructure are required?
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 # Infrastructure Components
@@ -139,18 +139,18 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 
 ```yaml
   receivers:
-      otlp:
-        protocols:
-          grpc:
-            endpoint: 0.0.0.0:4317            
-      zipkin:
-        endpoint: 0.0.0.0:9411
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317            
+    zipkin:
+      endpoint: 0.0.0.0:9411
   
   exporters:
-      azuremonitor:
-        connection_string: {{ .Values.APP_INSIGHTS.CONNECTION_STRING  }}
-        maxbatchsize: 10
-        maxbatchinterval: 5s
+    azuremonitor:
+      connection_string: {{ .Values.APP_INSIGHTS.CONNECTION_STRING  }}
+      maxbatchsize: 10
+      maxbatchinterval: 5s
 ```
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 

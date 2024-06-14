@@ -12,6 +12,10 @@ kubectl --namespace kubecost-system port-forward svc/kubecost-system-kubecost-re
 
 <hr/>
 
+## Optional Next Steps
+* :bulb: Scale out a couple of the services and monitor the cost changes.
+* :question: How much would it cost to run this eShop application in a production environment?
+
 ## Overall Costs
 ![cost 1](../.assets/costs-1.png)
 <p align="right">(<a href="#cost-management">back to top</a>)</p>
