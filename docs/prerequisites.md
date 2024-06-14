@@ -4,7 +4,7 @@ Prerequisites
 The following tools and build environment has been tested to work on Linux and on Windows using WSL2.  While all the tools have Windows equivalents, the instructions provided are for Linux and have not been fully tested. 
 
 ## Tools
-* Github CodeSpaces, [Azure Cloud Shell](https://shell.azure.com/) Linux, or Windows with WSL2.
+* Github CodeSpaces, [Azure Cloud Shell](https://shell.azure.com/), Linux, or Windows with WSL2.
 * [dotnet 8](https://dotnet.microsoft.com/download) - The .NET SDK
 * [Visual Studio Code or Equivalent](https://code.visualstudio.com/) - A lightweight code editor
 * [Docker Desktop](https://www.docker.com/products/docker-desktop) - The Docker Desktop to build/push containers
@@ -16,7 +16,8 @@ The following tools and build environment has been tested to work on Linux and o
 * [kubectl](https://kubernetes.io/docs/tasks/tools/) - Another tool for managing Kubernetes clusters
 * [helm](https://helm.sh/) - A tool for deploying applications to Kubernetes
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) - A tool for managing Azure resources
-* [Trivy]()
+* [Trivy](https://github.com/aquasecurity/trivy) - Open Source Vulnerability Scanner for Containers
+
 ### Optional Tools
 * [Windows Terminal](https://aka.ms/terminal) - A better terminal for Windows
 * [Zsh](https://ohmyz.sh/) - A better shell for Linux and Windows
@@ -41,12 +42,11 @@ The following tools and build environment has been tested to work on Linux and o
     DOMAIN_ROOT | Default root domain used for all URLs & certs | bjdazure.tech
 * Running the `task` command without any options will run the default command. This will list all the available tasks.
     * `task build`              : Builds containers
-    * `task certs`              : Gets the Challenge Information required for Cert Manager
+    * `task certs`              : Update cluster configurations required for Cert Manager
     * `task creds`              : Gets credential file for newly created AKS cluster
     * `task deploy`             : Deploys application via Helm
     * `task dns`                : Gets the IP Addresss of the Istio Gateway
     * `task down`               : Destroys all Azure resources and cleans up Terraform
-    * `task cluster-config`     : Update cluster configurations
     * `task up`                 : Creates Azure infrastructure and deploys application code
     * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
     * `task status`             : Get the status of the AKS cluster resources

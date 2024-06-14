@@ -55,7 +55,8 @@ Monitoring
 
 # Optional Next Steps
 * :bulb: Explore the Grafana dashboards to view additional metrics and dashboards
-* :bulb: Create custom queries in Application Insights to monitor specific application logs
+* :bulb: Create custom queries in Application Insights to monitor specific application logs. Create alerts based on these queries.
+* :bulb: Create an Availability Test in Application Insights to monitor the application uptime from multiple locations
 
 # Navigation
 [Previous Section ⏪](./deployment.md) ‖ [Return to Main Index 🏠](../README.md) ‖ [Next Section ⏩](./testing.md)

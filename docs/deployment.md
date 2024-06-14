@@ -75,7 +75,6 @@ Deployment
     > helm list
     NAME                    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
     eshop                   default         2               2024-05-20 09:25:22.748077861 -0500 CDT deployed        eshop-1.0.0                     1.0.0
-    eshop-k8s-extensions    default         2               2024-05-20 09:15:06.180620377 -0500 CDT deployed        eshop-k8s-extensions-1.0.0      1.0.0
 ```
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
