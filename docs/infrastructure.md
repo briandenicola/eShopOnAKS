@@ -40,6 +40,8 @@ Infrastructure
 
 ## Optional Next Steps
 * :question: eShop has an OpenAI component that can be deployed. What code updates are required and changes to the infrastructure are required?
+* :bulb: eShop is exposed directly to the Internet.  Update the infrastructure to deploy the Ingress Controller internally only and deploy a Azure Front Door or Azure App Gateway in front
+  > _Use [Multi-Region POC](https://github.com/briandenicola/azure-multi-region-proof-of-concept) and [Mission Critical Azure](https://github.com/Azure/Mission-Critical-Online) as guides_
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
 # Infrastructure Components
