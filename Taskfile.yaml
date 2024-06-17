@@ -132,7 +132,6 @@ tasks:
   restart:
     desc: Performs a rollout restart on all deployments in eshop namespace
     cmds:
-    #- kubectl -n eshop-infra rollout restart deploy
     - kubectl -n eshop rollout restart deploy
 
   down:
