@@ -21,7 +21,8 @@
 				"ms-kubernetes-tools.aks-devx-tools",
 				"ms-kubernetes-tools.vscode-kubernetes-tools",
 				"github.vscode-pull-request-github",				
-				"github.copilot"
+				"github.copilot",
+				"mindaro.mindaro" 
 			]
 		}
 	},
