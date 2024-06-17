@@ -16,14 +16,12 @@ tasks:
     cmds: 
     - task --list 
   
-  up:
+  init:
     desc: Creates Azure infrastructure and deploys application code
     cmds:
     - terraform -chdir=./infrastructure workspace new {{.REGION}} || true
     - terraform -chdir=./infrastructure workspace select {{.REGION}}
     - terraform -chdir=./infrastructure init
-    - task: apply
-    - task: creds
     vars: 
       REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
 

@@ -16,17 +16,15 @@ Infrastructure
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
-- :one: `task up`     - Initializes Terraform and then calls `task apply` and `task creds`
-
-### :heavy_check_mark: Or run the tasks individually
 > _**Note**: If terraform fails for any resaon, you can run these commands individually to retry the deployment._
-- :one: `task apply`  - Applies the Terraform plan to create the Azure infrastructure
-- :two: `task creds`  - Gets the credential file for the newly created AKS cluster
-- :three: `task dns`    - Gets the IP Address of the Istio Gateway
+- :one: `task init`     - Initializes Terraform
+- :two: `task apply`    - Applies the Terraform plan to create the Azure infrastructure
+- :three: `task creds`  - Gets the credential file for the newly created AKS cluster
+- :four: `task dns`     - Gets the IP Address of the Istio Gateway
 
 ## :heavy_check_mark: Deploy Manually
 ```pwsh
-  terraform -chdir=./infrastructure
+  terraform -chdir=./infrastructure init
   terraform -chdir=./infrastructure apply \
     -var "region={{.REGION}}" \
     -var "vm_size={{.SKU}}"  \
@@ -40,7 +38,7 @@ Infrastructure
 
 ## Optional Next Steps
 * :question: eShop has an OpenAI component that can be deployed. What code updates are required and changes to the infrastructure are required?
-* :bulb: eShop is exposed directly to the Internet.  Update the infrastructure to deploy the Ingress Controller internally only and deploy a Azure Front Door or Azure App Gateway in front
+* :bulb: eShop is exposed directly to the Internet.  Update the infrastructure to deploy an Intenral Ingress Controller then deploy a Azure Front Door or Azure App Gateway in front
   > _Use [Multi-Region POC](https://github.com/briandenicola/azure-multi-region-proof-of-concept) and [Mission Critical Azure](https://github.com/Azure/Mission-Critical-Online) as guides_
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 
