@@ -36,7 +36,6 @@ Build
 * :bulb: Setup Bridge-for-AKS to enable [Remote Debugging](https://learn.microsoft.com/en-us/visualstudio/bridge/overview-bridge-to-kubernetes) and setup up a couple breakpoints in the eShop code to test the debugging feature.
 * :bulb: Enable [Azure Defender for Container](https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings) then push the containers again to your Container Registry. Review any [security recommendations](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction).  How would you resolve the recommendations?
 
-
 ![defender](../.assets/defender.png)
 <p align="right">(<a href="#build">back to top</a>)</p>
 
@@ -101,10 +100,9 @@ Build
   │ bsdutils           │ CVE-2022-0563       │          │              │ 1:2.38.1-5+deb12u1    │               │ util-linux: partial disclosure of arbitrary files in chfn    │
   │                    │                     │          │              │                       │               │ and chsh when compiled...                                    │
   │                    │                     │          │              │                       │               │ https://avd.aquasec.com/nvd/cve-2022-0563                    │
-  ├────────────────────┼─────────────────────┤          ├──────────────┼───────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+  ├────────────────────┼─────────────────────|──────────├──────────────┼───────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
   ...
   ```
-
 
 ```
 <p align="right">(<a href="#build">back to top</a>)</p>

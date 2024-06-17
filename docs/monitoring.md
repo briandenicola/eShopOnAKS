@@ -29,7 +29,6 @@ Monitoring
 # Example Metrics - Grafana Dashboards and Prometheus Queries 
 > The following are example metrics and queries that can be used to monitor the eShop application. 
 
-
 ## Threads
 <img src="../.assets/grafana-threads.png" width="1024px" />
 
