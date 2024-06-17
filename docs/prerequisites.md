@@ -32,14 +32,17 @@ The following tools and build environment has been tested to work on Linux and o
 * Of course, the application can be deployed manually
 * The Taskfile is a simple way to run commands and scripts in a consistent manner.  
 * The [Taskfile](../Taskfile.yaml) definition is located in the root of the repository
-* The Task file declares 4 default values that can be updated to suit specific requirements: 
+* The Task file declares the default values that can be updated to suit specific requirements: 
     Name | Usage | Default Value
     ------ | ------ | ------
     TITLE | Value used in Azure Tags | eShop On AKS
-    SKU | Default SKU type for AKS nodes | Standard_D4ads_v5
+    SKU | Default SKU type for AKS nodes | Standard_D4s_v5
     COUNT | Number of nodes in the AKS cluster | 2
     DEFAULT_REGION | Default region to deploy to | westus3
     DOMAIN_ROOT | Default root domain used for all URLs & certs | bjdazure.tech
+    DEPLOY_SQL | Deploy Azure PostgreSQL | false (will deploy PostgreSQL as containers on AKS)
+    DEPLOY_REDIS | Deploy Azure Redis |  false (will deploy Redis as containers on AKS)
+
 * Running the `task` command without any options will run the default command. This will list all the available tasks.
     * `task build`              : Builds containers
     * `task certs`              : Update cluster configurations required for Cert Manager
@@ -50,6 +53,7 @@ The following tools and build environment has been tested to work on Linux and o
     * `task up`                 : Creates Azure infrastructure and deploys application code
     * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
     * `task status`             : Get the status of the AKS cluster resources
+    * `task restart`            : Performs a rollout restart on all deployments in eshop namespace
 
 ## Code
 * Clone the eShop Source repository: `git clone https://github.com/briandenicola/eshop`
