@@ -37,10 +37,11 @@ Infrastructure
 ```
 
 ## Optional Next Steps
-* :bulb: eShop is exposed directly to the Internet.  Update the infrastructure to deploy an Intenral Ingress Controller then deploy a Azure Front Door or Azure App Gateway in front
-  > _Use [Multi-Region POC](https://github.com/briandenicola/azure-multi-region-proof-of-concept) and [Mission Critical Azure](https://github.com/Azure/Mission-Critical-Online) as guides_
+* :bulb: [Entra ID support](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-azure-ad-authentication#connection-via-microsoft-entra-identities) was recently was added to Azure Postgres.  Update the eShop infrastructur and code to enable this feature.
 * :bulb: Deploy Azure Redis with Entra ID authentication and Private Link. Update the eShope Code to use Microsoft.Azure.StackExchangeRedis library for authentication
   > _Use [Entra ID with Redis](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-azure-active-directory-for-authentication) and [Terraform Redis Access Policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/redis_cache_access_policy_assignment) as guides_
+* :bulb: eShop is exposed directly to the Internet.  Update the infrastructure to deploy an Intenral Ingress Controller then deploy a Azure Front Door or Azure App Gateway in front
+  > _Use [Multi-Region POC](https://github.com/briandenicola/azure-multi-region-proof-of-concept) and [Mission Critical Azure](https://github.com/Azure/Mission-Critical-Online) as guides_
 * :question: eShop has an OpenAI component that can be deployed. What code updates are required and changes to the infrastructure are required?
 <p align="right">(<a href="#infrastructure">back to top</a>)</p>
 

@@ -32,7 +32,6 @@ Build
 ```
 
 ## Optional Next Steps
-* :question: [Entra ID support](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-azure-ad-authentication#connection-via-microsoft-entra-identities) was recently was added to Azure Postgres.  Try to update the eShop code to enable this security feature.
 * :bulb: Setup Bridge-for-AKS to enable [Remote Debugging](https://learn.microsoft.com/en-us/visualstudio/bridge/overview-bridge-to-kubernetes) and setup up a couple breakpoints in the eShop code to test the debugging feature.
 * :bulb: Enable [Azure Defender for Container](https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings) then push the containers again to your Container Registry. Review any [security recommendations](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction).  How would you resolve the recommendations?
 
