@@ -32,7 +32,7 @@ Table of contents
     * [Gihub Codespaces](./docs/prerequisites.md#github-codespaces)
     * [Firewall Update](./docs/prerequisites.md#firewall)
 * [Infrastructure](./docs/infrastructure.md)
-    * [Infrastructure Task Steps](./docs/build.md#steps)
+    * [Infrastructure Task Steps](./docs/infrastructure.md#steps)
     * [Components - Resource Groups](./docs/infrastructure.md#resource-groups)
     * [Components - Networking](./docs/infrastructure.md#networking)
     * [Components - AKS Cluster](./docs/infrastructure.md#aks-cluster-components)
