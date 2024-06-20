@@ -81,6 +81,7 @@ Roadmap
 - [x] Add Keda Scalers Examples
 - [x] Review Azure Monitor and Application Insights
 - [x] Update documentation
+- [ ] A Java-based Version
 <p align="right">(<a href="#overview">back to top</a>)</p>
 
 Acknowledgments
