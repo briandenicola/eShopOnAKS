@@ -60,8 +60,9 @@ Deployment
 ```
 
 ## Optional Next Steps
-* :bulb: eShop has all configurations stored in as AKS Configmaps. How could these be replaced with Azure App Configuration?
+* :bulb: eShop has all configurations stored in as AKS Configmaps. What needs to be completed to utilize Azure App Configuration instead? 
 * :bulb: eShop is deployed with a [ISTIO Virtual Service](https://istio.io/latest/docs/reference/config/networking/virtual-service/).  What [advance features](https://istio.io/latest/docs/tasks/traffic-management/) could be leverage to bring reliability to the microservices application?  What other ISTIO CRDs could be leveraged?
+* :bulb: Create a Github Actions Workload to deploy the application code to the AKS cluster
 
 # Components
 ## Helm Chart

@@ -29,11 +29,14 @@ Build
   dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/PaymentProcessor
   dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/WebApp
   dotnet publish -t:PublishContainer -p ContainerImageTag=$ContainerImageTag -p ContainerRegistry=${APP_ACR_NAME}.azurecr.io src/Webhooks.API
+  docker pull ${APP_ACR_NAME}.azurecr.io/webhookclient:$ContainerImageTag
+  trivy image ${APP_ACR_NAME}.azurecr.io/webhookclient:$ContainerImageTag
 ```
 
 ## Optional Next Steps
 * :bulb: Setup Bridge-for-AKS to enable [Remote Debugging](https://learn.microsoft.com/en-us/visualstudio/bridge/overview-bridge-to-kubernetes) and setup up a couple breakpoints in the eShop code to test the debugging feature.
-* :bulb: Enable [Azure Defender for Container](https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings) then push the containers again to your Container Registry. Review any [security recommendations](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction).  How would you resolve the recommendations?
+* :bulb: Enable [Azure Defender for Container](https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings) then push the containers again to your Container Registry. Review any [security recommendations](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction).  How would you resolve the recommendations? How could Defender be used instead of or along with Trivy
+* :bulb: Create a Github Action Workflow to build the containers and push them to your Azure Container Repository
 
 ![defender](../.assets/defender.png)
 <p align="right">(<a href="#build">back to top</a>)</p>
