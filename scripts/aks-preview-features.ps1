@@ -3,6 +3,10 @@
 [CmdletBinding(DefaultParameterSetName = 'Default')]
 param()
 
+az provider register --namespace Microsoft.Monitor
+az provider register --namespace Microsoft.Dashboard
+az provider register --namespace Microsoft.AlertsManagement
+
 az extension add --name aks-preview
 az extension add --name k8s-extension
 az extension update --name aks-preview
