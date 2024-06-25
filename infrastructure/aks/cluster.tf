@@ -77,7 +77,7 @@ resource "azurerm_kubernetes_cluster" "this" {
 
   default_node_pool {
     name                         = "system"
-    node_count                   = 3
+    node_count                   = 1
     vm_size                      = var.vm_size
     zones                        = local.zones
     os_disk_size_gb              = 127
@@ -85,8 +85,8 @@ resource "azurerm_kubernetes_cluster" "this" {
     os_sku                       = "Mariner"
     type                         = "VirtualMachineScaleSets"
     enable_auto_scaling          = true
-    min_count                    = 3
-    max_count                    = 6
+    min_count                    = 1
+    max_count                    = 1
     max_pods                     = 250
     only_critical_addons_enabled = true
     temporary_name_for_rotation  = "rotation"
