@@ -6,7 +6,7 @@ env:
   TITLE: eShop On AKS
   SKU: "standard_d5_v2_promo"
   DEFAULT_REGION: "westus3"
-  COUNT: 2
+  COUNT: 1
   DOMAIN_ROOT: "bjdazure.tech"
   DEPLOY_SQL: false
   DEPLOY_REDIS: false
