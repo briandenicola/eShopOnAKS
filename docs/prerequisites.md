@@ -70,10 +70,8 @@ The following tools and build environment has been tested to work on Linux and o
 * A valid, external DNS domain name to create a wildcard URL for the eShop application
 * An **Azure Service Principal** with Owner role on the Azure subscription  
 * :exclamation: Follow this guide to configure [Terraform](https://learn.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-powershell?tabs=bash) with an Service Principal
-* :exclamation: The followin Providers Must be enabled
-    * Azure.Monitor
-    * Azure.AlertsManagement
-    * Azure.Dashboard   
+* :exclamation: The following [Resource Providers](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#azure-portal) must be enabled: _Microsoft..Monitor, Microsoft.AlertsManagement, Microsoft.Dashboard, Microsoft.KubernetesConfiguration_
+    
 * :exclamation: Run the following command to enable the preview features on your Azure Subscription: _AKS-ExtensionManager, AKS-PrometheusAddonPreview, EnableImageCleanerPreview, AKS-KedaPreview, EnableAPIServerVnetIntegrationPreview, TrustedAccessPreview,NetworkObservabilityPreview, AKS-AzurePolicyExternalData_
     ```pwsh
     pwsh ./scripts/aks-preview-features.ps1
