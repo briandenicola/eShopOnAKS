@@ -46,8 +46,8 @@ resource "azurerm_kubernetes_cluster" "this" {
   #cost_analysis_enabled        = true
 
   api_server_access_profile {
-    vnet_integration_enabled = true
-    subnet_id                = data.azurerm_subnet.api.id
+  #  vnet_integration_enabled = true
+  #  subnet_id                = data.azurerm_subnet.api.id
     authorized_ip_ranges     = local.allowed_ip_range
   }
 
