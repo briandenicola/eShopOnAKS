@@ -26,6 +26,11 @@ variable "vm_size" {
   default     = "Standard_B4ms"
 }
 
+variable "system_vm_size" {
+  description = "The SKU for the default node pool"
+  default     = "Standard_DS3_v2"
+}
+
 variable "node_count" {
   description = "The default number of nodes to scale the cluster to"
   type        = number
