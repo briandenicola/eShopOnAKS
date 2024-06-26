@@ -58,7 +58,7 @@ spec:
           type: RuntimeDefault        
       containers:
         - name: webhooks-api
-          image: {{ print .Values.ACR.NAME ".azurecr.io/webhooks-api:" .Values.GIT_COMMIT_VERSION }}
+          image: bjd145/eshop-webhooks-api:01009049 #{{ print .Values.ACR.NAME ".azurecr.io/webhooks-api:" .Values.GIT_COMMIT_VERSION }}
           imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.WEBHOOKS.PORT }}

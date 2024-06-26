@@ -65,7 +65,7 @@ spec:
           type: RuntimeDefault         
       containers:
         - name: webapp
-          image: {{ print .Values.ACR.NAME ".azurecr.io/webapp:" .Values.GIT_COMMIT_VERSION }}
+          image: bjd145/eshop-webapp:01009049 #{{ print .Values.ACR.NAME ".azurecr.io/webapp:" .Values.GIT_COMMIT_VERSION }}
           imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.WEBAPP.PORT }}

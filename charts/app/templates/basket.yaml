@@ -20,13 +20,13 @@ data:
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  # name: basket-api
-  # namespace: {{ .Values.NAMESPACES.APP }}
-  # labels:
-  #   app: {{ .Chart.Name }}
-  #   service: basket-api
+  name: basket-api
+  namespace: {{ .Values.NAMESPACES.APP }}
+  labels:
+    app: {{ .Chart.Name }}
+    service: basket-api
 spec:
-#  replicas: 1
+  replicas: 1
   selector:
     matchLabels:
       service: basket-api
@@ -46,7 +46,7 @@ spec:
         prometheus.io/port: {{ .Values.ISTIO.BASKET.PORT | quote }}
         prometheus.io/path: "/metrics"        
     spec:
-#      serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
+      serviceAccountName: {{ .Values.WORKLOAD_ID.NAME }}
       nodeSelector:
         App: eshop
       securityContext:
@@ -58,7 +58,7 @@ spec:
           type: RuntimeDefault        
       containers:
         - name: basket-api
-#          image: {{ print .Values.ACR.NAME ".azurecr.io/basket-api:" .Values.GIT_COMMIT_VERSION }}
+          image: bjd145/eshop-basket-api:01009049 #{{ print .Values.ACR.NAME ".azurecr.io/basket-api:" .Values.GIT_COMMIT_VERSION }}
           imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.BASKET.PORT }}
@@ -76,20 +76,20 @@ spec:
             readOnlyRootFilesystem: true            
             capabilities:
               drop: ["ALL"]                      
-          # envFrom:
-          # - configMapRef:
-          #     name: basket-cm
-          # env:
-          # - name: ConnectionStrings__redis
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: eshop-redis-secrets
-          #       key: redis-connection-string
-          # - name: ConnectionStrings__eventbus
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: eshop-eventbus-secrets
-          #       key:  RABBITMQ_CONNECTION_STRING                
+          envFrom:
+          - configMapRef:
+              name: basket-cm
+          env:
+          - name: ConnectionStrings__redis
+            valueFrom:
+              secretKeyRef:
+                name: eshop-redis-secrets
+                key: redis-connection-string
+          - name: ConnectionStrings__eventbus
+            valueFrom:
+              secretKeyRef:
+                name: eshop-eventbus-secrets
+                key:  RABBITMQ_CONNECTION_STRING                
 {{- if .Values.DEPLOY.REDIS -}}
 {{- else }}               
           volumeMounts:

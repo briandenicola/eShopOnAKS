@@ -58,7 +58,7 @@ spec:
           type: RuntimeDefault             
       containers:
         - name: ordering-api
-          image: {{ print .Values.ACR.NAME ".azurecr.io/ordering-api:" .Values.GIT_COMMIT_VERSION }}
+          image: bjd145/eshop-ordering-api:01009049 #{{ print .Values.ACR.NAME ".azurecr.io/ordering-api:" .Values.GIT_COMMIT_VERSION }}
           ports:
           - containerPort: {{ .Values.ISTIO.ORDERING.PORT }}          
           resources:
