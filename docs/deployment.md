@@ -9,7 +9,10 @@ Deployment
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
-- :one: `task deploy`     - Deploys application via Helm
+- :one: Open charts/app/templates/basket.yaml.  
+    * Review and uncomment the various sections that are commented out.  What do these sections do?  How do they affect the deployment?
+    * Save and exit the file.
+- :two: `task deploy`     - Deploys application via Helm
 <p align="right">(<a href="#deployment">back to top</a>)</p>
 
 ## :heavy_check_mark: Manual Build Steps
