@@ -55,7 +55,8 @@ The following tools and build environment has been tested to work on Linux and o
     * `task deploy`             : Deploys application via Helm
     * `task dns`                : Gets the IP Addresss of the Istio Gateway
     * `task down`               : Destroys all Azure resources and cleans up Terraform
-    * `task up`                 : Creates Azure infrastructure and deploys application code
+    * `task init`               : Initialized Terraform modules
+    * `task apply`              : Creates Azure infrastructure and deploys application code
     * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
     * `task status`             : Get the status of the AKS cluster resources
     * `task restart`            : Performs a rollout restart on all deployments in eshop namespace
