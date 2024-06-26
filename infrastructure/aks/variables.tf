@@ -28,7 +28,7 @@ variable "vm_size" {
 
 variable "system_vm_size" {
   description = "The SKU for the default node pool"
-  default     = "Standard_DS3_v2"
+  default     = "Standard_DS3_v2_promo"
 }
 
 variable "node_count" {
