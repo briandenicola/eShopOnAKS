@@ -57,7 +57,7 @@ spec:
           type: RuntimeDefault          
       containers:
         - name: payment-api
-          image: bjd145/eshop-payment-api:01009049 #{{ print .Values.ACR.NAME ".azurecr.io/paymentprocessor:" .Values.GIT_COMMIT_VERSION }}
+          image: bjd145/eshop-payment-processor:01009049 #{{ print .Values.ACR.NAME ".azurecr.io/paymentprocessor:" .Values.GIT_COMMIT_VERSION }}
           imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.PAYMENT.PORT }}
