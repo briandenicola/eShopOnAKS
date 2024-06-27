@@ -23,7 +23,7 @@ variable "vm_size" {
 }
 
 variable "node_count" {
-  description = "The default number of nodes to scale the cluster to"
+  description = "The default number of nodes in the apps nodepool of the AKS cluster"
   type        = number
   default     = 1
 }

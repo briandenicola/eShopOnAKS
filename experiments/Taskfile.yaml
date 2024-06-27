@@ -47,7 +47,7 @@ tasks:
       AKS:
         sh: terraform -chdir=../infrastructure output -raw AKS_CLUSTER_NAME
       AKS_RG:
-        sh: terraform -chdir=../infrastructure output -raw AKS_RESOURCE_GROUP
+        sh: terraform -chdir=../infrastructure output -raw AKS_RESOURCE_GROUP++
       RG: 
         sh: terraform -chdir=../infrastructure output -raw CHAOS_RESOURCE_GROUP
       APP_NAME: 

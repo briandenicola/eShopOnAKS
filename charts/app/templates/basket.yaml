@@ -58,7 +58,7 @@ spec:
           type: RuntimeDefault        
       containers:
         - name: basket-api
-          image: bjd145/eshop-basket-api:01009049 #{{ print .Values.ACR.NAME ".azurecr.io/basket-api:" .Values.GIT_COMMIT_VERSION }}
+          image: {{ print .Values.ACR.NAME ".azurecr.io/basket-api:" .Values.GIT_COMMIT_VERSION }}
           imagePullPolicy: Always
           ports:
           - containerPort: {{ .Values.ISTIO.BASKET.PORT }}

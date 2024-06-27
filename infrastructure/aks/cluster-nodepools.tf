@@ -23,10 +23,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
   max_count             = var.node_count + 2
   zones                 = local.zones
   node_labels = {
-    App = "eshop"
+    App = "eshop"  
   }
-  #node_taints           = [ "ReservedFor=apps:NoSchedule" ]
-
+  
   upgrade_settings {
     max_surge = "25%"
   }

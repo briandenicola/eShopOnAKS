@@ -43,11 +43,10 @@ resource "azurerm_kubernetes_cluster" "this" {
   kubernetes_version           = local.kubernetes_version
   image_cleaner_enabled        = true
   image_cleaner_interval_hours = 48
-  #cost_analysis_enabled        = true
 
   api_server_access_profile {
-  #  vnet_integration_enabled = true
-  #  subnet_id                = data.azurerm_subnet.api.id
+   vnet_integration_enabled = true
+   subnet_id                = data.azurerm_subnet.api.id
     authorized_ip_ranges     = local.allowed_ip_range
   }
 

@@ -4,9 +4,9 @@ dotenv: ['.env']
 
 env:
   TITLE: eShop On AKS
-  SKU: "standard_d5_v2_promo"
+  SKU: "Standard_D5_v2_promo"
   DEFAULT_REGION: "westus3"
-  COUNT: 1
+  COUNT: 2
   DOMAIN_ROOT: "bjdazure.tech"
   DEPLOY_SQL: false
   DEPLOY_REDIS: false
@@ -16,6 +16,17 @@ tasks:
     cmds: 
     - task --list 
   
+  up: 
+    desc: Builds Complete Environment
+    cmds:
+    - task: init
+    - task: apply 
+    - task: creds
+    - task: dns
+    - task: cert
+    - task: build 
+    - task: deploy
+
   init:
     desc: Creates Azure infrastructure and deploys application code
     cmds:

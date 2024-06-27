@@ -6,10 +6,8 @@ The following tools and build environment has been tested to work on Linux and o
 ## Required Tools
 * A Posix compliant System. It could be one of the following:
     * [Github CodeSpaces](https://github.com/features/codespaces)
-    * [Azure Cloud Shell](https://shell.azure.com/)
     * Azure Linux VM - Standard_B1s VM will work ($18/month)
     * Windows 11 with [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install)
-    * MacOS might work but was not tested
 * [dotnet 8](https://dotnet.microsoft.com/download) - The .NET SDK
 * [Visual Studio Code](https://code.visualstudio.com/) or equivalent - A lightweight code editor
 * [Docker](https://www.docker.com/products/docker-desktop) - The Docker Desktop to build/push containers
@@ -30,7 +28,7 @@ The following tools and build environment has been tested to work on Linux and o
 * [.alias.rc](./.alias.rc) - A set of aliases for Linux that can assist with some of the commands in this guide.
     
 > * **Note:** The Github Codespaces environment has all the tools pre-installed and configured.  You can use the following link to open the eShop project in Github Codespaces: [Open in Github Codespaces](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
-> * **Note:** Scripts to help with the installation of all these tools can be found here: [Install Scripts](https://github.com/briandenicola/tooling)
+> * **Note:** [../.devcontainer/post-create.sh](../.devcontainer/post-create.sh) is a script that can be used to install the tools on a Linux VM. 
 
 ### Task
 * The deployment of this application has been automated using [Taskfile](https://taskfile.dev/#/).  This was done instead of using a CI/CD pipeline to make it easier to understand the deployment process.  
@@ -49,12 +47,13 @@ The following tools and build environment has been tested to work on Linux and o
     DEPLOY_REDIS | Deploy Azure Redis |  false (will deploy Redis as containers on AKS)
 
 * Running the `task` command without any options will run the default command. This will list all the available tasks.
+    * `task up`                 : Builds complete environment
+    * `task down`               : Destroys all Azure resources and cleans up Terraform
     * `task build`              : Builds containers
     * `task certs`              : Update cluster configurations required for Cert Manager
     * `task creds`              : Gets credential file for newly created AKS cluster
     * `task deploy`             : Deploys application via Helm
     * `task dns`                : Gets the IP Addresss of the Istio Gateway
-    * `task down`               : Destroys all Azure resources and cleans up Terraform
     * `task init`               : Initialized Terraform modules
     * `task apply`              : Creates Azure infrastructure and deploys application code
     * `task update-firewalls`   : Update firewall rules for Keyvault, AKS, and ACR
@@ -72,8 +71,9 @@ The following tools and build environment has been tested to work on Linux and o
 * An **Azure Service Principal** with Owner role on the Azure subscription  
 * :exclamation: Follow this guide to configure [Terraform](https://learn.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-powershell?tabs=bash) with an Service Principal
 * :exclamation: The following [Resource Providers](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#azure-portal) must be enabled: _Microsoft..Monitor, Microsoft.AlertsManagement, Microsoft.Dashboard, Microsoft.KubernetesConfiguration_
-    
-* :exclamation: Run the following command to enable the preview features on your Azure Subscription: _AKS-ExtensionManager, AKS-PrometheusAddonPreview, EnableImageCleanerPreview, AKS-KedaPreview, EnableAPIServerVnetIntegrationPreview, TrustedAccessPreview,NetworkObservabilityPreview, AKS-AzurePolicyExternalData_
+* :exclamation: The following preview features on your Azure Subscription: _EnableAPIServerVnetIntegrationPreview, TrustedAccessPreview_
+
+> * **Note:** The following script can be used to enable the required Preview Features and Resource Providers on your Azure Subscription:
     ```pwsh
     pwsh ./scripts/aks-preview-features.ps1
     ```
