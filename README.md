@@ -20,13 +20,11 @@ The following is high level architecture of the eShop application and its Azure 
 <p align="right">(<a href="#overview">back to top</a>)</p>
 
 
-
 Copilot
 ============
 If you need clarification on any documentation, you can leverage Github Copilot for assitance. Just highlight the code snippet and type `/explian` in the Copilot prompt.
 
 <p style="text-align:center;">
-    <img src=".assets/copilot-2.pg" width="1024px" />
     <img src=".assets/copilot-1.png" width="1024px" />
 </p>
 
