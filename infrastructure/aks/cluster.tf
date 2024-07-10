@@ -24,6 +24,8 @@ resource "azurerm_kubernetes_cluster" "this" {
   depends_on = [
     azurerm_user_assigned_identity.aks_identity,
     azurerm_user_assigned_identity.aks_kubelet_identity,
+    azurerm_role_assignment.aks_role_assignemnt_msi,
+    azurerm_role_assignment.aks_role_assignemnt_nework
   ]
 
   name                         = local.aks_name
