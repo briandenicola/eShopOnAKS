@@ -8,7 +8,7 @@ env:
   DEFAULT_REGION: "westus3"
   COUNT: 2
   DOMAIN_ROOT: "bjdazure.tech"
-  DEPLOY_SQL: false
+  DEPLOY_SQL: true
   DEPLOY_REDIS: false
 
 tasks:
