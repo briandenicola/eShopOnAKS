@@ -102,7 +102,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     dns_service_ip      = "100.${random_integer.services_cidr.id}.0.10"
     service_cidr        = "100.${random_integer.services_cidr.id}.0.0/16"
     pod_cidr            = "100.${random_integer.pod_cidr.id}.0.0/16"
-    network_plugin      = "azure"
+    network_plugin      = "cilium"
     network_plugin_mode = "overlay"
     load_balancer_sku   = "standard"
     network_data_plane  = "cilium"
