@@ -35,3 +35,8 @@ variable "postgresql_user_name" {
 variable "keyvault_id" {
   description = "The Resource ID of the KeyVault"
 }
+
+variable "zones" {
+  description = "The values for zones to deploy AKS nodes to"
+  default     = "1"
+}

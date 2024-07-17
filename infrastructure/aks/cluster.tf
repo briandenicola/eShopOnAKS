@@ -3,7 +3,8 @@ data "azurerm_kubernetes_service_versions" "current" {
 }
 
 locals {
-  kubernetes_version = data.azurerm_kubernetes_service_versions.current.versions[length(data.azurerm_kubernetes_service_versions.current.versions) - 2]
+  current_minus_2    = data.azurerm_kubernetes_service_versions.current.versions[length(data.azurerm_kubernetes_service_versions.current.versions) - 2]
+  kubernetes_version = var.kubernetes_version == null ? local.current_minus_2 : var.kubernetes_version
   allowed_ip_range   = ["${chomp(data.http.myip.response_body)}/32"]
   zones              = var.region == "northcentralus" ? null : var.zones
 }
@@ -47,8 +48,8 @@ resource "azurerm_kubernetes_cluster" "this" {
   image_cleaner_interval_hours = 48
 
   api_server_access_profile {
-   vnet_integration_enabled = true
-   subnet_id                = data.azurerm_subnet.api.id
+    vnet_integration_enabled = true
+    subnet_id                = data.azurerm_subnet.api.id
     authorized_ip_ranges     = local.allowed_ip_range
   }
 
@@ -92,7 +93,8 @@ resource "azurerm_kubernetes_cluster" "this" {
     only_critical_addons_enabled = true
     temporary_name_for_rotation  = "rotation"
     upgrade_settings {
-      max_surge = "33%"
+      max_surge                  = "33%"
+      drain_timeout_in_minutes   = 5
     }
   }
 
@@ -103,6 +105,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     network_plugin      = "azure"
     network_plugin_mode = "overlay"
     load_balancer_sku   = "standard"
+    network_data_plane  = "cilium"
   }
 
   maintenance_window_auto_upgrade {

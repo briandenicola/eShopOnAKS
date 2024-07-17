@@ -15,7 +15,7 @@ resource "azurerm_postgresql_flexible_server" "this" {
   storage_mb                    = 32768
   sku_name                      = "GP_Standard_D2ds_v4"
   public_network_access_enabled = false
-  zone                          = "2"
+  zone                          = var.zones
 }
 
 resource "azapi_update_resource" "azurerm_postgresql_configuration_vector_enable" {

@@ -16,6 +16,10 @@ variable "namespace" {
   default     = "eshop"
 }
 
+variable "kubernetes_version" {
+  description = "The version of Kubernetes to use for the AKS cluster"
+}
+
 variable "service_mesh_type" {
   description = "Type of Service Mesh for cluster"
   default     = "istio"
@@ -28,7 +32,7 @@ variable "vm_size" {
 
 variable "system_vm_size" {
   description = "The SKU for the default node pool"
-  default     = "Standard_DS3_v2_promo"
+  default     = "Standard_B4ms"
 }
 
 variable "node_count" {

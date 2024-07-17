@@ -17,6 +17,10 @@ variable "service_mesh_type" {
   default     = "istio"
 }
 
+variable "kubernetes_version" {
+  description = "The version of Kubernetes to use for the AKS cluster"
+}
+
 variable "vm_size" {
   description = "The SKU for the default node pool"
   default     = "Standard_B4ms"

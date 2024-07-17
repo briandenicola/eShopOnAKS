@@ -4,7 +4,8 @@ dotenv: ['.env']
 
 env:
   TITLE: eShop On AKS
-  SKU: "Standard_D5_v2_promo"
+  SKU: "Standard_D4as_v5"
+  K8S_VERSION: "1.29"
   DEFAULT_REGION: "westus3"
   COUNT: 2
   DOMAIN_ROOT: "bjdazure.tech"
@@ -42,6 +43,7 @@ tasks:
        -var "region={{.REGION}}" 
        -var "vm_size={{.SKU}}" 
        -var "node_count={{.COUNT}}"
+       -var "kubernetes_version={{.K8S_VERSION}}"
        -var "tags={{.TITLE}}" 
        -var "deploy_postgresql={{.DEPLOY_SQL}}"
        -var "deploy_redis={{.DEPLOY_REDIS}}"
