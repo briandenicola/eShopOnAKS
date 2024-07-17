@@ -23,10 +23,9 @@ tasks:
     - task: init
     - task: apply 
     - task: creds
-    - task: dns
     - task: cert
     - task: build 
-    - task: deploy
+    - task: dns
 
   init:
     desc: Creates Azure infrastructure and deploys application code
