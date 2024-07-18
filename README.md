@@ -5,7 +5,7 @@ This repository is a workshop that demonstrates a method to deploy the eShop app
 [![Open in GitHub Codespaces](https://img.shields.io/static/v1?style=for-the-badge&label=GitHub+Codespaces&message=Open&color=brightgreen&logo=github)](https://codespaces.new/briandenicola/eShopOnAKS?quickstart=1)
 [![Open in Dev Containers](https://img.shields.io/static/v1?style=for-the-badge&label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/briandenicola/eShopOnAKS)  
 
-Detaild Documentation
+Detail Documentation
 ============
 [Table of Contents](./toc.md)
 
