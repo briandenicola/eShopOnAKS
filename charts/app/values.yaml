@@ -4,6 +4,7 @@ NAMESPACES:
 
 APP_NAME                                : ""
 GIT_COMMIT_VERSION                      : ""
+
 ACR:
   NAME                                  : ""
 
@@ -30,6 +31,7 @@ EVENTBUS:
   PORT                                  : "5672"
 
 ISTIO:
+  VERSION                               : "asm-1-21"
   GATEWAY                               : ""
   WEBHOOKS:
     PORT                                : 8080
