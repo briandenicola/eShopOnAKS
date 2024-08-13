@@ -6,6 +6,7 @@ Build
 * The build process is kicked off using the command: `task build` command which runs the `scripts/build-containers.ps1` script.  The script sets the application variables, subscription context. Then it logs into the Azure Container Registry, gets the latest git commit version id. Finally, it builds then publishes each service to the Azure Container Registry.
 * `trivy` is used to scan locally for any security vulnerabilities 
 * If you have challenges building the containers, they are also published to **https://hub.docker.com/u/bjd145**.  `Tag ID: 01009049`
+* The Identity.API recently had a security vulnerability with 7.0.5.  An update to 7.0.6 is required but there is currently an issue with the build process and Nuget.  The issue and workaround are being tracked [here](https://github.com/DuendeSoftware/Support/issues/1352) and [here](https://docs.duendesoftware.com/identityserver/v7/overview/security/#package-signing)
 
 # Steps
 ## :heavy_check_mark: Deploy Task Steps
