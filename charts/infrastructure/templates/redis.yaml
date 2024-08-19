@@ -9,6 +9,9 @@ data:
   REDIS_PASSWORD: {{ .Values.REDIS.PASSWORD | b64enc }}
 stringData:
   redis.conf: |
+    appendonly no
+    save ""
+    
     user {{ .Values.REDIS.USER }} on +@all ~* >{{ .Values.REDIS.PASSWORD }}
 ---
 apiVersion: apps/v1
