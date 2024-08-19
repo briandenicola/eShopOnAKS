@@ -93,8 +93,8 @@ resource "azurerm_kubernetes_cluster" "this" {
     only_critical_addons_enabled = true
     temporary_name_for_rotation  = "rotation"
     upgrade_settings {
-      max_surge                  = "33%"
-      drain_timeout_in_minutes   = 5
+      max_surge                = "33%"
+      drain_timeout_in_minutes = 5
     }
   }
 
@@ -136,7 +136,8 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   oms_agent {
-    log_analytics_workspace_id = var.azurerm_log_analytics_workspace_id
+    log_analytics_workspace_id      = var.azurerm_log_analytics_workspace_id
+    msi_auth_for_monitoring_enabled = true
   }
 
   microsoft_defender {
