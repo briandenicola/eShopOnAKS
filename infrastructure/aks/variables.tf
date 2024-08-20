@@ -74,15 +74,6 @@ variable "azurerm_log_analytics_workspace_id" {
 variable "azurerm_monitor_data_collection_rule_azuremonitor_id" {
   description = "The Resource ID of the Azure Monitor Data Collection Rule"
 }
-
-variable "monitoring_resource_group_name" {
-  description = "The name of the Resource Group for the Monitoring"
-}
-
-variable "monitoring_location" {
-  description = "The location of the Resource Group for the Monitoring"
-}
-
-variable "azure_monitor_id" {
-  description = "The Resource ID of the Azure Monitor"
+variable "azurerm_monitor_container_insights_data_collection_rule_azuremonitor_id" {
+  description = "The Resource ID of the Azure Monitor Data Collection Rule for Container Insights"
 }

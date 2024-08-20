@@ -13,6 +13,11 @@ output "AZURERM_MONITOR_DATA_COLLECTION_RULE_AZUREMONITOR_ID" {
   sensitive = false
 }
 
+output "AZURERM_MONITOR_DATA_COLLECTION_RULE_CONTAINER_INSIGHTS_ID" {
+  value     = azurerm_monitor_data_collection_rule.container_insights.id
+  sensitive = false
+}
+
 output "MONITORING_RESOURCE_GROUP_NAME" {
   value     = azurerm_resource_group.monitoring.name
   sensitive = false
