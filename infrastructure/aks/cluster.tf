@@ -2,6 +2,7 @@ data "azurerm_kubernetes_service_versions" "current" {
   location = azurerm_resource_group.aks.location
 }
 
+
 locals {
   current_minus_2    = data.azurerm_kubernetes_service_versions.current.versions[length(data.azurerm_kubernetes_service_versions.current.versions) - 2]
   kubernetes_version = var.kubernetes_version == null ? local.current_minus_2 : var.kubernetes_version
@@ -35,8 +36,8 @@ resource "azurerm_kubernetes_cluster" "this" {
   node_resource_group          = "${local.aks_name}_nodes_rg"
   dns_prefix                   = local.aks_name
   sku_tier                     = "Standard"
-  automatic_channel_upgrade    = "patch"
-  node_os_channel_upgrade      = "NodeImage"
+  automatic_upgrade_channel    = "patch"
+  node_os_upgrade_channel      = "NodeImage"
   oidc_issuer_enabled          = true
   workload_identity_enabled    = true
   azure_policy_enabled         = true
@@ -48,13 +49,13 @@ resource "azurerm_kubernetes_cluster" "this" {
   image_cleaner_interval_hours = 48
 
   api_server_access_profile {
-    vnet_integration_enabled = true
-    subnet_id                = data.azurerm_subnet.api.id
-    authorized_ip_ranges     = local.allowed_ip_range
+    #vnet_integration_enabled = true
+    #subnet_id                = data.azurerm_subnet.api.id
+    authorized_ip_ranges = local.allowed_ip_range
   }
 
   azure_active_directory_role_based_access_control {
-    managed            = true
+    #managed            = true
     azure_rbac_enabled = true
     tenant_id          = data.azurerm_client_config.current.tenant_id
   }
@@ -84,9 +85,9 @@ resource "azurerm_kubernetes_cluster" "this" {
     zones                        = local.zones
     os_disk_size_gb              = 127
     vnet_subnet_id               = data.azurerm_subnet.kubernetes.id
-    os_sku                       = "Mariner"
+    os_sku                       = local.os_sku
     type                         = "VirtualMachineScaleSets"
-    enable_auto_scaling          = true
+    auto_scaling_enabled         = true
     min_count                    = 1
     max_count                    = 3
     max_pods                     = 250
@@ -154,6 +155,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   service_mesh_profile {
     mode                             = "Istio"
     external_ingress_gateway_enabled = true
+    revisions                        = ["asm-1-21"]
   }
 
   storage_profile {

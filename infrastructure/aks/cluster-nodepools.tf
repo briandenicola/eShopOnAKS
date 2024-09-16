@@ -13,9 +13,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
   kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
   vnet_subnet_id        = data.azurerm_subnet.kubernetes.id
   vm_size               = var.vm_size
-  enable_auto_scaling   = true
+  auto_scaling_enabled  = true
   mode                  = "User"
-  os_sku                = "Mariner"
+  os_sku                = local.os_sku
   os_disk_size_gb       = 127
   max_pods              = 250
   node_count            = var.node_count

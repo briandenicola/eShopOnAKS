@@ -1,12 +1,12 @@
 resource "azurerm_redis_cache" "this" {
-  name                = local.redis_name
-  resource_group_name = var.redis_resource_group_name
-  location            = var.region
-  capacity            = 1
-  family              = "P"
-  sku_name            = "Premium"
-  enable_non_ssl_port = false
-  minimum_tls_version = "1.2"
+  name                 = local.redis_name
+  resource_group_name  = var.redis_resource_group_name
+  location             = var.region
+  capacity             = 1
+  family               = "P"
+  sku_name             = "Premium"
+  non_ssl_port_enabled = false
+  minimum_tls_version  = "1.2"
 
   redis_configuration {
   }

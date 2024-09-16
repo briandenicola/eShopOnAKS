@@ -22,5 +22,5 @@ locals {
   istio_gw_path             = "./cluster-config/istio/gateway"
   app_path                  = "./cluster-config"
   flux_repository           = "https://github.com/briandenicola/eshoponaks"
-
+  os_sku                    = "AzureLinux"
 }
