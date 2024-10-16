@@ -20,6 +20,7 @@ The following tools and build environment has been tested to work on Linux and o
 * [kubectl](https://kubernetes.io/docs/tasks/tools/) - Another tool for managing Kubernetes clusters
 * [helm](https://helm.sh/) - A tool for deploying applications to Kubernetes
 * [Trivy](https://github.com/aquasecurity/trivy) - Open Source Vulnerability Scanner for Containers
+* [Hubble](https://github.com/cilium/hubble/releases/) - Network, Service & Security Observability for Kubernetes
 
 ### Optional Tools
 * [Windows Terminal](https://aka.ms/terminal) - A better terminal for Windows

@@ -39,26 +39,26 @@ tasks:
   apply:
     cmds:
     - terraform -chdir=./infrastructure apply -auto-approve
-       -var "region={{.REGION}}" 
-       -var "vm_size={{.SKU}}" 
-       -var "node_count={{.COUNT}}"
-       -var "kubernetes_version={{.K8S_VERSION}}"
-       -var "tags={{.TITLE}}" 
-       -var "deploy_postgresql={{.DEPLOY_SQL}}"
-       -var "deploy_redis={{.DEPLOY_REDIS}}"
-       -compact-warnings
+        -var "region={{.REGION}}" 
+        -var "vm_size={{.SKU}}" 
+        -var "node_count={{.COUNT}}"
+        -var "kubernetes_version={{.K8S_VERSION}}"
+        -var "tags={{.TITLE}}" 
+        -var "deploy_postgresql={{.DEPLOY_SQL}}"
+        -var "deploy_redis={{.DEPLOY_REDIS}}"
+        -compact-warnings
     vars: 
       REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
 
   refresh:
     cmds:
     - terraform -chdir=./infrastructure refresh 
-      -var "region={{.REGION}}" 
-      -var "vm_size={{.SKU}}" 
-      -var "node_count={{.COUNT}}" 
-      -var "tags={{.TITLE}}"
-      -var "deploy_postgresql={{.DEPLOY_SQL}}"
-      -var "deploy_redis={{.DEPLOY_REDIS}}"      
+        -var "region={{.REGION}}" 
+        -var "vm_size={{.SKU}}" 
+        -var "node_count={{.COUNT}}" 
+        -var "tags={{.TITLE}}"
+        -var "deploy_postgresql={{.DEPLOY_SQL}}"
+        -var "deploy_redis={{.DEPLOY_REDIS}}"      
     vars: 
       REGION: '{{default .DEFAULT_REGION .CLI_ARGS}}'
 
@@ -105,6 +105,20 @@ tasks:
       SUBSCRIPTION_NAME:
         sh: az account show --query name -o tsv        
 
+  hubble:
+    desc: Install Hubble Dashboard for Network Observability 
+    dir: ./scripts
+    cmds:
+    - bash ./hubble-certs.sh
+    - kubectl apply -f ../cluster-config/hubble/
+    - kubectl get pods -o wide -n kube-system -l k8s-app=hubble-relay
+    - cmd: echo; 
+        echo -e 'Next. Run the following commands:' &&
+        echo -e '\t➡️\033[1m\e[38;5;45mkubectl port-forward -n kube-system svc/hubble-relay --address 127.0.0.1 4245:443 &' &&
+        echo -e '\t➡️\033[1m\e[38;5;45mkubectl -n kube-system port-forward svc/hubble-ui 12000:80 &' &&
+        echo -e '\t➡️\033[1m\e[38;5;45mhubble observe --pod $(kubectl get pods -o wide -n kube-system -l k8s-app=hubble-relay -o=jsonpath='{.items[0].metadata.name}')'
+      silent: true
+
   update-firewalls:
     desc: Update firewall rules for Keyvault, AKS, and ACR
     dir: ./scripts
@@ -120,7 +134,8 @@ tasks:
     desc: Gets the IP Addresss of the Istio Gateway
     dir: ./scripts
     cmds:
-    - echo 'Manually create an DNS (A) Record "*.{{.APP_NAME}}.{{.DOMAIN_ROOT}}" resolving to {{.IP}}'
+    - cmd: echo -e '\t➡️\033[1m\e[38;5;45mManually create an DNS (A) Record "*.{{.APP_NAME}}.{{.DOMAIN_ROOT}}" resolving to {{.IP}}'
+      silent: true
     vars:
       APP_NAME: 
         sh: terraform -chdir=../infrastructure output -raw APP_NAME
