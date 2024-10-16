@@ -15,6 +15,9 @@ infrastructure/terraform.tfstate.backup
 infrastructure/variables.tfvars
 infrastructure/terraform.tfstate.d/
 
+# Certs
+scripts/.certs/
+
 # User-specific files
 *.rsuser
 *.suo
