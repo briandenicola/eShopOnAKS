@@ -3,14 +3,15 @@ version: '3'
 dotenv: ['.env']
 
 env:
-  TITLE: eShop On AKS
-  SKU: "Standard_D4as_v5"
-  K8S_VERSION: "1.29"
-  DEFAULT_REGION: "westus3"
-  COUNT: 2
-  DOMAIN_ROOT: "bjdazure.tech"
-  DEPLOY_SQL: true
-  DEPLOY_REDIS: false
+  TITLE:             "eShop On AKS"
+  SKU:               "Standard_D4as_v5"
+  K8S_VERSION:       "1.30"
+  ISTIO_VERSION:     "asm-1-23"
+  DEFAULT_REGION:    "westus3"
+  DEFAULT_NODE_COUNT: 2
+  DOMAIN_ROOT:       "bjdazure.tech"
+  DEPLOY_SQL:        false
+  DEPLOY_REDIS:      false
 
 tasks:
   default: 
@@ -41,8 +42,9 @@ tasks:
     - terraform -chdir=./infrastructure apply -auto-approve
         -var "region={{.REGION}}" 
         -var "vm_size={{.SKU}}" 
-        -var "node_count={{.COUNT}}"
+        -var "node_count={{.DEFAULT_NODE_COUNT}}"
         -var "kubernetes_version={{.K8S_VERSION}}"
+        -var "istio_version={{.ISTIO_VERSION}}"
         -var "tags={{.TITLE}}" 
         -var "deploy_postgresql={{.DEPLOY_SQL}}"
         -var "deploy_redis={{.DEPLOY_REDIS}}"
@@ -55,8 +57,10 @@ tasks:
     - terraform -chdir=./infrastructure refresh 
         -var "region={{.REGION}}" 
         -var "vm_size={{.SKU}}" 
-        -var "node_count={{.COUNT}}" 
+        -var "node_count={{.DEFAULT_NODE_COUNT}}" 
         -var "tags={{.TITLE}}"
+        -var "kubernetes_version={{.K8S_VERSION}}"        
+        -var "istio_version={{.ISTIO_VERSION}}"
         -var "deploy_postgresql={{.DEPLOY_SQL}}"
         -var "deploy_redis={{.DEPLOY_REDIS}}"      
     vars: 
@@ -139,8 +143,8 @@ tasks:
     vars:
       APP_NAME: 
         sh: terraform -chdir=../infrastructure output -raw APP_NAME
-      IP:
-        sh: pwsh ./get-service-ipaddress.ps1 
+      IP: 
+        sh: kubectl --namespace aks-istio-ingress get service aks-istio-ingressgateway-external -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
 
   status:
     desc: Gets the overall status of the cluster

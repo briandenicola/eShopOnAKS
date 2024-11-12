@@ -1,6 +1,6 @@
 Set-Variable -Name cwd                  -Value $PWD.Path
 Set-Variable -Name root                 -Value (Get-Item $PWD.Path).Parent.FullName
-Set-Variable -Name UriFriendlyAppName   -Value $AppName.Replace("-","")                 -Option Constant
+Set-Variable -Name UriFriendlyAppName   -Value $AppName.Replace("-", "")                 -Option Constant
 
 Set-Variable -Name AKS_RG_NAME          -Value ("{0}_aks_rg" -f $AppName)               -Option Constant
 Set-Variable -Name CORE_RG_NAME         -Value ("{0}_core_rg" -f $AppName)              -Option Constant
@@ -22,18 +22,18 @@ Set-Variable -Name CERT_CHART_NAME      -Value "eshop-certificate"              
 Set-Variable -Name INFRA_CHART_NAME     -Value "eshop-infra-components"                 -Option Constant
 
 Set-Variable -Name APP_ISTIO_GATEWAY    -Value "aks-istio-ingress/istio-ingressgateway"         -Option Constant
-Set-Variable -Name APP_IDENTITY_URL     -Value ("identity.{0}.{1}" -f $AppName,$DomainName)     -Option Constant
-Set-Variable -Name APP_URL              -Value ("shop.{0}.{1}" -f $AppName,$DomainName)         -Option Constant
+Set-Variable -Name APP_IDENTITY_URL     -Value ("identity.{0}.{1}" -f $AppName, $DomainName)    -Option Constant
+Set-Variable -Name APP_URL              -Value ("shop.{0}.{1}" -f $AppName, $DomainName)        -Option Constant
 
 Set-Variable -Name Services             -Value @(
-    @{Name="basket-api"; Path="src/Basket.API"},
-    @{Name="catalog-api"; Path="src/Catalog.API"},
-    @{Name="identity-api"; Path="src/Identity.API"},
-    @{Name="mobile-bff"; Path="src/Mobile.Bff.Shopping"},
-    @{Name="order-processor"; Path="src/OrderProcessor"},
-    @{Name="ordering-api"; Path="src/Ordering.API"},
-    @{Name="payment-processor"; Path="src/PaymentProcessor"},
-    @{Name="webapp"; Path="src/WebApp"},
-    @{Name="webhooks-api"; Path="src/Webhooks.API"},
-    @{Name="webhooksclient"; Path="src/WebhookClient"}
+    @{Name = "basket-api"; Path = "src/Basket.API" },
+    @{Name = "catalog-api"; Path = "src/Catalog.API" },
+    @{Name = "identity-api"; Path = "src/Identity.API" },
+    @{Name = "mobile-bff"; Path = "src/Mobile.Bff.Shopping" },
+    @{Name = "order-processor"; Path = "src/OrderProcessor" },
+    @{Name = "ordering-api"; Path = "src/Ordering.API" },
+    @{Name = "payment-processor"; Path = "src/PaymentProcessor" },
+    @{Name = "webapp"; Path = "src/WebApp" },
+    @{Name = "webhooks-api"; Path = "src/Webhooks.API" },
+    @{Name = "webhooksclient"; Path = "src/WebhookClient" }
 ) -Option Constant

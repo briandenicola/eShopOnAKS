@@ -33,7 +33,7 @@ Infrastructure
     -var "deploy_postgresql={{.DEPLOY_SQL}}" \
     -var "deploy_redis={{.DEPLOY_REDIS}}" 
   az aks get-credentials -g {{.AKS_NAME}} -n {{.RG}}
-  pwsh ./scripts/get-service-ipaddress.ps1
+  kubectl --namespace aks-istio-ingress get service aks-istio-ingressgateway-external -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
 ```
 
 ## Optional Next Steps
