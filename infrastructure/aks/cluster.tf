@@ -6,8 +6,8 @@ data "azurerm_kubernetes_service_versions" "current" {
 locals {
   current_minus_2    = data.azurerm_kubernetes_service_versions.current.versions[length(data.azurerm_kubernetes_service_versions.current.versions) - 2]
   kubernetes_version = var.kubernetes_version == null ? local.current_minus_2 : var.kubernetes_version
+  istio_version      = [var.istio_version]
   allowed_ip_range   = ["${chomp(data.http.myip.response_body)}/32"]
-  zones              = var.region == "northcentralus" ? null : var.zones
 }
 
 resource "tls_private_key" "rsa" {
@@ -55,7 +55,6 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   azure_active_directory_role_based_access_control {
-    #managed            = true
     azure_rbac_enabled = true
     tenant_id          = data.azurerm_client_config.current.tenant_id
   }
@@ -80,9 +79,9 @@ resource "azurerm_kubernetes_cluster" "this" {
 
   default_node_pool {
     name                         = "system"
-    node_count                   = 1
+    node_count                   = 2
     vm_size                      = var.system_vm_size
-    zones                        = local.zones
+    zones                        = var.zones
     os_disk_size_gb              = 127
     vnet_subnet_id               = data.azurerm_subnet.kubernetes.id
     os_sku                       = local.os_sku
@@ -93,6 +92,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     max_pods                     = 250
     only_critical_addons_enabled = true
     temporary_name_for_rotation  = "rotation"
+
     upgrade_settings {
       max_surge                = "33%"
       drain_timeout_in_minutes = 5
@@ -155,7 +155,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   service_mesh_profile {
     mode                             = "Istio"
     external_ingress_gateway_enabled = true
-    revisions                        = ["asm-1-21"]
+    revisions                        = local.istio_version
   }
 
   storage_profile {

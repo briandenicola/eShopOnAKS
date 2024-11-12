@@ -7,7 +7,7 @@ resource "azurerm_redis_cache" "this" {
   sku_name             = "Premium"
   non_ssl_port_enabled = false
   minimum_tls_version  = "1.2"
-
+  zones                = var.zones
   redis_configuration {
   }
 }
@@ -26,7 +26,7 @@ resource "azurerm_private_endpoint" "redis_account" {
   name                = "${local.redis_name}-ep"
   resource_group_name = var.redis_resource_group_name
   location            = var.region
-  subnet_id           = var.subnet_id
+  subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
     name                           = "${local.redis_name}-ep"

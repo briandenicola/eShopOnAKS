@@ -20,6 +20,10 @@ variable "kubernetes_version" {
   description = "The version of Kubernetes to use for the AKS cluster"
 }
 
+variable "istio_version" {
+  description = "The version of Istio to use for the AKS cluster"
+}
+
 variable "service_mesh_type" {
   description = "Type of Service Mesh for cluster"
   default     = "istio"
@@ -49,8 +53,8 @@ variable "vnet_resource_group_name" {
   description = "The name of the Resource Group for the VNet"
 }
 
-variable "subnet_id" {
-  description = "The name of the Subnet to attach to"
+variable "private_endpoint_subnet_id" {
+  description = "The name of the Subnet to attach private endpoints to"
 }
 
 variable "github_repo_branch" {
@@ -60,7 +64,6 @@ variable "github_repo_branch" {
 
 variable "zones" {
   description = "The values for zones to deploy AKS nodes to"
-  default     = ["1"]
 }
 
 variable "keyvault_id" {
@@ -74,6 +77,7 @@ variable "azurerm_log_analytics_workspace_id" {
 variable "azurerm_monitor_data_collection_rule_azuremonitor_id" {
   description = "The Resource ID of the Azure Monitor Data Collection Rule"
 }
+
 variable "azurerm_monitor_container_insights_data_collection_rule_azuremonitor_id" {
   description = "The Resource ID of the Azure Monitor Data Collection Rule for Container Insights"
 }

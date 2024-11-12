@@ -5,26 +5,36 @@ resource "azurerm_virtual_network" "this" {
   address_space       = [local.vnet_cidr]
 }
 
+resource "azurerm_subnet" "compute" {
+  name                              = "compute"
+  resource_group_name               = azurerm_virtual_network.this.resource_group_name
+  virtual_network_name              = azurerm_virtual_network.this.name
+  address_prefixes                  = [local.compute_subnet_cidr]
+  default_outbound_access_enabled   = true
+}
+
 resource "azurerm_subnet" "private-endpoints" {
   name                              = "private-endpoints"
   resource_group_name               = azurerm_virtual_network.this.resource_group_name
   virtual_network_name              = azurerm_virtual_network.this.name
   address_prefixes                  = [local.pe_subnet_cidr]
   private_endpoint_network_policies = "Enabled"
+  default_outbound_access_enabled   = true
 }
 
 resource "azurerm_subnet" "kubernetes" {
-  name                 = "nodes"
-  resource_group_name  = azurerm_virtual_network.this.resource_group_name
-  virtual_network_name = azurerm_virtual_network.this.name
-  address_prefixes     = [local.k8s_subnet_cidr]
+  name                              = "nodes"
+  resource_group_name               = azurerm_virtual_network.this.resource_group_name
+  virtual_network_name              = azurerm_virtual_network.this.name
+  address_prefixes                  = [local.k8s_subnet_cidr]
+  default_outbound_access_enabled   = true
 }
 
 resource "azurerm_subnet" "api" {
-  name                 = "api-severver"
-  resource_group_name  = azurerm_resource_group.core.name
-  virtual_network_name = azurerm_virtual_network.this.name
-  address_prefixes     = [local.api_subnet_cidir]
+  name                              = "api-severver"
+  resource_group_name               = azurerm_resource_group.core.name
+  virtual_network_name              = azurerm_virtual_network.this.name
+  address_prefixes                  = [local.api_subnet_cidir]
 
   delegation {
     name = "aks-delegation"
@@ -39,11 +49,12 @@ resource "azurerm_subnet" "api" {
 }
 
 resource "azurerm_subnet" "sql" {
-  name                 = "sql"
-  resource_group_name  = azurerm_virtual_network.this.resource_group_name
-  virtual_network_name = azurerm_virtual_network.this.name
-  address_prefixes     = [local.sql_subnet_cidr]
-  service_endpoints    = ["Microsoft.Storage"]
+  name                            = "sql"
+  resource_group_name             = azurerm_virtual_network.this.resource_group_name
+  virtual_network_name            = azurerm_virtual_network.this.name
+  address_prefixes                = [local.sql_subnet_cidr]
+  service_endpoints               = ["Microsoft.Storage"]
+  
   delegation {
     name = "fs"
     service_delegation {

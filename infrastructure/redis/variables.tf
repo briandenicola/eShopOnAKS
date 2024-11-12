@@ -18,8 +18,8 @@ variable "vnet_resource_group_name" {
   description = "The name of the Resource Group for the VNet"
 }
 
-variable "subnet_id" {
-  description = "The name of the Subnet to attach to"
+variable "private_endpoint_subnet_id" {
+  description = "The resource id of the Subnet to attach private endpoints to"
 }
 
 variable "log_analytics_workspace_id" {
@@ -28,4 +28,9 @@ variable "log_analytics_workspace_id" {
 
 variable "keyvault_id" {
   description = "The Resource ID of the KeyVault"
+}
+
+variable "zones" {
+  description = "The values for zones to deploy AKS nodes to"
+  default     = ["1"]
 }

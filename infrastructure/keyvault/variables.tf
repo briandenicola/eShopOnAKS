@@ -18,7 +18,7 @@ variable "vnet_resource_group_name" {
   description = "The name of the Resource Group for the VNet"
 }
 
-variable "subnet_id" {
-  description = "The name of the Subnet to attach to"
+variable "private_endpoint_subnet_id" {
+  description = "The resource id of the Subnet to attach private endpoints to"
 }
 

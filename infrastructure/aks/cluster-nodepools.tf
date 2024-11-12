@@ -21,11 +21,12 @@ resource "azurerm_kubernetes_cluster_node_pool" "app_node_pool" {
   node_count            = var.node_count
   min_count             = var.node_count
   max_count             = var.node_count + 2
-  zones                 = local.zones
-  node_labels = {
-    App = "eshop"  
-  }
+  zones                 = var.zones
   
+  node_labels = {
+    App = "eshop"
+  }
+
   upgrade_settings {
     max_surge = "25%"
   }

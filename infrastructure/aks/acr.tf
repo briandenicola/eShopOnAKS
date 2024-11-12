@@ -18,7 +18,7 @@ resource "azurerm_private_endpoint" "acr_account" {
   name                = "${local.acr_name}-ep"
   resource_group_name = azurerm_resource_group.aks.name
   location            = azurerm_resource_group.aks.location
-  subnet_id           = var.subnet_id
+  subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
     name                           = "${local.acr_name}-ep"

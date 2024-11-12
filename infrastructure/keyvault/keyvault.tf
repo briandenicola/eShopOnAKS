@@ -21,7 +21,7 @@ resource "azurerm_private_endpoint" "key_vault" {
   name                = "${local.kv_name}-ep"
   resource_group_name = var.keyvault_resource_group_name
   location            = var.region
-  subnet_id           = var.subnet_id
+  subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
     name                           = "${local.kv_name}-ep"

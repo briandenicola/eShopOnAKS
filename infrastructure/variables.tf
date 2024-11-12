@@ -21,6 +21,10 @@ variable "kubernetes_version" {
   description = "The version of Kubernetes to use for the AKS cluster"
 }
 
+variable "istio_version" {
+  description = "The version of Istio to use for the AKS cluster"
+}
+
 variable "vm_size" {
   description = "The SKU for the default node pool"
   default     = "Standard_B4ms"
@@ -35,11 +39,6 @@ variable "node_count" {
 variable "github_repo_branch" {
   description = "The branched used for Infrastructure GitOps"
   default     = "main"
-}
-
-variable "zones" {
-  description = "The values for zones to deploy AKS nodes to"
-  default     = ["1"]
 }
 
 variable "deploy_postgresql" {
