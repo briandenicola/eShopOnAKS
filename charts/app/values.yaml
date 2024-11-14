@@ -31,7 +31,7 @@ EVENTBUS:
   PORT                                  : "5672"
 
 ISTIO:
-  VERSION                               : "asm-1-21"
+  VERSION                               : "asm-1-23"
   GATEWAY                               : ""
   WEBHOOKS:
     PORT                                : 8080

@@ -82,7 +82,7 @@ Chaos Resource Group ("${app_name}_chaos_rg") | Chaos Engineering components
 ### Azure Service Mesh
 * Azure Service Mesh is installed as part of the AKS cluster deployment.
 * The default configuration is used for most of the Azure Service Mesh components.
-* Customization for Azure Service Mesh is defined in the `istio-shared-configmap-asm-1-20` configmap that is deployed as part of the GitOps deployment defined below.
+* Customization for Azure Service Mesh is defined in the `istio-shared-configmap-asm-1-23` configmap that is deployed as part of the GitOps deployment defined below.
 * The Azure Service Mesh is configured to forward trace logs to an Open Telemetry endpoing using the Zipkin protocol as defined:
 ```yaml
     defaultConfig:

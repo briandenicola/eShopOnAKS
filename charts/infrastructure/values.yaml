@@ -11,7 +11,7 @@ OTEL:
   VERSION                               : "0.98.0"
 
 ISTIO:
-  VERSION                               : "asm-1-21"
+  VERSION                               : "asm-1-23"
 
 APP_INSIGHTS:
   CONNECTION_STRING                     : ""
