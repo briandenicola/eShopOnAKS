@@ -17,6 +17,18 @@ data:
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.OTEL.ENDPOINT }}
   OTEL_SERVICE_NAME: "catalog-api"
 ---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: catalog-api-pdb
+  namespace: {{ .Values.NAMESPACES.APP }}  
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      service: catalog-api
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -26,7 +38,7 @@ metadata:
     app: {{ .Chart.Name }}
     service: catalog-api
 spec:
-  replicas: 1
+  replicas: {{ .Values.API.CATALOG_API.REPLICA_COUNT }}
   selector:
     matchLabels:
       service: catalog-api

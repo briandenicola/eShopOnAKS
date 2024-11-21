@@ -24,6 +24,18 @@ data:
   services__catalog-api__http__0: {{ .Values.ISTIO.CATALOG.INTERNAL_URL }}    
   services__catalog-api__https__0: {{ .Values.ISTIO.CATALOG.INTERNAL_URL }}
 ---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: webapp-api-pdb
+  namespace: {{ .Values.NAMESPACES.APP }}  
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      service: webapp
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -33,7 +45,7 @@ metadata:
     app: {{ .Chart.Name }}
     service: webapp
 spec:
-  replicas: 1
+  replicas: {{ .Values.API.WEBAPP.REPLICA_COUNT }}
   selector:
     matchLabels:
       service: webapp

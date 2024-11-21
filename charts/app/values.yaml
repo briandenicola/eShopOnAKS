@@ -30,6 +30,14 @@ EVENTBUS:
   PASSWORD                              : ""
   PORT                                  : "5672"
 
+API:
+  ORDER_API:
+    REPLICA_COUNT                       : 2
+  CATALOG_API:
+    REPLICA_COUNT                       : 2
+  WEBAPP:
+    REPLICA_COUNT                       : 2
+    
 ISTIO:
   VERSION                               : "asm-1-23"
   GATEWAY                               : ""

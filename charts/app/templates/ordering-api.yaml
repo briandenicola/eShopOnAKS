@@ -17,6 +17,18 @@ data:
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.OTEL.ENDPOINT }}
   OTEL_SERVICE_NAME: "ordering-api"
 ---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ordering-api-pdb
+  namespace: {{ .Values.NAMESPACES.APP }}  
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      service: ordering-api
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -26,7 +38,7 @@ metadata:
     app: {{ .Chart.Name }}
     service: ordering-api
 spec:
-  replicas: 1
+  replicas: {{ .Values.API.ORDER_API.REPLICA_COUNT }}
   selector:
     matchLabels:
       service: ordering-api
