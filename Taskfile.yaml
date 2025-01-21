@@ -24,9 +24,13 @@ tasks:
     - task: init
     - task: apply 
     - task: creds
-    - task: cert
     - task: build 
     - task: dns
+    - cmd: echo -e '\t🔹\033[1m\e[38;5;45mRun the following after creating proper DNS record from above:' &&
+        echo -e '\t➡️\033[1m\e[38;5;45mtask cert' &&
+        echo -e '\t➡️\033[1m\e[38;5;45mkubectl get cert -Aw (Wait for READY set to true)' &&
+        echo -e '\t➡️\033[1m\e[38;5;45mtask deploy'
+      silent: true
 
   init:
     desc: Creates Azure infrastructure and deploys application code
