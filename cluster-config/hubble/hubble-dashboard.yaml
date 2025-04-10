@@ -129,12 +129,11 @@ spec:
         app.kubernetes.io/name: hubble-ui
         app.kubernetes.io/part-of: retina
     spec:
-      serviceAccount: hibble-ui
       serviceAccountName: hubble-ui
       automountServiceAccountToken: true
       containers:
       - name: frontend
-        image: mcr.microsoft.com/oss/cilium/hubble-ui:v0.12.2  
+        image: mcr.microsoft.com/oss/cilium/hubble-ui:v0.12.2   
         imagePullPolicy: Always
         ports:
         - name: http
