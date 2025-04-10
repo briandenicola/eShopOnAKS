@@ -134,7 +134,7 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: frontend
-        image: mcr.microsoft.com/oss/cilium/hubble-ui:v0.12.2   
+        image: mcr.microsoft.com/oss/cilium/hubble-ui:v0.13.2   
         imagePullPolicy: Always
         ports:
         - name: http
@@ -157,7 +157,7 @@ spec:
         terminationMessagePolicy: FallbackToLogsOnError
         securityContext: {}
       - name: backend
-        image: mcr.microsoft.com/oss/cilium/hubble-ui-backend:v0.12.2
+        image: mcr.microsoft.com/oss/cilium/hubble-ui-backend:v0.13.2
         imagePullPolicy: Always
         env:
         - name: EVENTS_SERVER_PORT
