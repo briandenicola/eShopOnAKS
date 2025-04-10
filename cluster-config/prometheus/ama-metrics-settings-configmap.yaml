@@ -48,7 +48,7 @@ data:
     podannotations = ""
     kappiebasic = ""
     networkobservabilityRetina = ""
-    networkobservabilityHubble = ""
+    networkobservabilityHubble = "hubble.*"
     networkobservabilityCilium = ""
     controlplane-apiserver = ""
     controlplane-cluster-autoscaler = ""
@@ -57,7 +57,7 @@ data:
     controlplane-etcd = ""
     acstor-capacity-provisioner = ""
     acstor-metrics-exporter = ""
-    minimalingestionprofile = true
+    minimalingestionprofile = false
   default-targets-scrape-interval-settings: |-
     kubelet = "30s"
     coredns = "30s"
