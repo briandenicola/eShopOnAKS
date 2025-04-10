@@ -5,8 +5,8 @@ dotenv: ['.env']
 env:
   TITLE:             "eShop On AKS"
   SKU:               "Standard_D4as_v5"
-  K8S_VERSION:       "1.30"
-  ISTIO_VERSION:     "asm-1-23"
+  K8S_VERSION:       "1.31"
+  ISTIO_VERSION:     "asm-1-24"
   DEFAULT_REGION:    "westus3"
   DEFAULT_NODE_COUNT: 2
   DOMAIN_ROOT:       "bjdazure.tech"
