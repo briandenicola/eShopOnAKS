@@ -120,11 +120,12 @@ tasks:
     - bash ./hubble-certs.sh
     - kubectl apply -f ../cluster-config/hubble/
     - kubectl get pods -o wide -n kube-system -l k8s-app=hubble-relay
+    - kubectl get pods -o wide -n kube-system -l k8s-app=hubble-ui
     - cmd: echo; 
         echo -e '➡️\033[1m\e[38;5;45mHubble is now setup. . .' &&
         echo -e '➡️\033[1m\e[38;5;45mTo access the Dashboard, run the following commands:' &&
-        echo -e '\t\033[1m\e[38;5;196mkubectl port-forward -n kube-system svc/hubble-relay --address 127.0.0.1 4245:443 &' &&
-        echo -e '\tkubectl -n kube-system port-forward svc/hubble-ui 12000:80 &' &&
+        echo -e '\t\033[1m\e[38;5;196mkubectl port-forward -n kube-system svc/hubble-relay --address 127.0.0.1 4245:443 &&' &&
+        echo -e '\tkubectl -n kube-system port-forward svc/hubble-ui 12000:80' &&
         echo -e '➡️\033[1m\e[38;5;45mThen click this 🔗 \033[1m\e[38;5;46mhttp://localhost:12000:'
       silent: true        
     - cmd: echo; 
