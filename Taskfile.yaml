@@ -125,7 +125,8 @@ tasks:
         echo -e '➡️\033[1m\e[38;5;45mTo access the Dashboard, run the following commands:' &&
         echo -e '\t\033[1m\e[38;5;196mkubectl port-forward -n kube-system svc/hubble-relay --address 127.0.0.1 4245:443 &' &&
         echo -e '\tkubectl -n kube-system port-forward svc/hubble-ui 12000:80 &' &&
-        echo -e '➡️\033[1m\e[38;5;45mThen click this 🔗\033[1m\e[38;5;46mhttp://localhost:12000:'
+        echo -e '➡️\033[1m\e[38;5;45mThen click this 🔗 \033[1m\e[38;5;46mhttp://localhost:12000:'
+      silent: true        
     - cmd: echo; 
         echo -e '➡️\033[1m\e[38;5;45mThe Hubble cli can also be used to observe pod traffic with:' &&         
         echo -e '\t\033[1m\e[38;5;196mhubble observe --pod $(kubectl -n eshop get pods -o wide -l service=catalog-api -o jsonpath="{.items[0].metadata.name}")'
