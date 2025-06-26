@@ -6,7 +6,7 @@ resource "azapi_update_resource" "cluster_updates" {
   type        = "Microsoft.ContainerService/managedClusters@2025-02-01"
   resource_id = azurerm_kubernetes_cluster.this.id
 
-  body = jsonencode({
+  body = {
     properties = {
       networkProfile = {
         advancedNetworking = {
@@ -17,5 +17,5 @@ resource "azapi_update_resource" "cluster_updates" {
         }
       }
     }
-  })
+  }
 }
