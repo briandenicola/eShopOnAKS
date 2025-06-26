@@ -13,3 +13,9 @@ variable "tags" {
 variable "app_identity_principal_id" {
   description = "The Managed Identity Principal ID"
 }
+
+variable "grafana_major_version" {
+  description = "The major version of Grafana to deploy"
+  default     = 11
+  
+}

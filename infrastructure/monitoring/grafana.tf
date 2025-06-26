@@ -7,7 +7,7 @@ resource "azurerm_dashboard_grafana" "this" {
   resource_group_name               = azurerm_resource_group.monitoring.name
   location                          = var.core_region
   sku                               = "Standard"
-  grafana_major_version             = 10
+  grafana_major_version             = var.grafana_major_version
   zone_redundancy_enabled           = false
   api_key_enabled                   = true
   deterministic_outbound_ip_enabled = true
